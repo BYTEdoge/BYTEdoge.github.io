@@ -11,7 +11,8 @@
     root.style.setProperty('--theme-text', palette.text);
     root.style.setProperty('--sidebar-bg', palette.sidebarBg);
     root.style.setProperty('--sidebar-text', palette.sidebarText);
-    root.style.setProperty('--navbar-bg', palette.navbarBg);
+    // 不再覆盖导航栏背景色，保持CSS中设置的浅灰色
+    // root.style.setProperty('--navbar-bg', palette.navbarBg);
 
     // Map to NexT variables used by navbar/menu
     root.style.setProperty('--brand-color', palette.primaryDark);
