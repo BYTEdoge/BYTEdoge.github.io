@@ -1,7 +1,7 @@
 // Time-based theme color switching
 // Applies CSS variables to drive navbar and sidebar colors across the site.
 (function () {
-  function applyPalette(palette) {
+  function applyPalette(palette, mode) {
     const root = document.documentElement;
     // Primary palette
     root.style.setProperty('--theme-primary', palette.primary);
@@ -11,6 +11,7 @@
     root.style.setProperty('--theme-text', palette.text);
     root.style.setProperty('--sidebar-bg', palette.sidebarBg);
     root.style.setProperty('--sidebar-text', palette.sidebarText);
+    root.style.setProperty('--navbar-bg', palette.navbarBg);
 
     // Map to NexT variables used by navbar/menu
     root.style.setProperty('--brand-color', palette.primaryDark);
@@ -19,6 +20,8 @@
     root.style.setProperty('--link-hover-color', palette.primary);
     root.style.setProperty('--menu-item-bg-color', palette.primaryLight);
     root.style.setProperty('--text-color', palette.text);
+    // Mark mode for CSS targeting
+    root.setAttribute('data-time-theme', mode);
   }
 
   function setTimeBasedTheme() {
@@ -33,9 +36,11 @@
       primaryDark: '#4D94FF',
       primaryLight: '#99CCFF',
       text: '#333',
-      sidebarBg: '#f8f9fa',
-      sidebarText: '#333'
+      sidebarBg: '#66B2FF',
+      sidebarText: '#fff',
+      navbarBg: '#66B2FF'
     };
+    let mode = 'light';
 
     if (time >= 0 && time < 6) {
       // 00:00 - 06:00 浅天蓝
@@ -44,8 +49,9 @@
         primaryDark: '#66B2FF',
         primaryLight: '#B8E2F2',
         text: '#333',
-        sidebarBg: '#f8f9fa',
-        sidebarText: '#333'
+        sidebarBg: '#87CEEB',
+        sidebarText: '#fff',
+        navbarBg: '#87CEEB'
       };
     } else if (time >= 6 && time < 12) {
       // 06:00 - 12:00 天蓝
@@ -54,8 +60,9 @@
         primaryDark: '#4D94FF',
         primaryLight: '#99CCFF',
         text: '#333',
-        sidebarBg: '#f8f9fa',
-        sidebarText: '#333'
+        sidebarBg: '#66B2FF',
+        sidebarText: '#fff',
+        navbarBg: '#66B2FF'
       };
     } else if (time >= 12 && time < 14) {
       // 12:00 - 14:00 更通透的天蓝
@@ -64,8 +71,9 @@
         primaryDark: '#3385FF',
         primaryLight: '#80B3FF',
         text: '#333',
-        sidebarBg: '#f8f9fa',
-        sidebarText: '#333'
+        sidebarBg: '#4D94FF',
+        sidebarText: '#fff',
+        navbarBg: '#4D94FF'
       };
     } else if (time >= 14 && time < 18) {
       // 14:00 - 18:00 天蓝
@@ -74,8 +82,9 @@
         primaryDark: '#4D94FF',
         primaryLight: '#99CCFF',
         text: '#333',
-        sidebarBg: '#f8f9fa',
-        sidebarText: '#333'
+        sidebarBg: '#66B2FF',
+        sidebarText: '#fff',
+        navbarBg: '#66B2FF'
       };
     } else if (time >= 18 && time < 19.5) {
       // 18:00 - 19:30 日落红
@@ -84,8 +93,9 @@
         primaryDark: '#FF5252',
         primaryLight: '#FF8E8E',
         text: '#333',
-        sidebarBg: '#f8f9fa',
-        sidebarText: '#333'
+        sidebarBg: '#FF6B6B',
+        sidebarText: '#fff',
+        navbarBg: '#FF6B6B'
       };
     } else {
       // 19:30 - 24:00 黑夜
@@ -95,11 +105,13 @@
         primaryLight: '#444',
         text: '#fff',
         sidebarBg: '#222',
-        sidebarText: '#fff'
+        sidebarText: '#fff',
+        navbarBg: '#222'
       };
+      mode = 'dark';
     }
 
-    applyPalette(palette);
+    applyPalette(palette, mode);
   }
 
   // Initial and interval update
