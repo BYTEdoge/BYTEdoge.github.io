@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>12321</title>
+    <url>/2025/08/28/12321/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>123</title>
     <url>/2025/08/28/123/</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>12321</title>
-    <url>/2025/08/28/12321/</url>
+    <title>231</title>
+    <url>/2025/08/28/231/</url>
+    <content><![CDATA[<h4 id="123123"><a href="#123123" class="headerlink" title="123123"></a>123123</h4>]]></content>
+      <categories>
+        <category>231</category>
+      </categories>
+      <tags>
+        <tag>123</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>223</title>
+    <url>/2025/08/28/223/</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
@@ -42,8 +58,25 @@
       </tags>
   </entry>
   <entry>
-    <title>223</title>
-    <url>/2025/08/28/223/</url>
+    <title>777</title>
+    <url>/2025/08/28/777/</url>
+    <content><![CDATA[]]></content>
+      <categories>
+        <category>777</category>
+      </categories>
+      <tags>
+        <tag>777</tag>
+        <tag>666</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>test</title>
+    <url>/2025/08/28/test/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>mkad</title>
+    <url>/2025/08/28/mkad/</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
@@ -120,88 +153,6 @@
       <tags>
         <tag>go</tag>
         <tag>goframe</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>231</title>
-    <url>/2025/08/28/231/</url>
-    <content><![CDATA[<h4 id="123123"><a href="#123123" class="headerlink" title="123123"></a>123123</h4>]]></content>
-      <categories>
-        <category>231</category>
-      </categories>
-      <tags>
-        <tag>123</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2025/08/26/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<span id="more"></span>
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-      <categories>
-        <category>general</category>
-      </categories>
-      <tags>
-        <tag>intro</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>mkad</title>
-    <url>/2025/08/28/mkad/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>go语言特性</title>
-    <url>/2025/08/27/go%E8%AF%AD%E8%A8%80%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<h3 id="1-在定义函数时，参数的类型是写在参数名称之后的"><a href="#1-在定义函数时，参数的类型是写在参数名称之后的" class="headerlink" title="1.在定义函数时，参数的类型是写在参数名称之后的"></a>1.在定义函数时，参数的类型是写在参数名称之后的</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DoPost</span><span class="params">(ctx context.Context, crypto *AESCrypto, path, encryptBody <span class="type">string</span>)</span></span> (outDatamap[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;, err <span class="type">error</span>) </span><br></pre></td></tr></table></figure>
-
-<p>并且函数的出参直接在入参之后加上（）</p>
-<p>注意，不仅仅是函数的入参以及出参是这样的，整个go语言都是将数据类型放在数据名称之后的</p>
-<h3 id="2-键值对直接插入定义"><a href="#2-键值对直接插入定义" class="headerlink" title="2.键值对直接插入定义"></a>2.键值对直接插入定义</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> params = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>)</span><br></pre></td></tr></table></figure>
-
-<p>这里代表创建了一个params的键值对元组，其中key值使用的是string类型，value值使用的是string类型</p>
-<h3 id="3-包内函数调用方式"><a href="#3-包内函数调用方式" class="headerlink" title="3.包内函数调用方式"></a>3.包内函数调用方式</h3><p>在 Go 语言中，导入包后可以直接通过&#x3D;&#x3D;包名调用包内的导出&#x3D;&#x3D;方法（首字母&#x3D;&#x3D;大写&#x3D;&#x3D;的函数、变量等），形式为 包名.方法名()，这是 Go 语言的标准用法，GoFrame 框架也遵循这一规则。</p>
-<p>注意这里还有一条规则，就是函数名为首字母大写的函数可以被包内同级程序（直接使用函数名调用）和包外程序（使用时加上包名.）调用，而首字母小写的函数则是&#x3D;&#x3D;只能&#x3D;&#x3D;被包内同级程序调用（也就是包内的子包的程序是无法调用的），如果是包外则&#x3D;&#x3D;无法调用&#x3D;&#x3D;，如果必须调用，可以在包内添加一个桥接函数（以大写字母开头，引用小写字母的私有函数）。</p>
-<ul>
-<li><p>注意上述对于包中函数调用的描述同样也适用于变量</p>
-</li>
-<li><p>Type 创建和管理类型，可以创建自定义类型，或者是将类型取一个别名，创建接口，将多个类型分组定义</p>
-</li>
-<li><p>面向接口开发，利于解耦，允许先使用后定义，也就是函数的入参可以放置在函数的下方</p>
-</li>
-<li><p>和c语言，c++一样支持指针操作，<code>var SyncUserList = &amp;qSyncUserList&#123;&#125;</code>代表syncuserlist的值是取qsyncuserlist的地址*abc代表是指针</p>
-</li>
-</ul>
- <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="function"><span class="keyword">func</span> <span class="params">(q *qSyncUserList)</span></span> GetTopic() <span class="type">string</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> TaskSyncUserList</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>代表q指针指向的结构体是gettopic方法的接受体，也就是q指针指向的结构体有这个函数，并且只有这个指针可以调用</p>
-<h3 id="5-结构体定义"><a href="#5-结构体定义" class="headerlink" title="5.结构体定义"></a>5.结构体定义</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> UserGroupRelation <span class="keyword">struct</span> &#123;</span><br><span class="line">CustId <span class="type">string</span> <span class="string">`json:&quot;custId&quot; dc:&quot;客户编码&quot;`</span></span><br><span class="line">GroupId <span class="type">string</span> <span class="string">`json:&quot;groupId&quot; dc:&quot;组别编码&quot;`</span></span><br><span class="line">DataSources <span class="type">string</span> <span class="string">`json:&quot;dataSources&quot; dc:&quot;数据来源&quot;`</span></span><br><span class="line">AvailCode  <span class="type">string</span> <span class="string">`json:&quot;availCode&quot; dc:&quot;有效性标识&quot;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这里面每个参数最后的反引号的内容代表了是 Go 语言的<strong>结构体标签</strong>，用于为字段提供额外的元信息，供程序运行时通过反射（reflect）读取和使用。这里包含两类标签：</p>
-<ul>
-<li>json:”custId”：用于     JSON 序列化 &#x2F; 反序列化时的字段映射。表示当结构体与 JSON 互转时，CustId 字段会对应 JSON 中的 custId 键（小写开头，符合     JSON 命名习惯）。</li>
-<li>dc:”客户编码”：这是一个自定义标签（可能是项目内部约定，如     “数据字典” 或 “文档注释”），用于说明字段的业务含义，方便开发者理解或自动生成文档。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>go语言教程</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
       </tags>
   </entry>
   <entry>
@@ -296,23 +247,84 @@
       </tags>
   </entry>
   <entry>
+    <title>go语言特性</title>
+    <url>/2025/08/27/go%E8%AF%AD%E8%A8%80%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<h3 id="1-在定义函数时，参数的类型是写在参数名称之后的"><a href="#1-在定义函数时，参数的类型是写在参数名称之后的" class="headerlink" title="1.在定义函数时，参数的类型是写在参数名称之后的"></a>1.在定义函数时，参数的类型是写在参数名称之后的</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DoPost</span><span class="params">(ctx context.Context, crypto *AESCrypto, path, encryptBody <span class="type">string</span>)</span></span> (outDatamap[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;, err <span class="type">error</span>) </span><br></pre></td></tr></table></figure>
+
+<p>并且函数的出参直接在入参之后加上（）</p>
+<p>注意，不仅仅是函数的入参以及出参是这样的，整个go语言都是将数据类型放在数据名称之后的</p>
+<h3 id="2-键值对直接插入定义"><a href="#2-键值对直接插入定义" class="headerlink" title="2.键值对直接插入定义"></a>2.键值对直接插入定义</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> params = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>)</span><br></pre></td></tr></table></figure>
+
+<p>这里代表创建了一个params的键值对元组，其中key值使用的是string类型，value值使用的是string类型</p>
+<h3 id="3-包内函数调用方式"><a href="#3-包内函数调用方式" class="headerlink" title="3.包内函数调用方式"></a>3.包内函数调用方式</h3><p>在 Go 语言中，导入包后可以直接通过&#x3D;&#x3D;包名调用包内的导出&#x3D;&#x3D;方法（首字母&#x3D;&#x3D;大写&#x3D;&#x3D;的函数、变量等），形式为 包名.方法名()，这是 Go 语言的标准用法，GoFrame 框架也遵循这一规则。</p>
+<p>注意这里还有一条规则，就是函数名为首字母大写的函数可以被包内同级程序（直接使用函数名调用）和包外程序（使用时加上包名.）调用，而首字母小写的函数则是&#x3D;&#x3D;只能&#x3D;&#x3D;被包内同级程序调用（也就是包内的子包的程序是无法调用的），如果是包外则&#x3D;&#x3D;无法调用&#x3D;&#x3D;，如果必须调用，可以在包内添加一个桥接函数（以大写字母开头，引用小写字母的私有函数）。</p>
+<ul>
+<li><p>注意上述对于包中函数调用的描述同样也适用于变量</p>
+</li>
+<li><p>Type 创建和管理类型，可以创建自定义类型，或者是将类型取一个别名，创建接口，将多个类型分组定义</p>
+</li>
+<li><p>面向接口开发，利于解耦，允许先使用后定义，也就是函数的入参可以放置在函数的下方</p>
+</li>
+<li><p>和c语言，c++一样支持指针操作，<code>var SyncUserList = &amp;qSyncUserList&#123;&#125;</code>代表syncuserlist的值是取qsyncuserlist的地址*abc代表是指针</p>
+</li>
+</ul>
+ <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="function"><span class="keyword">func</span> <span class="params">(q *qSyncUserList)</span></span> GetTopic() <span class="type">string</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> TaskSyncUserList</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代表q指针指向的结构体是gettopic方法的接受体，也就是q指针指向的结构体有这个函数，并且只有这个指针可以调用</p>
+<h3 id="5-结构体定义"><a href="#5-结构体定义" class="headerlink" title="5.结构体定义"></a>5.结构体定义</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> UserGroupRelation <span class="keyword">struct</span> &#123;</span><br><span class="line">CustId <span class="type">string</span> <span class="string">`json:&quot;custId&quot; dc:&quot;客户编码&quot;`</span></span><br><span class="line">GroupId <span class="type">string</span> <span class="string">`json:&quot;groupId&quot; dc:&quot;组别编码&quot;`</span></span><br><span class="line">DataSources <span class="type">string</span> <span class="string">`json:&quot;dataSources&quot; dc:&quot;数据来源&quot;`</span></span><br><span class="line">AvailCode  <span class="type">string</span> <span class="string">`json:&quot;availCode&quot; dc:&quot;有效性标识&quot;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这里面每个参数最后的反引号的内容代表了是 Go 语言的<strong>结构体标签</strong>，用于为字段提供额外的元信息，供程序运行时通过反射（reflect）读取和使用。这里包含两类标签：</p>
+<ul>
+<li>json:”custId”：用于     JSON 序列化 &#x2F; 反序列化时的字段映射。表示当结构体与 JSON 互转时，CustId 字段会对应 JSON 中的 custId 键（小写开头，符合     JSON 命名习惯）。</li>
+<li>dc:”客户编码”：这是一个自定义标签（可能是项目内部约定，如     “数据字典” 或 “文档注释”），用于说明字段的业务含义，方便开发者理解或自动生成文档。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>go语言教程</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2025/08/26/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<span id="more"></span>
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>general</category>
+      </categories>
+      <tags>
+        <tag>intro</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>命令行测试</title>
+    <url>/2025/08/28/%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%B5%8B%E8%AF%95/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>title</title>
     <url>/2025/08/28/title/</url>
     <content><![CDATA[]]></content>
   </entry>
   <entry>
-    <title>test</title>
-    <url>/2025/08/28/test/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>tteesstt</title>
     <url>/2025/08/28/tteesstt/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>命令行测试</title>
-    <url>/2025/08/28/%E5%91%BD%E4%BB%A4%E8%A1%8C%E6%B5%8B%E8%AF%95/</url>
     <content><![CDATA[]]></content>
   </entry>
 </search>
