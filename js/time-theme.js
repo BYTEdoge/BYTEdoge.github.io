@@ -1,123 +1,71 @@
 // Time-based theme color switching
 // Applies CSS variables to drive navbar and sidebar colors across the site.
 (function () {
-  function applyPalette(palette, mode) {
+  function applyTimeTheme(timeClass) {
     const root = document.documentElement;
-    // Primary palette
-    root.style.setProperty('--theme-primary', palette.primary);
-    root.style.setProperty('--theme-primary-dark', palette.primaryDark);
-    root.style.setProperty('--theme-primary-light', palette.primaryLight);
-    // Text + sidebar
-    root.style.setProperty('--theme-text', palette.text);
-    root.style.setProperty('--sidebar-bg', palette.sidebarBg);
-    root.style.setProperty('--sidebar-text', palette.sidebarText);
-    // 不再覆盖导航栏背景色，保持CSS中设置的浅灰色
-    // root.style.setProperty('--navbar-bg', palette.navbarBg);
-
-    // Map to NexT variables used by navbar/menu
-    root.style.setProperty('--brand-color', palette.primaryDark);
-    root.style.setProperty('--brand-hover-color', palette.primary);
-    root.style.setProperty('--link-color', palette.primaryDark);
-    root.style.setProperty('--link-hover-color', palette.primary);
-    root.style.setProperty('--menu-item-bg-color', palette.primaryLight);
-    root.style.setProperty('--text-color', palette.text);
-    // Mark mode for CSS targeting
-    root.setAttribute('data-time-theme', mode);
+    
+    // 移除所有时间段类
+    const timeClasses = [
+      'theme-time-0-2', 'theme-time-2-4', 'theme-time-4-6', 'theme-time-6-8',
+      'theme-time-8-10', 'theme-time-10-12', 'theme-time-12-14', 'theme-time-14-16',
+      'theme-time-16-18', 'theme-time-18-20', 'theme-time-20-22', 'theme-time-22-24'
+    ];
+    
+    timeClasses.forEach(cls => {
+      document.body.classList.remove(cls);
+    });
+    
+    // 添加当前时间段的类
+    if (timeClass) {
+      document.body.classList.add(timeClass);
+    }
+    
+    // 标记模式用于CSS定位
+    root.setAttribute('data-time-theme', timeClass || 'default');
   }
 
   function setTimeBasedTheme() {
     const now = new Date();
     const hours = now.getHours();
-    const minutes = now.getMinutes();
-    const time = hours + minutes / 60;
-
-    // Default: light sky blue
-    let palette = {
-      primary: '#66B2FF',
-      primaryDark: '#4D94FF',
-      primaryLight: '#99CCFF',
-      text: '#333',
-      sidebarBg: '#66B2FF',
-      sidebarText: '#fff',
-      navbarBg: '#66B2FF'
-    };
-    let mode = 'light';
-
-    if (time >= 0 && time < 6) {
-      // 00:00 - 06:00 浅天蓝
-      palette = {
-        primary: '#87CEEB',
-        primaryDark: '#66B2FF',
-        primaryLight: '#B8E2F2',
-        text: '#333',
-        sidebarBg: '#87CEEB',
-        sidebarText: '#fff',
-        navbarBg: '#87CEEB'
-      };
-    } else if (time >= 6 && time < 12) {
-      // 06:00 - 12:00 天蓝
-      palette = {
-        primary: '#66B2FF',
-        primaryDark: '#4D94FF',
-        primaryLight: '#99CCFF',
-        text: '#333',
-        sidebarBg: '#66B2FF',
-        sidebarText: '#fff',
-        navbarBg: '#66B2FF'
-      };
-    } else if (time >= 12 && time < 14) {
-      // 12:00 - 14:00 更通透的天蓝
-      palette = {
-        primary: '#4D94FF',
-        primaryDark: '#3385FF',
-        primaryLight: '#80B3FF',
-        text: '#333',
-        sidebarBg: '#4D94FF',
-        sidebarText: '#fff',
-        navbarBg: '#4D94FF'
-      };
-    } else if (time >= 14 && time < 18) {
-      // 14:00 - 18:00 天蓝
-      palette = {
-        primary: '#66B2FF',
-        primaryDark: '#4D94FF',
-        primaryLight: '#99CCFF',
-        text: '#333',
-        sidebarBg: '#66B2FF',
-        sidebarText: '#fff',
-        navbarBg: '#66B2FF'
-      };
-    } else if (time >= 18 && time < 19.5) {
-      // 18:00 - 19:30 日落红
-      palette = {
-        primary: '#FF6B6B',
-        primaryDark: '#FF5252',
-        primaryLight: '#FF8E8E',
-        text: '#333',
-        sidebarBg: '#FF6B6B',
-        sidebarText: '#fff',
-        navbarBg: '#FF6B6B'
-      };
+    
+    let timeClass = '';
+    
+    // 根据小时确定时间段类
+    if (hours >= 0 && hours < 2) {
+      timeClass = 'theme-time-0-2';      // 墨黑
+    } else if (hours >= 2 && hours < 4) {
+      timeClass = 'theme-time-2-4';      // 靛蓝
+    } else if (hours >= 4 && hours < 6) {
+      timeClass = 'theme-time-4-6';      // 鱼肚白
+    } else if (hours >= 6 && hours < 8) {
+      timeClass = 'theme-time-6-8';      // 橘粉
+    } else if (hours >= 8 && hours < 10) {
+      timeClass = 'theme-time-8-10';     // 鹅黄
+    } else if (hours >= 10 && hours < 12) {
+      timeClass = 'theme-time-10-12';    // 浅金
+    } else if (hours >= 12 && hours < 14) {
+      timeClass = 'theme-time-12-14';    // 绯红
+    } else if (hours >= 14 && hours < 16) {
+      timeClass = 'theme-time-14-16';    // 天蓝
+    } else if (hours >= 16 && hours < 18) {
+      timeClass = 'theme-time-16-18';    // 琥珀橙
+    } else if (hours >= 18 && hours < 20) {
+      timeClass = 'theme-time-18-20';    // 玫紫
+    } else if (hours >= 20 && hours < 22) {
+      timeClass = 'theme-time-20-22';    // 藏青
     } else {
-      // 19:30 - 24:00 黑夜
-      palette = {
-        primary: '#333',
-        primaryDark: '#222',
-        primaryLight: '#444',
-        text: '#fff',
-        sidebarBg: '#222',
-        sidebarText: '#fff',
-        navbarBg: '#222'
-      };
-      mode = 'dark';
+      timeClass = 'theme-time-22-24';    // 黛灰
     }
 
-    applyPalette(palette, mode);
+    applyTimeTheme(timeClass);
+    
+    // 输出当前时间段信息（调试用）
+    console.log(`当前时间: ${hours}:00, 应用主题: ${timeClass}`);
   }
 
-  // Initial and interval update
+  // 初始化和定时更新
   setTimeBasedTheme();
-  setInterval(setTimeBasedTheme, 60000);
+  setInterval(setTimeBasedTheme, 60000); // 每分钟检查一次
 })();
 
 

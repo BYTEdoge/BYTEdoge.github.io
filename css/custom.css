@@ -1,0 +1,115 @@
+/* 自定义样式修复 */
+
+/* 修复关于、标签、分类页面左侧空白问题 */
+.sidebar-active.category,
+.sidebar-active.tag,
+.sidebar-active.page-about {
+  padding-right: 0 !important;
+}
+
+/* 确保分类页面内容居中 */
+.category .main-inner {
+  width: 100% !important;
+  max-width: 1000px !important;
+}
+
+.category .post-block {
+  margin: 0 auto !important;
+  width: 100% !important;
+  max-width: 800px !important;
+  padding-left: 0 !important;
+}
+
+.category .post-content {
+  margin-left: 0 !important;
+  text-align: center !important;
+}
+
+/* 确保标签页面内容居中 */
+.tag .main-inner {
+  width: 100% !important;
+  max-width: 1000px !important;
+}
+
+.tag .post-block {
+  margin: 0 auto !important;
+  width: 100% !important;
+  max-width: 800px !important;
+  padding-left: 0 !important;
+}
+
+.tag .post-content {
+  margin-left: 0 !important;
+  text-align: center !important;
+}
+
+/* 确保关于页面内容居中 */
+.page-about .main-inner {
+  width: 100% !important;
+  max-width: 1000px !important;
+}
+
+.page-about .page-content {
+  margin: 0 auto !important;
+  width: 100% !important;
+  max-width: 800px !important;
+  padding-left: 0 !important;
+}
+
+.page-about .post-block {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+/* 通用内容区域修复 */
+.post-body,
+.page-body {
+  padding-left: 0 !important;
+  margin-left: 0 !important;
+}
+
+/* 移除左侧空白 */
+.content-wrap {
+  margin-left: 0 !important;
+  padding-left: 0 !important;
+}
+
+.container .main-inner {
+  margin-left: 0 !important;
+}
+
+/* 移除关于、标签、分类页面中post-header元素占据的空间 */
+.page-about .header.post-header,
+.category .header.post-header,
+.tag .header.post-header,
+.page-about .header.post-header.animated,
+.category .header.post-header.animated,
+.tag .header.post-header.animated,
+.page-about .header.post-header.animated.fadeInDown,
+.category .header.post-header.animated.fadeInDown,
+.tag .header.post-header.animated.fadeInDown {
+  display: none !important;
+  height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 0 !important;
+}
+
+/* 确保在所有尺寸的设备上内容都能正确显示 */
+@media (max-width: 767px) {
+  .page-about .page-content,
+  .category .post-content,
+  .tag .post-content {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .page-about .page-content,
+  .category .post-content,
+  .tag .post-content {
+    padding-left: 0 !important;
+    margin-left: 0 !important;
+  }
+}
