@@ -1,42 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>git快速上手</title>
-    <url>/2025/08/26/git%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</url>
-    <content><![CDATA[<p>要在本地创建Git仓库仓库并连接到远程仓库 <code>git@github.com:xxxx/xxxxxxxx.git</code>，可以按照以下步骤操作：</p>
-<span id="more"></span>
-<h5 id="1-首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：">1.首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：</h5>
-<p><code>cd /path/to/your/local/directory</code></p>
-<h5 id="2-初始化本地Git仓库：">2.初始化本地Git仓库：</h5>
-<p><code>  git init</code></p>
-<h5 id="3-将本地仓库与远程仓库关联：">3.将本地仓库与远程仓库关联：</h5>
-<p><code> git remote add origin git@github.com:xxxxx/xxxxxx.git</code></p>
-<p>验证远程仓库连接是否成功：</p>
-<p><code> git remote -v</code></p>
-<p>如果成功，会显示类似以下内容：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (fetch) </span><br><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (push)</span><br></pre></td></tr></table></figure>
-<p>从远程仓库拉取代码（如果远程已有内容）：</p>
-<p><code>git pull origin main</code></p>
-<p>(如果默认分支不是main，可以替换为实际的分支名，如master）</p>
-<h5 id="4-添加到本地工作区：">4.添加到本地工作区：</h5>
-<p><code> git add</code> .</p>
-<h5 id="5-提交给本地仓库：">5.提交给本地仓库：</h5>
-<p><code>git commit -m &quot;这是提交的描述内容&quot;</code></p>
-<h5 id="6-提交到远程仓库：">6.提交到远程仓库：</h5>
-<p><code>git push origin master (master对应提交的远程仓库分支）</code></p>
-<p>创建并切换本地仓库分支：<br>
-<code>git checkout -b dev</code></p>
-<p>提交当前分支：</p>
-<p><code>git push -u origin dev</code></p>
-]]></content>
-      <categories>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>go语言简单入门</title>
     <url>/2025/08/27/go%E8%AF%AD%E8%A8%80%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<h3 id="1-在定义函数时，参数的类型是写在参数名称-之后的">1.在定义函数时，参数的类型是写在参数名称==之后的==</h3>
@@ -81,33 +45,46 @@
       </tags>
   </entry>
   <entry>
-    <title>go项目向目标接口发送数据的设计开发流程</title>
-    <url>/2025/08/29/goframe%E6%A1%86%E6%9E%B6%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="Go语言发送接口设计的整体结构">Go语言发送接口设计的整体结构</h3>
-<p><img src="C:%5CUsers%5C%E6%B8%85%E9%A3%8E%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20250829091105597.png" alt="image-20250829091105597"></p>
-<h3 id="service层发送接口的实现">service层发送接口的实现</h3>
-<p>分为三个部分</p>
-<ul>
-<li>接口注册</li>
-</ul>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterDatasync</span><span class="params">(i IDatasync)</span></span> &#123;</span><br><span class="line">	localDatasync = i</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//实现将逻辑实现层中的接口实现注册到service层中</span></span><br><span class="line"><span class="comment">//注意二者的接口的名称，入参，出参，数量一定要一致</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>接口定义</li>
-</ul>
+    <title>git快速上手</title>
+    <url>/2025/08/26/git%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</url>
+    <content><![CDATA[<p>要在本地创建Git仓库仓库并连接到远程仓库 <code>git@github.com:xxxx/xxxxxxxx.git</code>，可以按照以下步骤操作：</p>
+<span id="more"></span>
+<h5 id="1-首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：">1.首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：</h5>
+<p><code>cd /path/to/your/local/directory</code></p>
+<h5 id="2-初始化本地Git仓库：">2.初始化本地Git仓库：</h5>
+<p><code>  git init</code></p>
+<h5 id="3-将本地仓库与远程仓库关联：">3.将本地仓库与远程仓库关联：</h5>
+<p><code> git remote add origin git@github.com:xxxxx/xxxxxx.git</code></p>
+<p>验证远程仓库连接是否成功：</p>
+<p><code> git remote -v</code></p>
+<p>如果成功，会显示类似以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (fetch) </span><br><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (push)</span><br></pre></td></tr></table></figure>
+<p>从远程仓库拉取代码（如果远程已有内容）：</p>
+<p><code>git pull origin main</code></p>
+<p>(如果默认分支不是main，可以替换为实际的分支名，如master）</p>
+<h5 id="4-添加到本地工作区：">4.添加到本地工作区：</h5>
+<p><code> git add</code> .</p>
+<h5 id="5-提交给本地仓库：">5.提交给本地仓库：</h5>
+<p><code>git commit -m &quot;这是提交的描述内容&quot;</code></p>
+<h5 id="6-提交到远程仓库：">6.提交到远程仓库：</h5>
+<p><code>git push origin master (master对应提交的远程仓库分支）</code></p>
+<p>创建并切换本地仓库分支：<br>
+<code>git checkout -b dev</code></p>
+<p>提交当前分支：</p>
+<p><code>git push -u origin dev</code></p>
 ]]></content>
       <categories>
-        <category>go,接口设计开发</category>
+        <category>git</category>
       </categories>
       <tags>
-        <tag>go</tag>
-        <tag>接口</tag>
+        <tag>git</tag>
       </tags>
   </entry>
   <entry>
     <title>go项目发送接口设计流程</title>
     <url>/2025/08/29/go%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/</url>
     <content><![CDATA[<h3 id="Go发送接口设计的整体结构">Go发送接口设计的整体结构</h3>
-<p>![666](…\img\屏幕截图 2025-08-29 104725.png)</p>
+<p>![666](\img\屏幕截图 2025-08-29 104725.png)</p>
 <h3 id="service层实现">service层实现</h3>
 <p>分为以下三个部分</p>
 <ul>
@@ -257,32 +234,6 @@
       </categories>
       <tags>
         <tag>博客搭建</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2025/08/26/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<span id="more"></span>
-<h2 id="Quick-Start">Quick Start</h2>
-<h3 id="Create-a-new-post">Create a new post</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server">Run server</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files">Generate static files</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites">Deploy to remote sites</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-      <categories>
-        <category>general</category>
-      </categories>
-      <tags>
-        <tag>intro</tag>
       </tags>
   </entry>
 </search>
