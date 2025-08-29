@@ -1,41 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>233</title>
-    <url>/2025/08/28/233/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>555</title>
-    <url>/2025/08/28/555/</url>
-    <content><![CDATA[]]></content>
+    <title>go项目向目标接口发送数据的设计开发流程</title>
+    <url>/2025/08/29/goframe%E6%A1%86%E6%9E%B6%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<h3 id="Go语言发送接口设计的整体结构"><a href="#Go语言发送接口设计的整体结构" class="headerlink" title="Go语言发送接口设计的整体结构"></a>Go语言发送接口设计的整体结构</h3><p><img src="C:\Users\清风\AppData\Roaming\Typora\typora-user-images\image-20250829091105597.png" alt="image-20250829091105597"></p>
+<h3 id="service层发送接口的实现"><a href="#service层发送接口的实现" class="headerlink" title="service层发送接口的实现"></a>service层发送接口的实现</h3><p>分为三个部分</p>
+<ul>
+<li>接口注册</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterDatasync</span><span class="params">(i IDatasync)</span></span> &#123;</span><br><span class="line">	localDatasync = i</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//实现将逻辑实现层中的接口实现注册到service层中</span></span><br><span class="line"><span class="comment">//注意二者的接口的名称，入参，出参，数量一定要一致</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>接口定义</li>
+</ul>
+]]></content>
       <categories>
-        <category>555</category>
+        <category>go,接口设计开发</category>
       </categories>
       <tags>
-        <tag>555</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>245</title>
-    <url>/2025/08/28/245/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>234</category>
-      </categories>
-      <tags>
-        <tag>234</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>667</title>
-    <url>/2025/08/28/667/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>667</category>
-      </categories>
-      <tags>
-        <tag>667</tag>
+        <tag>go</tag>
+        <tag>接口</tag>
       </tags>
   </entry>
   <entry>
@@ -70,31 +54,9 @@
       </tags>
   </entry>
   <entry>
-    <title>788</title>
-    <url>/2025/08/28/788/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>788</category>
-      </categories>
-      <tags>
-        <tag>788</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>888</title>
-    <url>/2025/08/28/888/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>888</category>
-      </categories>
-      <tags>
-        <tag>888</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>go语言特性</title>
+    <title>go语言简单入门</title>
     <url>/2025/08/27/go%E8%AF%AD%E8%A8%80%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<h3 id="1-在定义函数时，参数的类型是写在参数名称之后的"><a href="#1-在定义函数时，参数的类型是写在参数名称之后的" class="headerlink" title="1.在定义函数时，参数的类型是写在参数名称之后的"></a>1.在定义函数时，参数的类型是写在参数名称之后的</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DoPost</span><span class="params">(ctx context.Context, crypto *AESCrypto, path, encryptBody <span class="type">string</span>)</span></span> (outDatamap[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;, err <span class="type">error</span>) </span><br></pre></td></tr></table></figure>
+    <content><![CDATA[<h3 id="1-在定义函数时，参数的类型是写在参数名称-之后的"><a href="#1-在定义函数时，参数的类型是写在参数名称-之后的" class="headerlink" title="1.在定义函数时，参数的类型是写在参数名称&#x3D;&#x3D;之后的&#x3D;&#x3D;"></a>1.在定义函数时，参数的类型是写在参数名称&#x3D;&#x3D;之后的&#x3D;&#x3D;</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DoPost</span><span class="params">(ctx context.Context, crypto *AESCrypto, path, encryptBody <span class="type">string</span>)</span></span> (outDatamap[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;, err <span class="type">error</span>) </span><br></pre></td></tr></table></figure>
 
 <p>并且函数的出参直接在入参之后加上（）</p>
 <p>注意，不仅仅是函数的入参以及出参是这样的，整个go语言都是将数据类型放在数据名称之后的</p>
@@ -129,108 +91,6 @@
       </categories>
       <tags>
         <tag>go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>goframe框架简单介绍</title>
-    <url>/2025/08/27/goframe%E6%A1%86%E6%9E%B6%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<p>Go（又称 Golang）是 Google 开发的静态强类型编程语言，而 GoFrame（简称 gf）是基于 Go 语言的一款现代化、企业级开发框架。二者的关系类似于 “JavaScript 与 Vue.js”“Java 与 Spring”——<strong>Go 是基础语言，GoFrame 是基于 Go 语言的上层框架</strong>，用于简化 Go 语言的工程化开发。</p>
-<h3 id="一、区别与联系"><a href="#一、区别与联系" class="headerlink" title="一、区别与联系"></a>一、区别与联系</h3><table>
-<thead>
-<tr>
-<th>维度</th>
-<th>Go（语言）</th>
-<th>GoFrame（框架）</th>
-</tr>
-</thead>
-<tbody><tr>
-<td><strong>定位</strong></td>
-<td>编程语言，提供语法、 runtime、标准库等基础能力</td>
-<td>基于 Go 的开发框架，封装了 Web、ORM、缓存等上层组件</td>
-</tr>
-<tr>
-<td><strong>依赖关系</strong></td>
-<td>独立存在，是 GoFrame 的基础</td>
-<td>完全依赖 Go 语言，无法脱离 Go 运行</td>
-</tr>
-<tr>
-<td><strong>核心目标</strong></td>
-<td>提供简洁、高效、并发安全的语言特性</td>
-<td>提供工程化开发规范和工具链，简化复杂业务开发</td>
-</tr>
-<tr>
-<td><strong>使用场景</strong></td>
-<td>所有 Go 语言能覆盖的领域（后端、云原生等）</td>
-<td>主要用于快速开发企业级应用（Web API、微服务等）</td>
-</tr>
-</tbody></table>
-<h3 id="二、语法区别"><a href="#二、语法区别" class="headerlink" title="二、语法区别"></a>二、语法区别</h3><p>GoFrame<strong>不改变 Go 语言本身的语法</strong>（它是框架而非语言扩展），但在<strong>代码规范、开发模式</strong>上有自己的约定，与原生 Go 开发相比有以下差异：</p>
-<ol>
-<li><p><strong>代码组织规范</strong><br>原生 Go 没有强制的项目结构，而 GoFrame 通过<code>gf cli</code>工具生成标准化项目结构（如<code>api</code>、<code>model</code>、<code>service</code>分层），强制约束代码组织方式，便于团队协作。</p>
-</li>
-<li><p><strong>结构体标签（Tag）扩展</strong><br>GoFrame 定义了专属的结构体标签（如<code>v:&quot;required&quot;</code>用于参数验证、<code>orm:&quot;name&quot;</code>用于数据库映射），这些标签是框架层面的约定，而非 Go 语言原生语法：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// GoFrame中用于参数验证和ORM映射的结构体</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    Id    <span class="type">int</span>    <span class="string">`v:&quot;required&quot; orm:&quot;id,pk&quot;`</span>  <span class="comment">// gf的验证和ORM标签</span></span><br><span class="line">    Name  <span class="type">string</span> <span class="string">`v:&quot;required|length:2,10&quot;`</span>   <span class="comment">// gf的参数验证规则</span></span><br><span class="line">    Age   <span class="type">int</span>    <span class="string">`v:&quot;min:0|max:150&quot;`</span>          <span class="comment">// 原生Go不识别这些标签，由gf框架解析</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p><strong>函数命名与接口设计</strong><br>GoFrame 遵循 “<code>CamelCase</code>+ 前缀约定”（如<code>ghttp.Get</code>、<code>gorm.Insert</code>），且大量使用接口抽象（如<code>gdb.ORM</code>接口），而原生 Go 标准库的函数命名更简洁（如<code>http.Get</code>、<code>sql.Query</code>）。</p>
-</li>
-</ol>
-<h3 id="三、实现-API-接口时的区别"><a href="#三、实现-API-接口时的区别" class="headerlink" title="三、实现 API 接口时的区别"></a>三、实现 API 接口时的区别</h3><p>以实现一个 “用户注册” API（POST <code>/user/register</code>）为例，对比原生 Go 与 GoFrame 的开发差异：</p>
-<h4 id="1-原生-Go-实现（依赖标准库net-http）"><a href="#1-原生-Go-实现（依赖标准库net-http）" class="headerlink" title="1. 原生 Go 实现（依赖标准库net/http）"></a>1. 原生 Go 实现（依赖标准库<code>net/http</code>）</h4><p>需要手动处理路由、参数解析、验证、错误处理等，代码繁琐：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;encoding/json&quot;</span></span><br><span class="line">    <span class="string">&quot;net/http&quot;</span></span><br><span class="line">    <span class="string">&quot;strconv&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义请求结构体</span></span><br><span class="line"><span class="keyword">type</span> RegisterRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name  <span class="type">string</span> <span class="string">`json:&quot;name&quot;`</span></span><br><span class="line">    Age   <span class="type">int</span>    <span class="string">`json:&quot;age&quot;`</span></span><br><span class="line">    Email <span class="type">string</span> <span class="string">`json:&quot;email&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 注册路由</span></span><br><span class="line">    http.HandleFunc(<span class="string">&quot;/user/register&quot;</span>, registerHandler)</span><br><span class="line">    http.ListenAndServe(<span class="string">&quot;:8080&quot;</span>, <span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">registerHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    <span class="comment">// 1. 校验请求方法</span></span><br><span class="line">    <span class="keyword">if</span> r.Method != http.MethodPost &#123;</span><br><span class="line">        w.WriteHeader(http.StatusMethodNotAllowed)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;method not allowed&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 解析请求体</span></span><br><span class="line">    <span class="keyword">var</span> req RegisterRequest</span><br><span class="line">    <span class="keyword">if</span> err := json.NewDecoder(r.Body).Decode(&amp;req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;invalid request: &quot;</span> + err.Error()))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 手动验证参数</span></span><br><span class="line">    <span class="keyword">if</span> req.Name == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">        w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;name is required&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> req.Age &lt;= <span class="number">0</span> || req.Age &gt; <span class="number">150</span> &#123;</span><br><span class="line">        w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;age must be 1-150&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4. 模拟数据库操作（需手动写SQL或集成第三方ORM）</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 5. 返回响应</span></span><br><span class="line">    w.Header().Set(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)</span><br><span class="line">    json.NewEncoder(w).Encode(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>&#123;</span><br><span class="line">        <span class="string">&quot;code&quot;</span>:    <span class="string">&quot;0&quot;</span>,</span><br><span class="line">        <span class="string">&quot;message&quot;</span>: <span class="string">&quot;register success&quot;</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h4 id="2-GoFrame-实现"><a href="#2-GoFrame-实现" class="headerlink" title="2. GoFrame 实现"></a>2. GoFrame 实现</h4><p>框架封装了路由、参数绑定、验证、ORM 等功能，代码更简洁：</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;github.com/gogf/gf/v2/frame/g&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/gogf/gf/v2/net/ghttp&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义请求结构体（通过gf标签实现自动验证）</span></span><br><span class="line"><span class="keyword">type</span> RegisterRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">    g.Meta <span class="string">`path:&quot;/user/register&quot; method:&quot;post&quot;`</span> <span class="comment">// 路由和方法定义</span></span><br><span class="line">    Name   <span class="type">string</span> <span class="string">`json:&quot;name&quot; v:&quot;required#姓名不能为空&quot;`</span>   <span class="comment">// 自动验证规则</span></span><br><span class="line">    Age    <span class="type">int</span>    <span class="string">`json:&quot;age&quot; v:&quot;min:1|max:150#年龄必须在1-150之间&quot;`</span> <span class="comment">// 自动验证</span></span><br><span class="line">    Email  <span class="type">string</span> <span class="string">`json:&quot;email&quot; v:&quot;email#邮箱格式错误&quot;`</span>       <span class="comment">// 内置邮箱验证</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义响应结构体</span></span><br><span class="line"><span class="keyword">type</span> RegisterResponse <span class="keyword">struct</span> &#123;</span><br><span class="line">    Code    <span class="type">int</span>    <span class="string">`json:&quot;code&quot;`</span></span><br><span class="line">    Message <span class="type">string</span> <span class="string">`json:&quot;message&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    s := g.Server()</span><br><span class="line">    <span class="comment">// 绑定API处理函数（自动关联路由和验证）</span></span><br><span class="line">    s.BindHandler(<span class="built_in">new</span>(RegisterRequest), registerHandler)</span><br><span class="line">    s.Run(<span class="string">&quot;:8080&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理函数（参数自动绑定和验证）</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">registerHandler</span><span class="params">(r *ghttp.Request)</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> req RegisterRequest</span><br><span class="line">    <span class="comment">// 自动解析请求并验证参数（失败会自动返回错误）</span></span><br><span class="line">    <span class="keyword">if</span> err := r.Parse(&amp;req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        r.Response.WriteJson(RegisterResponse&#123;</span><br><span class="line">            Code:    <span class="number">1</span>,</span><br><span class="line">            Message: err.Error(),</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 数据库操作（通过gf的ORM快速实现，无需手写SQL）</span></span><br><span class="line">    <span class="comment">// g.DB().Model(&quot;user&quot;).Insert(req)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 返回响应</span></span><br><span class="line">    r.Response.WriteJson(RegisterResponse&#123;</span><br><span class="line">        Code:    <span class="number">0</span>,</span><br><span class="line">        Message: <span class="string">&quot;register success&quot;</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="四、GoFrame-主要提升的能力"><a href="#四、GoFrame-主要提升的能力" class="headerlink" title="四、GoFrame 主要提升的能力"></a>四、GoFrame 主要提升的能力</h3><p>GoFrame 的核心价值是<strong>降低 Go 语言开发的 “工程化成本”</strong>，主要提升点包括：</p>
-<ol>
-<li><strong>简化重复工作</strong><br>封装了 Web 开发中的通用需求（路由、参数验证、中间件、ORM、缓存等），避免开发者重复造轮子。例如：<ul>
-<li>内置参数验证器（支持正则、范围、自定义规则），无需手动写 if-else 校验；</li>
-<li>ORM 支持自动生成 SQL、事务、关联查询，简化数据库操作。</li>
-</ul>
-</li>
-<li><strong>标准化开发流程</strong><br>通过<code>gf cli</code>工具生成标准化项目结构（API 层、业务层、数据层分离），并提供统一的错误处理、日志、配置管理机制，解决团队协作中的 “代码风格混乱” 问题。</li>
-<li><strong>增强企业级特性</strong><br>提供微服务、分布式事务、分布式缓存、API 文档自动生成（OpenAPI）等企业级功能，原生 Go 需集成多个第三方库才能实现，而 GoFrame 一站式支持。</li>
-<li><strong>提升开发效率</strong><br>支持热重载（<code>gf run</code>）、代码生成（<code>gf gen</code>）、接口自动化测试等工具，大幅缩短开发周期。例如：通过结构体标签自动生成 Swagger 文档，无需手动编写。</li>
-<li><strong>优化性能与稳定性</strong><br>框架内部对并发、内存管理做了针对性优化（如对象池、连接池），且经过大量生产环境验证，稳定性优于 “原生 + 零散第三方库” 的组合。</li>
-</ol>
-<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
-<li><strong>联系</strong>：GoFrame 是 Go 语言的 “增强工具”，完全基于 Go 语法开发，依赖 Go 的 runtime。</li>
-<li><strong>区别</strong>：Go 是语言基础，GoFrame 是框架；前者提供语法和标准库，后者提供工程化解决方案。</li>
-<li><strong>核心价值</strong>：GoFrame 通过封装通用能力、标准化开发流程，让开发者更专注于业务逻辑，而非重复的技术细节，特别适合快速开发企业级应用。</li>
-</ul>
-]]></content>
-      <categories>
-        <category>go语言教程</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-        <tag>goframe</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Hello World</title>
-    <url>/2025/08/26/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<span id="more"></span>
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
-]]></content>
-      <categories>
-        <category>general</category>
-      </categories>
-      <tags>
-        <tag>intro</tag>
       </tags>
   </entry>
   <entry>
@@ -325,15 +185,61 @@
       </tags>
   </entry>
   <entry>
-    <title>test</title>
-    <url>/2025/08/28/test/</url>
-    <content><![CDATA[<h3 id="123456"><a href="#123456" class="headerlink" title="123456"></a>123456</h3>]]></content>
+    <title>go项目发送接口设计流程</title>
+    <url>/2025/08/29/go%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/</url>
+    <content><![CDATA[<h3 id="Go发送接口设计的整体结构"><a href="#Go发送接口设计的整体结构" class="headerlink" title="Go发送接口设计的整体结构"></a>Go发送接口设计的整体结构</h3><p><img src="C:\Users\清风\AppData\Roaming\Typora\typora-user-images\image-20250829093246491.png" alt="image-20250829093246491"></p>
+<h3 id="service层实现"><a href="#service层实现" class="headerlink" title="service层实现"></a>service层实现</h3><p>分为以下三个部分</p>
+<ul>
+<li><p>接口的定义</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> (</span><br><span class="line">	IDatasync <span class="keyword">interface</span> &#123;<span class="comment">//定义一个interface（接口类型）的IDatasync</span></span><br><span class="line">		Func1(ctx context.Context) (err <span class="type">error</span>)<span class="comment">//前面的括号是入参，后面的括号是出参</span></span><br><span class="line">		Func2(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">		Func3(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"><span class="comment">//只定义抽象的接口名称，接口入参出参类型</span></span><br><span class="line"><span class="comment">//数据实现层的接口的数量，名称，入参出参都要和这一致</span></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>全局变量以及单例模式的定义实现</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	localDatasync IDatasync<span class="comment">//定义全局变量</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Datasync</span><span class="params">()</span></span> IDatasync &#123;<span class="comment">//全局访问点，当系统其他地方需要调用接口方法是通过这个方法.Func1(ctx 		     context.Context)</span></span><br><span class="line">	<span class="keyword">if</span> localDatasync == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;implement not found for interface IDatasync, forgot register?&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> localDatasync</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>注册具体方法实现</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterDatasync</span><span class="params">(i IDatasync)</span></span> &#123;</span><br><span class="line">	localDatasync = i</span><br><span class="line">&#125;<span class="comment">//将逻辑实现层中的方法具体实现注册进来</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h3 id="逻辑实现层的具体实现"><a href="#逻辑实现层的具体实现" class="headerlink" title="逻辑实现层的具体实现"></a>逻辑实现层的具体实现</h3><h4 id="接口实现的注册"><a href="#接口实现的注册" class="headerlink" title="接口实现的注册"></a>接口实现的注册</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> sDatasync <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="comment">// sDatasyncNew 函数用于创建并返回一个 *sDatasync 类型的实例。</span></span><br><span class="line"><span class="comment">// 从代码中的 init 函数可以看出，该函数创建的实例会被传递给 service.RegisterDatasync 方法，</span></span><br><span class="line"><span class="comment">// 这表明 sDatasync 结构体实现了 service.IDatasync 接口，</span></span><br><span class="line"><span class="comment">// 此函数创建的实例会被注册到 service 模块中，供后续使用。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sDatasyncNew</span><span class="params">()</span></span> *sDatasync &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;sDatasync&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 此方法是将 sDatasync 实例注册到 service 模块中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	service.RegisterDatasync(sDatasyncNew())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>&#x3D;&#x3D;注意&#x3D;&#x3D;由于GO语言是包级作用域，因此如果接口过多，要分成多分文件去写，那么在同一包下的其他文件不用实现上面的注册，直接进行接口实现就行</p>
+<h4 id="接口的实现"><a href="#接口的实现" class="headerlink" title="接口的实现"></a>接口的实现</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在 Go 语言里，`func` 后面的 `(s *sDatasync)` 被称作方法接收器（Method Receiver），</span></span><br><span class="line"><span class="comment">// 它表明这个函数是 `sDatasync` 结构体的一个方法。</span></span><br><span class="line"><span class="comment">// `*sDatasync` 表示使用指针接收器，意味着该方法可以修改 `sDatasync` 结构体实例的内容，</span></span><br><span class="line"><span class="comment">// 同时避免在调用方法时复制结构体实例，提高性能。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *sDatasync)</span></span> Func1(ctx context.Context) (err <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="comment">//获取所有用户信息</span></span><br><span class="line">	userInfoOut, err := proxy.GetUserAll(ctx)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> userProfileInfos []*model.UserProfileInfo</span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> userInfoOut &#123;</span><br><span class="line">		<span class="comment">//数据格式的转换</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 使用 json.Marshal 将 userProfiles 转换为 JSON 字符串</span></span><br><span class="line">	jsonData, err := json.Marshal(model.CustDataRequest&#123;</span><br><span class="line">		CustDataVo: userProfileInfos,</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;Error converting to JSON:&quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//对参数进行ASE进行加密</span></span><br><span class="line">    aesCrypto, err := utils.数据加密()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Log().Errorf(context.Background(), <span class="string">&quot;创建默认AES加解密工具失败: %v&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	encryptedText, err := aesCrypto.Encrypt(<span class="type">string</span>(jsonData))</span><br><span class="line">	outData, err := utils.发送数据(ctx, aesCrypto, consts.UploadUserList, encryptedText)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;<span class="comment">//这里传入的aesCrypto作为解密工具，负责将目标服务器发送的响应解密</span></span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 发送到目标地址，使用明文数据</span></span><br><span class="line">	<span class="comment">// outData, err := utils.DoPost(ctx, nil, consts.UploadUserList, encryptedText)</span></span><br><span class="line">	<span class="comment">// if err != nil &#123;</span></span><br><span class="line">	<span class="comment">// 	return err</span></span><br><span class="line">	<span class="comment">// &#125;</span></span><br><span class="line">	g.Log().Debugf(ctx, <span class="string">&quot;返回结果:%v&quot;</span>, outData)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>代码中提到的utils包主要作用是实现一些非获取数据的其他功能，如加解密数据，数据发送等</p>
+<h4 id="目标服务器地址以及请求api的定义"><a href="#目标服务器地址以及请求api的定义" class="headerlink" title="目标服务器地址以及请求api的定义"></a>目标服务器地址以及请求api的定义</h4><p>通过const定义相关常量</p>
+<h6 id=""><a href="#" class="headerlink" title=""></a></h6>]]></content>
       <categories>
-        <category>test</category>
+        <category>go</category>
+        <category>接口设计</category>
       </categories>
       <tags>
-        <tag>test</tag>
-        <tag>tteesstt</tag>
+        <tag>go</tag>
+        <tag>接口设计</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2025/08/26/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<span id="more"></span>
+
+<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>general</category>
+      </categories>
+      <tags>
+        <tag>intro</tag>
       </tags>
   </entry>
 </search>
