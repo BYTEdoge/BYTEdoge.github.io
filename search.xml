@@ -3,24 +3,29 @@
   <entry>
     <title>git快速上手</title>
     <url>/2025/08/26/git%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</url>
-    <content><![CDATA[<p> 要在本地创建Git仓库仓库并连接到远程仓库 <code>git@github.com:xxxx/xxxxxxxx.git</code>，可以按照以下步骤操作：</p>
+    <content><![CDATA[<p>要在本地创建Git仓库仓库并连接到远程仓库 <code>git@github.com:xxxx/xxxxxxxx.git</code>，可以按照以下步骤操作：</p>
 <span id="more"></span>
-
-<h5 id="1-首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录："><a href="#1-首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：" class="headerlink" title="1.首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录："></a>1.首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：</h5><p>  <code>cd /path/to/your/local/directory</code></p>
-<h5 id="2-初始化本地Git仓库："><a href="#2-初始化本地Git仓库：" class="headerlink" title="2.初始化本地Git仓库："></a>2.初始化本地Git仓库：</h5><p> <code>  git init</code></p>
-<h5 id="3-将本地仓库与远程仓库关联："><a href="#3-将本地仓库与远程仓库关联：" class="headerlink" title="3.将本地仓库与远程仓库关联："></a>3.将本地仓库与远程仓库关联：</h5><p> <code> git remote add origin git@github.com:xxxxx/xxxxxx.git</code></p>
-<p> 验证远程仓库连接是否成功：</p>
-<p> <code> git remote -v</code></p>
-<p> 如果成功，会显示类似以下内容：</p>
+<h5 id="1-首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：">1.首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：</h5>
+<p><code>cd /path/to/your/local/directory</code></p>
+<h5 id="2-初始化本地Git仓库：">2.初始化本地Git仓库：</h5>
+<p><code>  git init</code></p>
+<h5 id="3-将本地仓库与远程仓库关联：">3.将本地仓库与远程仓库关联：</h5>
+<p><code> git remote add origin git@github.com:xxxxx/xxxxxx.git</code></p>
+<p>验证远程仓库连接是否成功：</p>
+<p><code> git remote -v</code></p>
+<p>如果成功，会显示类似以下内容：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (fetch) </span><br><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (push)</span><br></pre></td></tr></table></figure>
-
-<p> 从远程仓库拉取代码（如果远程已有内容）：</p>
-<p>  <code>git pull origin main</code></p>
-<p> (如果默认分支不是main，可以替换为实际的分支名，如master）</p>
-<h5 id="4-添加到本地工作区："><a href="#4-添加到本地工作区：" class="headerlink" title="4.添加到本地工作区："></a>4.添加到本地工作区：</h5><p> <code> git add</code> .</p>
-<h5 id="5-提交给本地仓库："><a href="#5-提交给本地仓库：" class="headerlink" title="5.提交给本地仓库："></a>5.提交给本地仓库：</h5><p>  <code>git commit -m &quot;这是提交的描述内容&quot;</code></p>
-<h5 id="6-提交到远程仓库："><a href="#6-提交到远程仓库：" class="headerlink" title="6.提交到远程仓库："></a>6.提交到远程仓库：</h5><p><code>git push origin master (master对应提交的远程仓库分支）</code></p>
-<p>创建并切换本地仓库分支：<br><code>git checkout -b dev</code></p>
+<p>从远程仓库拉取代码（如果远程已有内容）：</p>
+<p><code>git pull origin main</code></p>
+<p>(如果默认分支不是main，可以替换为实际的分支名，如master）</p>
+<h5 id="4-添加到本地工作区：">4.添加到本地工作区：</h5>
+<p><code> git add</code> .</p>
+<h5 id="5-提交给本地仓库：">5.提交给本地仓库：</h5>
+<p><code>git commit -m &quot;这是提交的描述内容&quot;</code></p>
+<h5 id="6-提交到远程仓库：">6.提交到远程仓库：</h5>
+<p><code>git push origin master (master对应提交的远程仓库分支）</code></p>
+<p>创建并切换本地仓库分支：<br>
+<code>git checkout -b dev</code></p>
 <p>提交当前分支：</p>
 <p><code>git push -u origin dev</code></p>
 ]]></content>
@@ -34,34 +39,38 @@
   <entry>
     <title>go语言简单入门</title>
     <url>/2025/08/27/go%E8%AF%AD%E8%A8%80%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<h3 id="1-在定义函数时，参数的类型是写在参数名称-之后的"><a href="#1-在定义函数时，参数的类型是写在参数名称-之后的" class="headerlink" title="1.在定义函数时，参数的类型是写在参数名称&#x3D;&#x3D;之后的&#x3D;&#x3D;"></a>1.在定义函数时，参数的类型是写在参数名称&#x3D;&#x3D;之后的&#x3D;&#x3D;</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DoPost</span><span class="params">(ctx context.Context, crypto *AESCrypto, path, encryptBody <span class="type">string</span>)</span></span> (outDatamap[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;, err <span class="type">error</span>) </span><br></pre></td></tr></table></figure>
-
+    <content><![CDATA[<h3 id="1-在定义函数时，参数的类型是写在参数名称-之后的">1.在定义函数时，参数的类型是写在参数名称==之后的==</h3>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DoPost</span><span class="params">(ctx context.Context, crypto *AESCrypto, path, encryptBody <span class="type">string</span>)</span></span> (outDatamap[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;, err <span class="type">error</span>) </span><br></pre></td></tr></table></figure>
 <p>并且函数的出参直接在入参之后加上（）</p>
 <p>注意，不仅仅是函数的入参以及出参是这样的，整个go语言都是将数据类型放在数据名称之后的</p>
-<h3 id="2-键值对直接插入定义"><a href="#2-键值对直接插入定义" class="headerlink" title="2.键值对直接插入定义"></a>2.键值对直接插入定义</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> params = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>)</span><br></pre></td></tr></table></figure>
-
+<h3 id="2-键值对直接插入定义">2.键值对直接插入定义</h3>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> params = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>)</span><br></pre></td></tr></table></figure>
 <p>这里代表创建了一个params的键值对元组，其中key值使用的是string类型，value值使用的是string类型</p>
-<h3 id="3-包内函数调用方式"><a href="#3-包内函数调用方式" class="headerlink" title="3.包内函数调用方式"></a>3.包内函数调用方式</h3><p>在 Go 语言中，导入包后可以直接通过&#x3D;&#x3D;包名调用包内的导出&#x3D;&#x3D;方法（首字母&#x3D;&#x3D;大写&#x3D;&#x3D;的函数、变量等），形式为 包名.方法名()，这是 Go 语言的标准用法，GoFrame 框架也遵循这一规则。</p>
-<p>注意这里还有一条规则，就是函数名为首字母大写的函数可以被包内同级程序（直接使用函数名调用）和包外程序（使用时加上包名.）调用，而首字母小写的函数则是&#x3D;&#x3D;只能&#x3D;&#x3D;被包内同级程序调用（也就是包内的子包的程序是无法调用的），如果是包外则&#x3D;&#x3D;无法调用&#x3D;&#x3D;，如果必须调用，可以在包内添加一个桥接函数（以大写字母开头，引用小写字母的私有函数）。</p>
+<h3 id="3-包内函数调用方式">3.包内函数调用方式</h3>
+<p>在 Go 语言中，导入包后可以直接通过==包名调用包内的导出==方法（首字母==大写==的函数、变量等），形式为 包名.方法名()，这是 Go 语言的标准用法，GoFrame 框架也遵循这一规则。</p>
+<p>注意这里还有一条规则，就是函数名为首字母大写的函数可以被包内同级程序（直接使用函数名调用）和包外程序（使用时加上包名.）调用，而首字母小写的函数则是==只能==被包内同级程序调用（也就是包内的子包的程序是无法调用的），如果是包外则==无法调用==，如果必须调用，可以在包内添加一个桥接函数（以大写字母开头，引用小写字母的私有函数）。</p>
 <ul>
-<li><p>注意上述对于包中函数调用的描述同样也适用于变量</p>
+<li>
+<p>注意上述对于包中函数调用的描述同样也适用于变量</p>
 </li>
-<li><p>Type 创建和管理类型，可以创建自定义类型，或者是将类型取一个别名，创建接口，将多个类型分组定义</p>
+<li>
+<p>Type 创建和管理类型，可以创建自定义类型，或者是将类型取一个别名，创建接口，将多个类型分组定义</p>
 </li>
-<li><p>面向接口开发，利于解耦，允许先使用后定义，也就是函数的入参可以放置在函数的下方</p>
+<li>
+<p>面向接口开发，利于解耦，允许先使用后定义，也就是函数的入参可以放置在函数的下方</p>
 </li>
-<li><p>和c语言，c++一样支持指针操作，<code>var SyncUserList = &amp;qSyncUserList&#123;&#125;</code>代表syncuserlist的值是取qsyncuserlist的地址*abc代表是指针</p>
+<li>
+<p>和c语言，c++一样支持指针操作，<code>var SyncUserList = &amp;qSyncUserList&#123;&#125;</code>代表syncuserlist的值是取qsyncuserlist的地址*abc代表是指针</p>
 </li>
 </ul>
  <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="function"><span class="keyword">func</span> <span class="params">(q *qSyncUserList)</span></span> GetTopic() <span class="type">string</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> TaskSyncUserList</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <p>代表q指针指向的结构体是gettopic方法的接受体，也就是q指针指向的结构体有这个函数，并且只有这个指针可以调用</p>
-<h3 id="5-结构体定义"><a href="#5-结构体定义" class="headerlink" title="5.结构体定义"></a>5.结构体定义</h3><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> UserGroupRelation <span class="keyword">struct</span> &#123;</span><br><span class="line">CustId <span class="type">string</span> <span class="string">`json:&quot;custId&quot; dc:&quot;客户编码&quot;`</span></span><br><span class="line">GroupId <span class="type">string</span> <span class="string">`json:&quot;groupId&quot; dc:&quot;组别编码&quot;`</span></span><br><span class="line">DataSources <span class="type">string</span> <span class="string">`json:&quot;dataSources&quot; dc:&quot;数据来源&quot;`</span></span><br><span class="line">AvailCode  <span class="type">string</span> <span class="string">`json:&quot;availCode&quot; dc:&quot;有效性标识&quot;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h3 id="5-结构体定义">5.结构体定义</h3>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> UserGroupRelation <span class="keyword">struct</span> &#123;</span><br><span class="line">CustId <span class="type">string</span> <span class="string">`json:&quot;custId&quot; dc:&quot;客户编码&quot;`</span></span><br><span class="line">GroupId <span class="type">string</span> <span class="string">`json:&quot;groupId&quot; dc:&quot;组别编码&quot;`</span></span><br><span class="line">DataSources <span class="type">string</span> <span class="string">`json:&quot;dataSources&quot; dc:&quot;数据来源&quot;`</span></span><br><span class="line">AvailCode  <span class="type">string</span> <span class="string">`json:&quot;availCode&quot; dc:&quot;有效性标识&quot;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这里面每个参数最后的反引号的内容代表了是 Go 语言的<strong>结构体标签</strong>，用于为字段提供额外的元信息，供程序运行时通过反射（reflect）读取和使用。这里包含两类标签：</p>
 <ul>
-<li>json:”custId”：用于     JSON 序列化 &#x2F; 反序列化时的字段映射。表示当结构体与 JSON 互转时，CustId 字段会对应 JSON 中的 custId 键（小写开头，符合     JSON 命名习惯）。</li>
-<li>dc:”客户编码”：这是一个自定义标签（可能是项目内部约定，如     “数据字典” 或 “文档注释”），用于说明字段的业务含义，方便开发者理解或自动生成文档。</li>
+<li>json:“custId”：用于     JSON 序列化 / 反序列化时的字段映射。表示当结构体与 JSON 互转时，CustId 字段会对应 JSON 中的 custId 键（小写开头，符合     JSON 命名习惯）。</li>
+<li>dc:“客户编码”：这是一个自定义标签（可能是项目内部约定，如     “数据字典” 或 “文档注释”），用于说明字段的业务含义，方便开发者理解或自动生成文档。</li>
 </ul>
 ]]></content>
       <categories>
@@ -72,47 +81,16 @@
       </tags>
   </entry>
   <entry>
-    <title>go项目发送接口设计流程</title>
-    <url>/2025/08/29/go%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/</url>
-    <content><![CDATA[<h3 id="Go发送接口设计的整体结构"><a href="#Go发送接口设计的整体结构" class="headerlink" title="Go发送接口设计的整体结构"></a>Go发送接口设计的整体结构</h3><p><img src="C:\Users\清风\AppData\Roaming\Typora\typora-user-images\image-20250829093246491.png" alt="image-20250829093246491"></p>
-<h3 id="service层实现"><a href="#service层实现" class="headerlink" title="service层实现"></a>service层实现</h3><p>分为以下三个部分</p>
-<ul>
-<li><p>接口的定义</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> (</span><br><span class="line">	IDatasync <span class="keyword">interface</span> &#123;<span class="comment">//定义一个interface（接口类型）的IDatasync</span></span><br><span class="line">		Func1(ctx context.Context) (err <span class="type">error</span>)<span class="comment">//前面的括号是入参，后面的括号是出参</span></span><br><span class="line">		Func2(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">		Func3(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"><span class="comment">//只定义抽象的接口名称，接口入参出参类型</span></span><br><span class="line"><span class="comment">//数据实现层的接口的数量，名称，入参出参都要和这一致</span></span><br></pre></td></tr></table></figure>
-</li>
-<li><p>全局变量以及单例模式的定义实现</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	localDatasync IDatasync<span class="comment">//定义全局变量</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Datasync</span><span class="params">()</span></span> IDatasync &#123;<span class="comment">//全局访问点，当系统其他地方需要调用接口方法是通过这个方法.Func1(ctx 		     context.Context)</span></span><br><span class="line">	<span class="keyword">if</span> localDatasync == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;implement not found for interface IDatasync, forgot register?&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> localDatasync</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>注册具体方法实现</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterDatasync</span><span class="params">(i IDatasync)</span></span> &#123;</span><br><span class="line">	localDatasync = i</span><br><span class="line">&#125;<span class="comment">//将逻辑实现层中的方法具体实现注册进来</span></span><br></pre></td></tr></table></figure></li>
-</ul>
-<h3 id="逻辑实现层的具体实现"><a href="#逻辑实现层的具体实现" class="headerlink" title="逻辑实现层的具体实现"></a>逻辑实现层的具体实现</h3><h4 id="接口实现的注册"><a href="#接口实现的注册" class="headerlink" title="接口实现的注册"></a>接口实现的注册</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> sDatasync <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="comment">// sDatasyncNew 函数用于创建并返回一个 *sDatasync 类型的实例。</span></span><br><span class="line"><span class="comment">// 从代码中的 init 函数可以看出，该函数创建的实例会被传递给 service.RegisterDatasync 方法，</span></span><br><span class="line"><span class="comment">// 这表明 sDatasync 结构体实现了 service.IDatasync 接口，</span></span><br><span class="line"><span class="comment">// 此函数创建的实例会被注册到 service 模块中，供后续使用。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sDatasyncNew</span><span class="params">()</span></span> *sDatasync &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;sDatasync&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 此方法是将 sDatasync 实例注册到 service 模块中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	service.RegisterDatasync(sDatasyncNew())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>&#x3D;&#x3D;注意&#x3D;&#x3D;由于GO语言是包级作用域，因此如果接口过多，要分成多分文件去写，那么在同一包下的其他文件不用实现上面的注册，直接进行接口实现就行</p>
-<h4 id="接口的实现"><a href="#接口的实现" class="headerlink" title="接口的实现"></a>接口的实现</h4><figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在 Go 语言里，`func` 后面的 `(s *sDatasync)` 被称作方法接收器（Method Receiver），</span></span><br><span class="line"><span class="comment">// 它表明这个函数是 `sDatasync` 结构体的一个方法。</span></span><br><span class="line"><span class="comment">// `*sDatasync` 表示使用指针接收器，意味着该方法可以修改 `sDatasync` 结构体实例的内容，</span></span><br><span class="line"><span class="comment">// 同时避免在调用方法时复制结构体实例，提高性能。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *sDatasync)</span></span> Func1(ctx context.Context) (err <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="comment">//获取所有用户信息</span></span><br><span class="line">	userInfoOut, err := proxy.GetUserAll(ctx)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> userProfileInfos []*model.UserProfileInfo</span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> userInfoOut &#123;</span><br><span class="line">		<span class="comment">//数据格式的转换</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 使用 json.Marshal 将 userProfiles 转换为 JSON 字符串</span></span><br><span class="line">	jsonData, err := json.Marshal(model.CustDataRequest&#123;</span><br><span class="line">		CustDataVo: userProfileInfos,</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;Error converting to JSON:&quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//对参数进行ASE进行加密</span></span><br><span class="line">    aesCrypto, err := utils.数据加密()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Log().Errorf(context.Background(), <span class="string">&quot;创建默认AES加解密工具失败: %v&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	encryptedText, err := aesCrypto.Encrypt(<span class="type">string</span>(jsonData))</span><br><span class="line">	outData, err := utils.发送数据(ctx, aesCrypto, consts.UploadUserList, encryptedText)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;<span class="comment">//这里传入的aesCrypto作为解密工具，负责将目标服务器发送的响应解密</span></span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 发送到目标地址，使用明文数据</span></span><br><span class="line">	<span class="comment">// outData, err := utils.DoPost(ctx, nil, consts.UploadUserList, encryptedText)</span></span><br><span class="line">	<span class="comment">// if err != nil &#123;</span></span><br><span class="line">	<span class="comment">// 	return err</span></span><br><span class="line">	<span class="comment">// &#125;</span></span><br><span class="line">	g.Log().Debugf(ctx, <span class="string">&quot;返回结果:%v&quot;</span>, outData)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>代码中提到的utils包主要作用是实现一些非获取数据的其他功能，如加解密数据，数据发送等</p>
-<h4 id="目标服务器地址以及请求api的定义"><a href="#目标服务器地址以及请求api的定义" class="headerlink" title="目标服务器地址以及请求api的定义"></a>目标服务器地址以及请求api的定义</h4><p>通过const定义相关常量</p>
-<h6 id=""><a href="#" class="headerlink" title=""></a></h6>]]></content>
-      <categories>
-        <category>go</category>
-        <category>接口设计</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-        <tag>接口设计</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>go项目向目标接口发送数据的设计开发流程</title>
     <url>/2025/08/29/goframe%E6%A1%86%E6%9E%B6%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<h3 id="Go语言发送接口设计的整体结构"><a href="#Go语言发送接口设计的整体结构" class="headerlink" title="Go语言发送接口设计的整体结构"></a>Go语言发送接口设计的整体结构</h3><p><img src="C:\Users\清风\AppData\Roaming\Typora\typora-user-images\image-20250829091105597.png" alt="image-20250829091105597"></p>
-<h3 id="service层发送接口的实现"><a href="#service层发送接口的实现" class="headerlink" title="service层发送接口的实现"></a>service层发送接口的实现</h3><p>分为三个部分</p>
+    <content><![CDATA[<h3 id="Go语言发送接口设计的整体结构">Go语言发送接口设计的整体结构</h3>
+<p><img src="C:%5CUsers%5C%E6%B8%85%E9%A3%8E%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20250829091105597.png" alt="image-20250829091105597"></p>
+<h3 id="service层发送接口的实现">service层发送接口的实现</h3>
+<p>分为三个部分</p>
 <ul>
 <li>接口注册</li>
 </ul>
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterDatasync</span><span class="params">(i IDatasync)</span></span> &#123;</span><br><span class="line">	localDatasync = i</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//实现将逻辑实现层中的接口实现注册到service层中</span></span><br><span class="line"><span class="comment">//注意二者的接口的名称，入参，出参，数量一定要一致</span></span><br></pre></td></tr></table></figure>
-
 <ul>
 <li>接口定义</li>
 </ul>
@@ -126,109 +104,148 @@
       </tags>
   </entry>
   <entry>
-    <title>Hello World</title>
-    <url>/2025/08/26/hello-world/</url>
-    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
-<span id="more"></span>
-
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-
-<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+    <title>go项目发送接口设计流程</title>
+    <url>/2025/08/29/go%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/</url>
+    <content><![CDATA[<h3 id="Go发送接口设计的整体结构">Go发送接口设计的整体结构</h3>
+<p>![666](…\img\屏幕截图 2025-08-29 104725.png)</p>
+<h3 id="service层实现">service层实现</h3>
+<p>分为以下三个部分</p>
+<ul>
+<li>
+<p>接口的定义</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> (</span><br><span class="line">	IDatasync <span class="keyword">interface</span> &#123;<span class="comment">//定义一个interface（接口类型）的IDatasync</span></span><br><span class="line">		Func1(ctx context.Context) (err <span class="type">error</span>)<span class="comment">//前面的括号是入参，后面的括号是出参</span></span><br><span class="line">		Func2(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">		Func3(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"><span class="comment">//只定义抽象的接口名称，接口入参出参类型</span></span><br><span class="line"><span class="comment">//数据实现层的接口的数量，名称，入参出参都要和这一致</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>全局变量以及单例模式的定义实现</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	localDatasync IDatasync<span class="comment">//定义全局变量</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Datasync</span><span class="params">()</span></span> IDatasync &#123;<span class="comment">//全局访问点，当系统其他地方需要调用接口方法是通过这个方法.Func1(ctx 		     context.Context)</span></span><br><span class="line">	<span class="keyword">if</span> localDatasync == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;implement not found for interface IDatasync, forgot register?&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> localDatasync</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>注册具体方法实现</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterDatasync</span><span class="params">(i IDatasync)</span></span> &#123;</span><br><span class="line">	localDatasync = i</span><br><span class="line">&#125;<span class="comment">//将逻辑实现层中的方法具体实现注册进来</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="逻辑实现层的具体实现">逻辑实现层的具体实现</h3>
+<h4 id="接口实现的注册">接口实现的注册</h4>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> sDatasync <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="comment">// sDatasyncNew 函数用于创建并返回一个 *sDatasync 类型的实例。</span></span><br><span class="line"><span class="comment">// 从代码中的 init 函数可以看出，该函数创建的实例会被传递给 service.RegisterDatasync 方法，</span></span><br><span class="line"><span class="comment">// 这表明 sDatasync 结构体实现了 service.IDatasync 接口，</span></span><br><span class="line"><span class="comment">// 此函数创建的实例会被注册到 service 模块中，供后续使用。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sDatasyncNew</span><span class="params">()</span></span> *sDatasync &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;sDatasync&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 此方法是将 sDatasync 实例注册到 service 模块中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	service.RegisterDatasync(sDatasyncNew())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>==注意==由于GO语言是包级作用域，因此如果接口过多，要分成多分文件去写，那么在同一包下的其他文件不用实现上面的注册，直接进行接口实现就行</p>
+<h4 id="接口的实现">接口的实现</h4>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在 Go 语言里，`func` 后面的 `(s *sDatasync)` 被称作方法接收器（Method Receiver），</span></span><br><span class="line"><span class="comment">// 它表明这个函数是 `sDatasync` 结构体的一个方法。</span></span><br><span class="line"><span class="comment">// `*sDatasync` 表示使用指针接收器，意味着该方法可以修改 `sDatasync` 结构体实例的内容，</span></span><br><span class="line"><span class="comment">// 同时避免在调用方法时复制结构体实例，提高性能。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *sDatasync)</span></span> Func1(ctx context.Context) (err <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="comment">//获取所有用户信息</span></span><br><span class="line">	userInfoOut, err := proxy.GetUserAll(ctx)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> userProfileInfos []*model.UserProfileInfo</span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> userInfoOut &#123;</span><br><span class="line">		<span class="comment">//数据格式的转换</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 使用 json.Marshal 将 userProfiles 转换为 JSON 字符串</span></span><br><span class="line">	jsonData, err := json.Marshal(model.CustDataRequest&#123;</span><br><span class="line">		CustDataVo: userProfileInfos,</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;Error converting to JSON:&quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//对参数进行ASE进行加密</span></span><br><span class="line">    aesCrypto, err := utils.数据加密()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Log().Errorf(context.Background(), <span class="string">&quot;创建默认AES加解密工具失败: %v&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	encryptedText, err := aesCrypto.Encrypt(<span class="type">string</span>(jsonData))</span><br><span class="line">	outData, err := utils.发送数据(ctx, aesCrypto, consts.UploadUserList, encryptedText)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;<span class="comment">//这里传入的aesCrypto作为解密工具，负责将目标服务器发送的响应解密</span></span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 发送到目标地址，使用明文数据</span></span><br><span class="line">	<span class="comment">// outData, err := utils.DoPost(ctx, nil, consts.UploadUserList, encryptedText)</span></span><br><span class="line">	<span class="comment">// if err != nil &#123;</span></span><br><span class="line">	<span class="comment">// 	return err</span></span><br><span class="line">	<span class="comment">// &#125;</span></span><br><span class="line">	g.Log().Debugf(ctx, <span class="string">&quot;返回结果:%v&quot;</span>, outData)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码中提到的utils包主要作用是实现一些非获取数据的其他功能，如加解密数据，数据发送等</p>
+<h4 id="目标服务器地址以及请求api的定义">目标服务器地址以及请求api的定义</h4>
+<p>通过const定义相关常量</p>
+<h6 id=""></h6>
 ]]></content>
       <categories>
-        <category>general</category>
+        <category>go</category>
+        <category>接口设计</category>
       </categories>
       <tags>
-        <tag>intro</tag>
+        <tag>go</tag>
+        <tag>接口设计</tag>
       </tags>
   </entry>
   <entry>
     <title>hexo+next博客搭建</title>
     <url>/2025/08/28/hexo-next%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
     <content><![CDATA[<p>以下是使用 Hexo 和 Next 主题搭建个人博客的详细教程：</p>
-<h3 id="一、环境准备"><a href="#一、环境准备" class="headerlink" title="一、环境准备"></a>一、环境准备</h3><ol>
-<li><p><strong>安装 Node.js</strong></p>
+<h3 id="一、环境准备">一、环境准备</h3>
+<ol>
+<li>
+<p><strong>安装 Node.js</strong></p>
 <ul>
 <li>访问 <a href="https://nodejs.org/">Node.js 官网</a> 下载并安装（推荐 LTS 版本）</li>
 <li>验证安装：<code>node -v</code> 和 <code>npm -v</code> 能显示版本号</li>
 </ul>
 </li>
-<li><p><strong>安装 Git</strong></p>
+<li>
+<p><strong>安装 Git</strong></p>
 <ul>
 <li>访问 <a href="https://git-scm.com/">Git 官网</a> 下载对应系统版本</li>
 <li>验证安装：<code>git --version</code></li>
 </ul>
 </li>
-<li><p><strong>安装 Hexo</strong></p>
+<li>
+<p><strong>安装 Hexo</strong></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-
 <p>验证安装：<code>hexo -v</code></p>
 </li>
 </ol>
-<h3 id="二、初始化博客"><a href="#二、初始化博客" class="headerlink" title="二、初始化博客"></a>二、初始化博客</h3><ol>
-<li><p><strong>创建博客目录并初始化</strong></p>
+<h3 id="二、初始化博客">二、初始化博客</h3>
+<ol>
+<li>
+<p><strong>创建博客目录并初始化</strong></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建目录</span></span><br><span class="line"><span class="built_in">mkdir</span> my-hexo-blog &amp;&amp; <span class="built_in">cd</span> my-hexo-blog</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化 Hexo</span></span><br><span class="line">hexo init</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>本地预览</strong></p>
+<li>
+<p><strong>本地预览</strong></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 生成静态文件</span></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动本地服务器</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-
 <p>访问 <code>http://localhost:4000</code> 即可看到默认博客页面</p>
 </li>
 </ol>
-<h3 id="三、安装-Next-主题"><a href="#三、安装-Next-主题" class="headerlink" title="三、安装 Next 主题"></a>三、安装 Next 主题</h3><ol>
-<li><p><strong>下载 Next 主题</strong></p>
+<h3 id="三、安装-Next-主题">三、安装 Next 主题</h3>
+<ol>
+<li>
+<p><strong>下载 Next 主题</strong></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入 themes 目录</span></span><br><span class="line"><span class="built_in">cd</span> themes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 克隆 Next 仓库</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/next-theme/hexo-theme-next.git next</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回博客根目录</span></span><br><span class="line"><span class="built_in">cd</span> ..</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>配置 Next 主题</strong><br>编辑博客根目录下的 <code>_config.yml</code>：</p>
+<li>
+<p><strong>配置 Next 主题</strong><br>
+编辑博客根目录下的 <code>_config.yml</code>：</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 找到 theme 配置项，修改为 next</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>验证主题安装</strong></p>
+<li>
+<p><strong>验证主题安装</strong></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean  <span class="comment"># 清除缓存</span></span><br><span class="line">hexo g      <span class="comment"># 重新生成</span></span><br><span class="line">hexo s      <span class="comment"># 启动服务器</span></span><br></pre></td></tr></table></figure>
-
 <p>刷新页面即可看到 Next 主题效果</p>
 </li>
 </ol>
-<h3 id="四、基础配置"><a href="#四、基础配置" class="headerlink" title="四、基础配置"></a>四、基础配置</h3><ol>
-<li><p><strong>站点配置</strong>（<code>_config.yml</code>）</p>
+<h3 id="四、基础配置">四、基础配置</h3>
+<ol>
+<li>
+<p><strong>站点配置</strong>（<code>_config.yml</code>）</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">title:</span> <span class="string">你的博客名称</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">博客副标题</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">博客描述</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">你的名字</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span>  <span class="comment"># 设置为中文</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shanghai</span>  <span class="comment"># 设置时区</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>Next 主题配置</strong><br>复制 <code>themes/next/_config.yml</code> 到根目录，并重命名为 <code>_config.next.yml</code>，然后进行配置：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 选择主题风格</span></span><br><span class="line"><span class="attr">scheme:</span> <span class="string">Muse</span>  <span class="comment"># 可选: Muse, Mist, Pisces, Gemini</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 菜单配置</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 社交链接</span></span><br><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="attr">GitHub:</span> <span class="string">https://github.com/yourname</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-github</span></span><br><span class="line">  <span class="attr">Twitter:</span> <span class="string">https://twitter.com/yourname</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-twitter</span></span><br></pre></td></tr></table></figure></li>
+<li>
+<p><strong>Next 主题配置</strong><br>
+复制 <code>themes/next/_config.yml</code> 到根目录，并重命名为 <code>_config.next.yml</code>，然后进行配置：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 选择主题风格</span></span><br><span class="line"><span class="attr">scheme:</span> <span class="string">Muse</span>  <span class="comment"># 可选: Muse, Mist, Pisces, Gemini</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 菜单配置</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 社交链接</span></span><br><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="attr">GitHub:</span> <span class="string">https://github.com/yourname</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-github</span></span><br><span class="line">  <span class="attr">Twitter:</span> <span class="string">https://twitter.com/yourname</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-twitter</span></span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<h3 id="五、发布文章"><a href="#五、发布文章" class="headerlink" title="五、发布文章"></a>五、发布文章</h3><ol>
-<li><p><strong>创建新文章</strong></p>
+<h3 id="五、发布文章">五、发布文章</h3>
+<ol>
+<li>
+<p><strong>创建新文章</strong></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new <span class="string">&quot;我的第一篇文章&quot;</span></span><br></pre></td></tr></table></figure>
-
 <p>文章会生成在 <code>source/_posts/</code> 目录下，格式为 Markdown</p>
 </li>
-<li><p><strong>文章头部配置示例</strong></p>
+<li>
+<p><strong>文章头部配置示例</strong></p>
 <figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 我的第一篇文章</span><br><span class="line">date: 2023-10-01 12:00:00</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">  -</span> 教程</span><br><span class="line"><span class="bullet">  -</span> Hexo</span><br><span class="line">categories:</span><br><span class="line"><span class="section">  - 技术</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line">这里是文章内容...</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>创建页面</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page <span class="string">&quot;about&quot;</span>  <span class="comment"># 创建关于页面</span></span><br><span class="line">hexo new page <span class="string">&quot;tags&quot;</span>   <span class="comment"># 创建标签页</span></span><br><span class="line">hexo new page <span class="string">&quot;categories&quot;</span>  <span class="comment"># 创建分类页</span></span><br></pre></td></tr></table></figure></li>
+<li>
+<p><strong>创建页面</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page <span class="string">&quot;about&quot;</span>  <span class="comment"># 创建关于页面</span></span><br><span class="line">hexo new page <span class="string">&quot;tags&quot;</span>   <span class="comment"># 创建标签页</span></span><br><span class="line">hexo new page <span class="string">&quot;categories&quot;</span>  <span class="comment"># 创建分类页</span></span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<h3 id="六、部署到-GitHub-Pages"><a href="#六、部署到-GitHub-Pages" class="headerlink" title="六、部署到 GitHub Pages"></a>六、部署到 GitHub Pages</h3><ol>
-<li><p><strong>安装部署插件</strong></p>
+<h3 id="六、部署到-GitHub-Pages">六、部署到 GitHub Pages</h3>
+<ol>
+<li>
+<p><strong>安装部署插件</strong></p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>配置部署信息</strong>（<code>_config.yml</code>）</p>
+<li>
+<p><strong>配置部署信息</strong>（<code>_config.yml</code>）</p>
 <figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://github.com/yourname/yourname.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br></pre></td></tr></table></figure>
 </li>
-<li><p><strong>部署博客</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g -d  <span class="comment"># 生成并部署</span></span><br></pre></td></tr></table></figure></li>
+<li>
+<p><strong>部署博客</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g -d  <span class="comment"># 生成并部署</span></span><br></pre></td></tr></table></figure>
+</li>
 </ol>
-<h3 id="七、常用命令总结"><a href="#七、常用命令总结" class="headerlink" title="七、常用命令总结"></a>七、常用命令总结</h3><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new <span class="string">&quot;文章标题&quot;</span>   <span class="comment"># 创建新文章</span></span><br><span class="line">hexo new page <span class="string">&quot;页面名&quot;</span> <span class="comment"># 创建新页面</span></span><br><span class="line">hexo clean            <span class="comment"># 清除缓存</span></span><br><span class="line">hexo generate (hexo g) <span class="comment"># 生成静态文件</span></span><br><span class="line">hexo server (hexo s)   <span class="comment"># 启动本地服务器</span></span><br><span class="line">hexo deploy (hexo d)   <span class="comment"># 部署博客</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="八、个性化定制"><a href="#八、个性化定制" class="headerlink" title="八、个性化定制"></a>八、个性化定制</h3><ol>
+<h3 id="七、常用命令总结">七、常用命令总结</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new <span class="string">&quot;文章标题&quot;</span>   <span class="comment"># 创建新文章</span></span><br><span class="line">hexo new page <span class="string">&quot;页面名&quot;</span> <span class="comment"># 创建新页面</span></span><br><span class="line">hexo clean            <span class="comment"># 清除缓存</span></span><br><span class="line">hexo generate (hexo g) <span class="comment"># 生成静态文件</span></span><br><span class="line">hexo server (hexo s)   <span class="comment"># 启动本地服务器</span></span><br><span class="line">hexo deploy (hexo d)   <span class="comment"># 部署博客</span></span><br></pre></td></tr></table></figure>
+<h3 id="八、个性化定制">八、个性化定制</h3>
+<ol>
 <li>可以在 <code>_config.next.yml</code> 中修改主题颜色、字体、动画等</li>
 <li>安装第三方插件扩展功能（如评论系统、阅读统计等）</li>
 <li>自定义 CSS 样式，放在 <code>source/css/_custom/custom.styl</code> 中</li>
@@ -240,6 +257,32 @@
       </categories>
       <tags>
         <tag>博客搭建</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Hello World</title>
+    <url>/2025/08/26/hello-world/</url>
+    <content><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p>
+<span id="more"></span>
+<h2 id="Quick-Start">Quick Start</h2>
+<h3 id="Create-a-new-post">Create a new post</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p>
+<h3 id="Run-server">Run server</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p>
+<h3 id="Generate-static-files">Generate static files</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p>
+<h3 id="Deploy-to-remote-sites">Deploy to remote sites</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
+<p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>
+]]></content>
+      <categories>
+        <category>general</category>
+      </categories>
+      <tags>
+        <tag>intro</tag>
       </tags>
   </entry>
 </search>
