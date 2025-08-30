@@ -24,19 +24,21 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"bytedoge.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="Go发送接口设计的整体结构 ![666](\img\屏幕截图 2025-08-29 104725.png) service层实现 分为以下三个部分   接口的定义 123456789type (	IDatasync interface &#123;&#x2F;&#x2F;定义一个interface（接口类型）的IDatasync		Func1(ctx context.Context) (err error)&#x2F;&#x2F;前面的">
+    <meta name="description" content="¶Go发送接口设计的整体结构  ¶service层实现 分为以下三个部分   接口的定义 123456789type (	IDatasync interface &#123;&#x2F;&#x2F;定义一个interface（接口类型）的IDatasync		Func1(ctx context.Context) (err error)&#x2F;&#x2F;前面的括号是入参，后面的括号是出参		Func2(ctx context.Con">
 <meta property="og:type" content="article">
 <meta property="og:title" content="go项目发送接口设计流程">
 <meta property="og:url" content="https://bytedoge.github.io/2025/08/29/go%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/">
 <meta property="og:site_name" content="zhyBlogs">
-<meta property="og:description" content="Go发送接口设计的整体结构 ![666](\img\屏幕截图 2025-08-29 104725.png) service层实现 分为以下三个部分   接口的定义 123456789type (	IDatasync interface &#123;&#x2F;&#x2F;定义一个interface（接口类型）的IDatasync		Func1(ctx context.Context) (err error)&#x2F;&#x2F;前面的">
+<meta property="og:description" content="¶Go发送接口设计的整体结构  ¶service层实现 分为以下三个部分   接口的定义 123456789type (	IDatasync interface &#123;&#x2F;&#x2F;定义一个interface（接口类型）的IDatasync		Func1(ctx context.Context) (err error)&#x2F;&#x2F;前面的括号是入参，后面的括号是出参		Func2(ctx context.Con">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bytedoge.github.io/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-08-29%20104725.png">
 <meta property="article:published_time" content="2025-08-29T00:43:44.000Z">
-<meta property="article:modified_time" content="2025-08-29T08:01:17.132Z">
+<meta property="article:modified_time" content="2025-08-30T13:47:11.323Z">
 <meta property="article:author" content="Zheng HanYang">
 <meta property="article:tag" content="go">
 <meta property="article:tag" content="接口设计">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bytedoge.github.io/img/%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202025-08-29%20104725.png">
 
 
 <link rel="canonical" href="https://bytedoge.github.io/2025/08/29/go%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/">
@@ -337,7 +339,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Go%E5%8F%91%E9%80%81%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">Go发送接口设计的整体结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#service%E5%B1%82%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">service层实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%AE%9E%E7%8E%B0%E5%B1%82%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">逻辑实现层的具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%B3%A8%E5%86%8C"><span class="nav-number">3.1.</span> <span class="nav-text">接口实现的注册</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.2.</span> <span class="nav-text">接口的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9C%B0%E5%9D%80%E4%BB%A5%E5%8F%8A%E8%AF%B7%E6%B1%82api%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">3.3.</span> <span class="nav-text">目标服务器地址以及请求api的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link"><span class="nav-number">3.3.0.1.</span> <span class="nav-text"></span></a></li></ol></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Go%E5%8F%91%E9%80%81%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E7%9A%84%E6%95%B4%E4%BD%93%E7%BB%93%E6%9E%84"><span class="nav-number">1.</span> <span class="nav-text">Go发送接口设计的整体结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#service%E5%B1%82%E5%AE%9E%E7%8E%B0"><span class="nav-number">2.</span> <span class="nav-text">service层实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%BB%E8%BE%91%E5%AE%9E%E7%8E%B0%E5%B1%82%E7%9A%84%E5%85%B7%E4%BD%93%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.</span> <span class="nav-text">逻辑实现层的具体实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E5%AE%9E%E7%8E%B0%E7%9A%84%E6%B3%A8%E5%86%8C"><span class="nav-number">3.1.</span> <span class="nav-text">接口实现的注册</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%8E%A5%E5%8F%A3%E7%9A%84%E5%AE%9E%E7%8E%B0"><span class="nav-number">3.2.</span> <span class="nav-text">接口的实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%9C%B0%E5%9D%80%E4%BB%A5%E5%8F%8A%E8%AF%B7%E6%B1%82api%E7%9A%84%E5%AE%9A%E4%B9%89"><span class="nav-number">3.3.</span> <span class="nav-text">目标服务器地址以及请求api的定义</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link"><span class="nav-number">3.3.0.1.</span> <span class="nav-text">¶</span></a></li></ol></li></ol></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -425,9 +427,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">发表于</span>
-      
 
-      <time title="创建时间：2025-08-29 08:43:44 / 修改时间：16:01:17" itemprop="dateCreated datePublished" datetime="2025-08-29T08:43:44+08:00">2025-08-29</time>
+      <time title="创建时间：2025-08-29 08:43:44" itemprop="dateCreated datePublished" datetime="2025-08-29T08:43:44+08:00">2025-08-29</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">更新于</span>
+      <time title="修改时间：2025-08-30 21:47:11" itemprop="dateModified" datetime="2025-08-30T21:47:11+08:00">2025-08-30</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -474,9 +482,9 @@
     
     
     
-      <div class="post-body" itemprop="articleBody"><h3 id="Go发送接口设计的整体结构">Go发送接口设计的整体结构</h3>
-<p>![666](\img\屏幕截图 2025-08-29 104725.png)</p>
-<h3 id="service层实现">service层实现</h3>
+      <div class="post-body" itemprop="articleBody"><h3 id="Go发送接口设计的整体结构"><a class="header-anchor" href="#Go发送接口设计的整体结构">¶</a>Go发送接口设计的整体结构</h3>
+<img src="/img/屏幕截图 2025-08-29 104725.png" alt="678" />
+<h3 id="service层实现"><a class="header-anchor" href="#service层实现">¶</a>service层实现</h3>
 <p>分为以下三个部分</p>
 <ul>
 <li>
@@ -492,16 +500,16 @@
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterDatasync</span><span class="params">(i IDatasync)</span></span> &#123;</span><br><span class="line">	localDatasync = i</span><br><span class="line">&#125;<span class="comment">//将逻辑实现层中的方法具体实现注册进来</span></span><br></pre></td></tr></table></figure>
 </li>
 </ul>
-<h3 id="逻辑实现层的具体实现">逻辑实现层的具体实现</h3>
-<h4 id="接口实现的注册">接口实现的注册</h4>
+<h3 id="逻辑实现层的具体实现"><a class="header-anchor" href="#逻辑实现层的具体实现">¶</a>逻辑实现层的具体实现</h3>
+<h4 id="接口实现的注册"><a class="header-anchor" href="#接口实现的注册">¶</a>接口实现的注册</h4>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> sDatasync <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="comment">// sDatasyncNew 函数用于创建并返回一个 *sDatasync 类型的实例。</span></span><br><span class="line"><span class="comment">// 从代码中的 init 函数可以看出，该函数创建的实例会被传递给 service.RegisterDatasync 方法，</span></span><br><span class="line"><span class="comment">// 这表明 sDatasync 结构体实现了 service.IDatasync 接口，</span></span><br><span class="line"><span class="comment">// 此函数创建的实例会被注册到 service 模块中，供后续使用。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sDatasyncNew</span><span class="params">()</span></span> *sDatasync &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;sDatasync&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 此方法是将 sDatasync 实例注册到 service 模块中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	service.RegisterDatasync(sDatasyncNew())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>==注意==由于GO语言是包级作用域，因此如果接口过多，要分成多分文件去写，那么在同一包下的其他文件不用实现上面的注册，直接进行接口实现就行</p>
-<h4 id="接口的实现">接口的实现</h4>
+<p><mark>注意</mark>由于GO语言是包级作用域，因此如果接口过多，要分成多分文件去写，那么在同一包下的其他文件不用实现上面的注册，直接进行接口实现就行</p>
+<h4 id="接口的实现"><a class="header-anchor" href="#接口的实现">¶</a>接口的实现</h4>
 <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 在 Go 语言里，`func` 后面的 `(s *sDatasync)` 被称作方法接收器（Method Receiver），</span></span><br><span class="line"><span class="comment">// 它表明这个函数是 `sDatasync` 结构体的一个方法。</span></span><br><span class="line"><span class="comment">// `*sDatasync` 表示使用指针接收器，意味着该方法可以修改 `sDatasync` 结构体实例的内容，</span></span><br><span class="line"><span class="comment">// 同时避免在调用方法时复制结构体实例，提高性能。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *sDatasync)</span></span> Func1(ctx context.Context) (err <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="comment">//获取所有用户信息</span></span><br><span class="line">	userInfoOut, err := proxy.GetUserAll(ctx)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> userProfileInfos []*model.UserProfileInfo</span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> userInfoOut &#123;</span><br><span class="line">		<span class="comment">//数据格式的转换</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 使用 json.Marshal 将 userProfiles 转换为 JSON 字符串</span></span><br><span class="line">	jsonData, err := json.Marshal(model.CustDataRequest&#123;</span><br><span class="line">		CustDataVo: userProfileInfos,</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;Error converting to JSON:&quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//对参数进行ASE进行加密</span></span><br><span class="line">    aesCrypto, err := utils.数据加密()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Log().Errorf(context.Background(), <span class="string">&quot;创建默认AES加解密工具失败: %v&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	encryptedText, err := aesCrypto.Encrypt(<span class="type">string</span>(jsonData))</span><br><span class="line">	outData, err := utils.发送数据(ctx, aesCrypto, consts.UploadUserList, encryptedText)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;<span class="comment">//这里传入的aesCrypto作为解密工具，负责将目标服务器发送的响应解密</span></span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 发送到目标地址，使用明文数据</span></span><br><span class="line">	<span class="comment">// outData, err := utils.DoPost(ctx, nil, consts.UploadUserList, encryptedText)</span></span><br><span class="line">	<span class="comment">// if err != nil &#123;</span></span><br><span class="line">	<span class="comment">// 	return err</span></span><br><span class="line">	<span class="comment">// &#125;</span></span><br><span class="line">	g.Log().Debugf(ctx, <span class="string">&quot;返回结果:%v&quot;</span>, outData)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>代码中提到的utils包主要作用是实现一些非获取数据的其他功能，如加解密数据，数据发送等</p>
-<h4 id="目标服务器地址以及请求api的定义">目标服务器地址以及请求api的定义</h4>
+<h4 id="目标服务器地址以及请求api的定义"><a class="header-anchor" href="#目标服务器地址以及请求api的定义">¶</a>目标服务器地址以及请求api的定义</h4>
 <p>通过const定义相关常量</p>
-<h6 id=""></h6>
+<h6 id=""><a class="header-anchor" href="#">¶</a></h6>
 
       </div>
 
