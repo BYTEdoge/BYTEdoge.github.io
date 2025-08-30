@@ -37,6 +37,47 @@
       </tags>
   </entry>
   <entry>
+    <title>go项目发送接口设计流程</title>
+    <url>/2025/08/29/go%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/</url>
+    <content><![CDATA[<h3 id="Go发送接口设计的整体结构">Go发送接口设计的整体结构</h3>
+<p>![666](\img\屏幕截图 2025-08-29 104725.png)</p>
+<h3 id="service层实现">service层实现</h3>
+<p>分为以下三个部分</p>
+<ul>
+<li>
+<p>接口的定义</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> (</span><br><span class="line">	IDatasync <span class="keyword">interface</span> &#123;<span class="comment">//定义一个interface（接口类型）的IDatasync</span></span><br><span class="line">		Func1(ctx context.Context) (err <span class="type">error</span>)<span class="comment">//前面的括号是入参，后面的括号是出参</span></span><br><span class="line">		Func2(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">		Func3(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"><span class="comment">//只定义抽象的接口名称，接口入参出参类型</span></span><br><span class="line"><span class="comment">//数据实现层的接口的数量，名称，入参出参都要和这一致</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>全局变量以及单例模式的定义实现</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	localDatasync IDatasync<span class="comment">//定义全局变量</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Datasync</span><span class="params">()</span></span> IDatasync &#123;<span class="comment">//全局访问点，当系统其他地方需要调用接口方法是通过这个方法.Func1(ctx 		     context.Context)</span></span><br><span class="line">	<span class="keyword">if</span> localDatasync == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;implement not found for interface IDatasync, forgot register?&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> localDatasync</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>注册具体方法实现</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterDatasync</span><span class="params">(i IDatasync)</span></span> &#123;</span><br><span class="line">	localDatasync = i</span><br><span class="line">&#125;<span class="comment">//将逻辑实现层中的方法具体实现注册进来</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="逻辑实现层的具体实现">逻辑实现层的具体实现</h3>
+<h4 id="接口实现的注册">接口实现的注册</h4>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> sDatasync <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="comment">// sDatasyncNew 函数用于创建并返回一个 *sDatasync 类型的实例。</span></span><br><span class="line"><span class="comment">// 从代码中的 init 函数可以看出，该函数创建的实例会被传递给 service.RegisterDatasync 方法，</span></span><br><span class="line"><span class="comment">// 这表明 sDatasync 结构体实现了 service.IDatasync 接口，</span></span><br><span class="line"><span class="comment">// 此函数创建的实例会被注册到 service 模块中，供后续使用。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sDatasyncNew</span><span class="params">()</span></span> *sDatasync &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;sDatasync&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 此方法是将 sDatasync 实例注册到 service 模块中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	service.RegisterDatasync(sDatasyncNew())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>==注意==由于GO语言是包级作用域，因此如果接口过多，要分成多分文件去写，那么在同一包下的其他文件不用实现上面的注册，直接进行接口实现就行</p>
+<h4 id="接口的实现">接口的实现</h4>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在 Go 语言里，`func` 后面的 `(s *sDatasync)` 被称作方法接收器（Method Receiver），</span></span><br><span class="line"><span class="comment">// 它表明这个函数是 `sDatasync` 结构体的一个方法。</span></span><br><span class="line"><span class="comment">// `*sDatasync` 表示使用指针接收器，意味着该方法可以修改 `sDatasync` 结构体实例的内容，</span></span><br><span class="line"><span class="comment">// 同时避免在调用方法时复制结构体实例，提高性能。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *sDatasync)</span></span> Func1(ctx context.Context) (err <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="comment">//获取所有用户信息</span></span><br><span class="line">	userInfoOut, err := proxy.GetUserAll(ctx)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> userProfileInfos []*model.UserProfileInfo</span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> userInfoOut &#123;</span><br><span class="line">		<span class="comment">//数据格式的转换</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 使用 json.Marshal 将 userProfiles 转换为 JSON 字符串</span></span><br><span class="line">	jsonData, err := json.Marshal(model.CustDataRequest&#123;</span><br><span class="line">		CustDataVo: userProfileInfos,</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;Error converting to JSON:&quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//对参数进行ASE进行加密</span></span><br><span class="line">    aesCrypto, err := utils.数据加密()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Log().Errorf(context.Background(), <span class="string">&quot;创建默认AES加解密工具失败: %v&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	encryptedText, err := aesCrypto.Encrypt(<span class="type">string</span>(jsonData))</span><br><span class="line">	outData, err := utils.发送数据(ctx, aesCrypto, consts.UploadUserList, encryptedText)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;<span class="comment">//这里传入的aesCrypto作为解密工具，负责将目标服务器发送的响应解密</span></span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 发送到目标地址，使用明文数据</span></span><br><span class="line">	<span class="comment">// outData, err := utils.DoPost(ctx, nil, consts.UploadUserList, encryptedText)</span></span><br><span class="line">	<span class="comment">// if err != nil &#123;</span></span><br><span class="line">	<span class="comment">// 	return err</span></span><br><span class="line">	<span class="comment">// &#125;</span></span><br><span class="line">	g.Log().Debugf(ctx, <span class="string">&quot;返回结果:%v&quot;</span>, outData)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码中提到的utils包主要作用是实现一些非获取数据的其他功能，如加解密数据，数据发送等</p>
+<h4 id="目标服务器地址以及请求api的定义">目标服务器地址以及请求api的定义</h4>
+<p>通过const定义相关常量</p>
+<h6 id=""></h6>
+]]></content>
+      <categories>
+        <category>go</category>
+        <category>接口设计</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+        <tag>接口设计</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>go语言简单入门</title>
     <url>/2025/08/27/go%E8%AF%AD%E8%A8%80%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8/</url>
     <content><![CDATA[<h3 id="1-在定义函数时，参数的类型是写在参数名称-之后的">1.在定义函数时，参数的类型是写在参数名称==之后的==</h3>
@@ -193,47 +234,6 @@
       </categories>
       <tags>
         <tag>博客搭建</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>go项目发送接口设计流程</title>
-    <url>/2025/08/29/go%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/</url>
-    <content><![CDATA[<h3 id="Go发送接口设计的整体结构">Go发送接口设计的整体结构</h3>
-<p>![666](\img\屏幕截图 2025-08-29 104725.png)</p>
-<h3 id="service层实现">service层实现</h3>
-<p>分为以下三个部分</p>
-<ul>
-<li>
-<p>接口的定义</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> (</span><br><span class="line">	IDatasync <span class="keyword">interface</span> &#123;<span class="comment">//定义一个interface（接口类型）的IDatasync</span></span><br><span class="line">		Func1(ctx context.Context) (err <span class="type">error</span>)<span class="comment">//前面的括号是入参，后面的括号是出参</span></span><br><span class="line">		Func2(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">		Func3(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"><span class="comment">//只定义抽象的接口名称，接口入参出参类型</span></span><br><span class="line"><span class="comment">//数据实现层的接口的数量，名称，入参出参都要和这一致</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>全局变量以及单例模式的定义实现</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	localDatasync IDatasync<span class="comment">//定义全局变量</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Datasync</span><span class="params">()</span></span> IDatasync &#123;<span class="comment">//全局访问点，当系统其他地方需要调用接口方法是通过这个方法.Func1(ctx 		     context.Context)</span></span><br><span class="line">	<span class="keyword">if</span> localDatasync == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;implement not found for interface IDatasync, forgot register?&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> localDatasync</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p>注册具体方法实现</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterDatasync</span><span class="params">(i IDatasync)</span></span> &#123;</span><br><span class="line">	localDatasync = i</span><br><span class="line">&#125;<span class="comment">//将逻辑实现层中的方法具体实现注册进来</span></span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h3 id="逻辑实现层的具体实现">逻辑实现层的具体实现</h3>
-<h4 id="接口实现的注册">接口实现的注册</h4>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> sDatasync <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="comment">// sDatasyncNew 函数用于创建并返回一个 *sDatasync 类型的实例。</span></span><br><span class="line"><span class="comment">// 从代码中的 init 函数可以看出，该函数创建的实例会被传递给 service.RegisterDatasync 方法，</span></span><br><span class="line"><span class="comment">// 这表明 sDatasync 结构体实现了 service.IDatasync 接口，</span></span><br><span class="line"><span class="comment">// 此函数创建的实例会被注册到 service 模块中，供后续使用。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sDatasyncNew</span><span class="params">()</span></span> *sDatasync &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;sDatasync&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 此方法是将 sDatasync 实例注册到 service 模块中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	service.RegisterDatasync(sDatasyncNew())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>==注意==由于GO语言是包级作用域，因此如果接口过多，要分成多分文件去写，那么在同一包下的其他文件不用实现上面的注册，直接进行接口实现就行</p>
-<h4 id="接口的实现">接口的实现</h4>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在 Go 语言里，`func` 后面的 `(s *sDatasync)` 被称作方法接收器（Method Receiver），</span></span><br><span class="line"><span class="comment">// 它表明这个函数是 `sDatasync` 结构体的一个方法。</span></span><br><span class="line"><span class="comment">// `*sDatasync` 表示使用指针接收器，意味着该方法可以修改 `sDatasync` 结构体实例的内容，</span></span><br><span class="line"><span class="comment">// 同时避免在调用方法时复制结构体实例，提高性能。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *sDatasync)</span></span> Func1(ctx context.Context) (err <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="comment">//获取所有用户信息</span></span><br><span class="line">	userInfoOut, err := proxy.GetUserAll(ctx)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> userProfileInfos []*model.UserProfileInfo</span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> userInfoOut &#123;</span><br><span class="line">		<span class="comment">//数据格式的转换</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 使用 json.Marshal 将 userProfiles 转换为 JSON 字符串</span></span><br><span class="line">	jsonData, err := json.Marshal(model.CustDataRequest&#123;</span><br><span class="line">		CustDataVo: userProfileInfos,</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;Error converting to JSON:&quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//对参数进行ASE进行加密</span></span><br><span class="line">    aesCrypto, err := utils.数据加密()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Log().Errorf(context.Background(), <span class="string">&quot;创建默认AES加解密工具失败: %v&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	encryptedText, err := aesCrypto.Encrypt(<span class="type">string</span>(jsonData))</span><br><span class="line">	outData, err := utils.发送数据(ctx, aesCrypto, consts.UploadUserList, encryptedText)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;<span class="comment">//这里传入的aesCrypto作为解密工具，负责将目标服务器发送的响应解密</span></span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 发送到目标地址，使用明文数据</span></span><br><span class="line">	<span class="comment">// outData, err := utils.DoPost(ctx, nil, consts.UploadUserList, encryptedText)</span></span><br><span class="line">	<span class="comment">// if err != nil &#123;</span></span><br><span class="line">	<span class="comment">// 	return err</span></span><br><span class="line">	<span class="comment">// &#125;</span></span><br><span class="line">	g.Log().Debugf(ctx, <span class="string">&quot;返回结果:%v&quot;</span>, outData)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代码中提到的utils包主要作用是实现一些非获取数据的其他功能，如加解密数据，数据发送等</p>
-<h4 id="目标服务器地址以及请求api的定义">目标服务器地址以及请求api的定义</h4>
-<p>通过const定义相关常量</p>
-<h6 id=""></h6>
-]]></content>
-      <categories>
-        <category>go</category>
-        <category>接口设计</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-        <tag>接口设计</tag>
       </tags>
   </entry>
 </search>

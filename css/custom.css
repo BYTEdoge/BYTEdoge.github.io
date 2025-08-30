@@ -7,7 +7,7 @@
   padding-right: 0 !important;
 }
 
-/* 确保分类页面内容居中 */
+/* 确保分类页面内容左对齐并右移 */
 .category .main-inner {
   width: 100% !important;
   max-width: 1000px !important;
@@ -21,11 +21,12 @@
 }
 
 .category .post-content {
-  margin-left: 0 !important;
-  text-align: center !important;
+  margin-left: 50px !important;
+  text-align: left !important;
+  padding-right: 20px !important;
 }
 
-/* 确保标签页面内容居中 */
+/* 确保标签页面内容左对齐并右移 */
 .tag .main-inner {
   width: 100% !important;
   max-width: 1000px !important;
@@ -39,8 +40,9 @@
 }
 
 .tag .post-content {
-  margin-left: 0 !important;
-  text-align: center !important;
+  margin-left: 50px !important;
+  text-align: left !important;
+  padding-right: 20px !important;
 }
 
 /* 确保关于页面内容居中 */
@@ -101,7 +103,8 @@
   .category .post-content,
   .tag .post-content {
     padding-left: 0 !important;
-    margin-left: 0 !important;
+    margin-left: 20px !important;
+    padding-right: 10px !important;
   }
 }
 
@@ -110,6 +113,7 @@
   .category .post-content,
   .tag .post-content {
     padding-left: 0 !important;
-    margin-left: 0 !important;
+    margin-left: 50px !important;
+    padding-right: 20px !important;
   }
 }
