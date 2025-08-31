@@ -1,6 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>git快速上手</title>
+    <url>/2025/08/26/git%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</url>
+    <content><![CDATA[<p>要在本地创建Git仓库仓库并连接到远程仓库 <code>git@github.com:xxxx/xxxxxxxx.git</code>，可以按照以下步骤操作：</p>
+<span id="more"></span>
+<h5 id="1-首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录："><a class="header-anchor" href="#1-首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：">¶</a>1.首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：</h5>
+<p><code>cd /path/to/your/local/directory</code></p>
+<h5 id="2-初始化本地Git仓库："><a class="header-anchor" href="#2-初始化本地Git仓库：">¶</a>2.初始化本地Git仓库：</h5>
+<p><code>  git init</code></p>
+<h5 id="3-将本地仓库与远程仓库关联："><a class="header-anchor" href="#3-将本地仓库与远程仓库关联：">¶</a>3.将本地仓库与远程仓库关联：</h5>
+<p><code> git remote add origin git@github.com:xxxxx/xxxxxx.git</code></p>
+<p>验证远程仓库连接是否成功：</p>
+<p><code> git remote -v</code></p>
+<p>如果成功，会显示类似以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (fetch) </span><br><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (push)</span><br></pre></td></tr></table></figure>
+<p>从远程仓库拉取代码（如果远程已有内容）：</p>
+<p><code>git pull origin main</code></p>
+<p>(如果默认分支不是main，可以替换为实际的分支名，如master）</p>
+<h5 id="4-添加到本地工作区："><a class="header-anchor" href="#4-添加到本地工作区：">¶</a>4.添加到本地工作区：</h5>
+<p><code> git add</code> .</p>
+<h5 id="5-提交给本地仓库："><a class="header-anchor" href="#5-提交给本地仓库：">¶</a>5.提交给本地仓库：</h5>
+<p><code>git commit -m &quot;这是提交的描述内容&quot;</code></p>
+<h5 id="6-提交到远程仓库："><a class="header-anchor" href="#6-提交到远程仓库：">¶</a>6.提交到远程仓库：</h5>
+<p><code>git push origin master (master对应提交的远程仓库分支）</code></p>
+<p>创建并切换本地仓库分支：<br>
+<code>git checkout -b dev</code></p>
+<p>提交当前分支：</p>
+<p><code>git push -u origin dev</code></p>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>go语言简单入门</title>
+    <url>/2025/08/27/go%E8%AF%AD%E8%A8%80%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8/</url>
+    <content><![CDATA[<h3 id="1-在定义函数时，参数的类型是写在参数名称之后的"><a class="header-anchor" href="#1-在定义函数时，参数的类型是写在参数名称之后的">¶</a>1.在定义函数时，参数的类型是写在参数名称<mark>之后的</mark></h3>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DoPost</span><span class="params">(ctx context.Context, crypto *AESCrypto, path, encryptBody <span class="type">string</span>)</span></span> (outDatamap[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;, err <span class="type">error</span>) </span><br></pre></td></tr></table></figure>
+<p>并且函数的出参直接在入参之后加上（）</p>
+<p>注意，不仅仅是函数的入参以及出参是这样的，整个go语言都是将数据类型放在数据名称之后的</p>
+<h3 id="2-键值对直接插入定义"><a class="header-anchor" href="#2-键值对直接插入定义">¶</a>2.键值对直接插入定义</h3>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> params = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>)</span><br></pre></td></tr></table></figure>
+<p>这里代表创建了一个params的键值对元组，其中key值使用的是string类型，value值使用的是string类型</p>
+<h3 id="3-包内函数调用方式"><a class="header-anchor" href="#3-包内函数调用方式">¶</a>3.包内函数调用方式</h3>
+<p>在 Go 语言中，导入包后可以直接通过<mark>包名调用包内的导出</mark>方法（首字母<mark>大写</mark>的函数、变量等），形式为 包名.方法名()，这是 Go 语言的标准用法，GoFrame 框架也遵循这一规则。</p>
+<p>注意这里还有一条规则，就是函数名为首字母大写的函数可以被包内同级程序（直接使用函数名调用）和包外程序（使用时加上包名.）调用，而首字母小写的函数则是<mark>只能</mark>被包内同级程序调用（也就是包内的子包的程序是无法调用的），如果是包外则<mark>无法调用</mark>，如果必须调用，可以在包内添加一个桥接函数（以大写字母开头，引用小写字母的私有函数）。</p>
+<ul>
+<li>
+<p>注意上述对于包中函数调用的描述同样也适用于变量</p>
+</li>
+<li>
+<p>Type 创建和管理类型，可以创建自定义类型，或者是将类型取一个别名，创建接口，将多个类型分组定义</p>
+</li>
+<li>
+<p>面向接口开发，利于解耦，允许先使用后定义，也就是函数的入参可以放置在函数的下方</p>
+</li>
+<li>
+<p>和c语言，c++一样支持指针操作，<code>var SyncUserList = &amp;qSyncUserList&#123;&#125;</code>代表syncuserlist的值是取qsyncuserlist的地址*abc代表是指针</p>
+</li>
+</ul>
+ <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="function"><span class="keyword">func</span> <span class="params">(q *qSyncUserList)</span></span> GetTopic() <span class="type">string</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> TaskSyncUserList</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代表q指针指向的结构体是gettopic方法的接受体，也就是q指针指向的结构体有这个函数，并且只有这个指针可以调用</p>
+<h3 id="5-结构体定义"><a class="header-anchor" href="#5-结构体定义">¶</a>5.结构体定义</h3>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> UserGroupRelation <span class="keyword">struct</span> &#123;</span><br><span class="line">CustId <span class="type">string</span> <span class="string">`json:&quot;custId&quot; dc:&quot;客户编码&quot;`</span></span><br><span class="line">GroupId <span class="type">string</span> <span class="string">`json:&quot;groupId&quot; dc:&quot;组别编码&quot;`</span></span><br><span class="line">DataSources <span class="type">string</span> <span class="string">`json:&quot;dataSources&quot; dc:&quot;数据来源&quot;`</span></span><br><span class="line">AvailCode  <span class="type">string</span> <span class="string">`json:&quot;availCode&quot; dc:&quot;有效性标识&quot;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里面每个参数最后的反引号的内容代表了是 Go 语言的<strong>结构体标签</strong>，用于为字段提供额外的元信息，供程序运行时通过反射（reflect）读取和使用。这里包含两类标签：</p>
+<ul>
+<li>json:&quot;custId&quot;：用于     JSON 序列化 / 反序列化时的字段映射。表示当结构体与 JSON 互转时，CustId 字段会对应 JSON 中的 custId 键（小写开头，符合     JSON 命名习惯）。</li>
+<li>dc:&quot;客户编码&quot;：这是一个自定义标签（可能是项目内部约定，如     “数据字典” 或 “文档注释”），用于说明字段的业务含义，方便开发者理解或自动生成文档。</li>
+</ul>
+<h6 id=""><a class="header-anchor" href="#">¶</a></h6>
+]]></content>
+      <categories>
+        <category>go语言教程</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>hexo+next博客搭建</title>
+    <url>/2025/08/28/hexo-next%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
+    <content><![CDATA[<p>以下是使用 Hexo 和 Next 主题搭建个人博客的详细教程：</p>
+<h3 id="一、环境准备"><a class="header-anchor" href="#一、环境准备">¶</a>一、环境准备</h3>
+<ol>
+<li>
+<p><strong>安装 Node.js</strong></p>
+<ul>
+<li>访问 <a href="https://nodejs.org/">Node.js 官网</a> 下载并安装（推荐 LTS 版本）</li>
+<li>验证安装：<code>node -v</code> 和 <code>npm -v</code> 能显示版本号</li>
+</ul>
+</li>
+<li>
+<p><strong>安装 Git</strong></p>
+<ul>
+<li>访问 <a href="https://git-scm.com/">Git 官网</a> 下载对应系统版本</li>
+<li>验证安装：<code>git --version</code></li>
+</ul>
+</li>
+<li>
+<p><strong>安装 Hexo</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
+<p>验证安装：<code>hexo -v</code></p>
+</li>
+</ol>
+<h3 id="二、初始化博客"><a class="header-anchor" href="#二、初始化博客">¶</a>二、初始化博客</h3>
+<ol>
+<li>
+<p><strong>创建博客目录并初始化</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建目录</span></span><br><span class="line"><span class="built_in">mkdir</span> my-hexo-blog &amp;&amp; <span class="built_in">cd</span> my-hexo-blog</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化 Hexo</span></span><br><span class="line">hexo init</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>本地预览</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 生成静态文件</span></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动本地服务器</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
+<p>访问 <code>http://localhost:4000</code> 即可看到默认博客页面</p>
+</li>
+</ol>
+<h3 id="三、安装-Next-主题"><a class="header-anchor" href="#三、安装-Next-主题">¶</a>三、安装 Next 主题</h3>
+<ol>
+<li>
+<p><strong>下载 Next 主题</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入 themes 目录</span></span><br><span class="line"><span class="built_in">cd</span> themes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 克隆 Next 仓库</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/next-theme/hexo-theme-next.git next</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回博客根目录</span></span><br><span class="line"><span class="built_in">cd</span> ..</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>配置 Next 主题</strong><br>
+编辑博客根目录下的 <code>_config.yml</code>：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 找到 theme 配置项，修改为 next</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>验证主题安装</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean  <span class="comment"># 清除缓存</span></span><br><span class="line">hexo g      <span class="comment"># 重新生成</span></span><br><span class="line">hexo s      <span class="comment"># 启动服务器</span></span><br></pre></td></tr></table></figure>
+<p>刷新页面即可看到 Next 主题效果</p>
+</li>
+</ol>
+<h3 id="四、基础配置"><a class="header-anchor" href="#四、基础配置">¶</a>四、基础配置</h3>
+<ol>
+<li>
+<p><strong>站点配置</strong>（<code>_config.yml</code>）</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">title:</span> <span class="string">你的博客名称</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">博客副标题</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">博客描述</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">你的名字</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span>  <span class="comment"># 设置为中文</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shanghai</span>  <span class="comment"># 设置时区</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>Next 主题配置</strong><br>
+复制 <code>themes/next/_config.yml</code> 到根目录，并重命名为 <code>_config.next.yml</code>，然后进行配置：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 选择主题风格</span></span><br><span class="line"><span class="attr">scheme:</span> <span class="string">Muse</span>  <span class="comment"># 可选: Muse, Mist, Pisces, Gemini</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 菜单配置</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 社交链接</span></span><br><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="attr">GitHub:</span> <span class="string">https://github.com/yourname</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-github</span></span><br><span class="line">  <span class="attr">Twitter:</span> <span class="string">https://twitter.com/yourname</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-twitter</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="五、发布文章"><a class="header-anchor" href="#五、发布文章">¶</a>五、发布文章</h3>
+<ol>
+<li>
+<p><strong>创建新文章</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new <span class="string">&quot;我的第一篇文章&quot;</span></span><br></pre></td></tr></table></figure>
+<p>文章会生成在 <code>source/_posts/</code> 目录下，格式为 Markdown</p>
+</li>
+<li>
+<p><strong>文章头部配置示例</strong></p>
+<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 我的第一篇文章</span><br><span class="line">date: 2023-10-01 12:00:00</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">  -</span> 教程</span><br><span class="line"><span class="bullet">  -</span> Hexo</span><br><span class="line">categories:</span><br><span class="line"><span class="section">  - 技术</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line">这里是文章内容...</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>创建页面</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page <span class="string">&quot;about&quot;</span>  <span class="comment"># 创建关于页面</span></span><br><span class="line">hexo new page <span class="string">&quot;tags&quot;</span>   <span class="comment"># 创建标签页</span></span><br><span class="line">hexo new page <span class="string">&quot;categories&quot;</span>  <span class="comment"># 创建分类页</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="六、部署到-GitHub-Pages"><a class="header-anchor" href="#六、部署到-GitHub-Pages">¶</a>六、部署到 GitHub Pages</h3>
+<ol>
+<li>
+<p><strong>安装部署插件</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>配置部署信息</strong>（<code>_config.yml</code>）</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://github.com/yourname/yourname.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>部署博客</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g -d  <span class="comment"># 生成并部署</span></span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<h3 id="七、常用命令总结"><a class="header-anchor" href="#七、常用命令总结">¶</a>七、常用命令总结</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new <span class="string">&quot;文章标题&quot;</span>   <span class="comment"># 创建新文章</span></span><br><span class="line">hexo new page <span class="string">&quot;页面名&quot;</span> <span class="comment"># 创建新页面</span></span><br><span class="line">hexo clean            <span class="comment"># 清除缓存</span></span><br><span class="line">hexo generate (hexo g) <span class="comment"># 生成静态文件</span></span><br><span class="line">hexo server (hexo s)   <span class="comment"># 启动本地服务器</span></span><br><span class="line">hexo deploy (hexo d)   <span class="comment"># 部署博客</span></span><br></pre></td></tr></table></figure>
+<h3 id="八、个性化定制"><a class="header-anchor" href="#八、个性化定制">¶</a>八、个性化定制</h3>
+<ol>
+<li>可以在 <code>_config.next.yml</code> 中修改主题颜色、字体、动画等</li>
+<li>安装第三方插件扩展功能（如评论系统、阅读统计等）</li>
+<li>自定义 CSS 样式，放在 <code>source/css/_custom/custom.styl</code> 中</li>
+</ol>
+<p>按照以上步骤，你就可以搭建一个功能完善的 Hexo + Next 博客了。如果需要更深入的定制，可以参考 <a href="https://hexo.io/zh-cn/docs/">Hexo 官方文档</a> 和 <a href="https://theme-next.js.org/">Next 主题文档</a>。</p>
+]]></content>
+      <categories>
+        <category>博客搭建</category>
+      </categories>
+      <tags>
+        <tag>博客搭建</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>go项目发送接口设计流程</title>
     <url>/2025/08/29/go%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/</url>
     <content><![CDATA[<h3 id="Go发送接口设计的整体结构"><a class="header-anchor" href="#Go发送接口设计的整体结构">¶</a>Go发送接口设计的整体结构</h3>
@@ -42,198 +238,104 @@
       </tags>
   </entry>
   <entry>
-    <title>go语言简单入门</title>
-    <url>/2025/08/27/go%E8%AF%AD%E8%A8%80%E7%AE%80%E5%8D%95%E5%85%A5%E9%97%A8/</url>
-    <content><![CDATA[<h3 id="1-在定义函数时，参数的类型是写在参数名称-之后的">1.在定义函数时，参数的类型是写在参数名称==之后的==</h3>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">DoPost</span><span class="params">(ctx context.Context, crypto *AESCrypto, path, encryptBody <span class="type">string</span>)</span></span> (outDatamap[<span class="type">string</span>]<span class="keyword">interface</span>&#123;&#125;, err <span class="type">error</span>) </span><br></pre></td></tr></table></figure>
-<p>并且函数的出参直接在入参之后加上（）</p>
-<p>注意，不仅仅是函数的入参以及出参是这样的，整个go语言都是将数据类型放在数据名称之后的</p>
-<h3 id="2-键值对直接插入定义">2.键值对直接插入定义</h3>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> params = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>)</span><br></pre></td></tr></table></figure>
-<p>这里代表创建了一个params的键值对元组，其中key值使用的是string类型，value值使用的是string类型</p>
-<h3 id="3-包内函数调用方式">3.包内函数调用方式</h3>
-<p>在 Go 语言中，导入包后可以直接通过==包名调用包内的导出==方法（首字母==大写==的函数、变量等），形式为 包名.方法名()，这是 Go 语言的标准用法，GoFrame 框架也遵循这一规则。</p>
-<p>注意这里还有一条规则，就是函数名为首字母大写的函数可以被包内同级程序（直接使用函数名调用）和包外程序（使用时加上包名.）调用，而首字母小写的函数则是==只能==被包内同级程序调用（也就是包内的子包的程序是无法调用的），如果是包外则==无法调用==，如果必须调用，可以在包内添加一个桥接函数（以大写字母开头，引用小写字母的私有函数）。</p>
+    <title>goframe框架介绍</title>
+    <url>/2025/08/31/goframe%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<p>Go（又称 Golang）是 Google 开发的静态强类型编程语言，而 GoFrame（简称 gf）是基于 Go 语言的一款现代化、企业级开发框架。二者的关系类似于 “JavaScript 与 Vue.js”“Java 与 Spring”——<strong>Go 是基础语言，GoFrame 是基于 Go 语言的上层框架</strong>，用于简化 Go 语言的工程化开发。</p>
+<h3 id="一、区别与联系"><a class="header-anchor" href="#一、区别与联系">¶</a>一、区别与联系</h3>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Go（语言）</th>
+<th>GoFrame（框架）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>定位</strong></td>
+<td>编程语言，提供语法、 runtime、标准库等基础能力</td>
+<td>基于 Go 的开发框架，封装了 Web、ORM、缓存等上层组件</td>
+</tr>
+<tr>
+<td><strong>依赖关系</strong></td>
+<td>独立存在，是 GoFrame 的基础</td>
+<td>完全依赖 Go 语言，无法脱离 Go 运行</td>
+</tr>
+<tr>
+<td><strong>核心目标</strong></td>
+<td>提供简洁、高效、并发安全的语言特性</td>
+<td>提供工程化开发规范和工具链，简化复杂业务开发</td>
+</tr>
+<tr>
+<td><strong>使用场景</strong></td>
+<td>所有 Go 语言能覆盖的领域（后端、云原生等）</td>
+<td>主要用于快速开发企业级应用（Web API、微服务等）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="二、语法区别"><a class="header-anchor" href="#二、语法区别">¶</a>二、语法区别</h3>
+<p>GoFrame<strong>不改变 Go 语言本身的语法</strong>（它是框架而非语言扩展），但在<strong>代码规范、开发模式</strong>上有自己的约定，与原生 Go 开发相比有以下差异：</p>
+<ol>
+<li>
+<p><strong>代码组织规范</strong><br>
+原生 Go 没有强制的项目结构，而 GoFrame 通过<code>gf cli</code>工具生成标准化项目结构（如<code>api</code>、<code>model</code>、<code>service</code>分层），强制约束代码组织方式，便于团队协作。</p>
+</li>
+<li>
+<p><strong>结构体标签（Tag）扩展</strong><br>
+GoFrame 定义了专属的结构体标签（如<code>v:&quot;required&quot;</code>用于参数验证、<code>orm:&quot;name&quot;</code>用于数据库映射），这些标签是框架层面的约定，而非 Go 语言原生语法：</p>
+<p>go</p>
+<p>运行</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// GoFrame中用于参数验证和ORM映射的结构体</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    Id    <span class="type">int</span>    <span class="string">`v:&quot;required&quot; orm:&quot;id,pk&quot;`</span>  <span class="comment">// gf的验证和ORM标签</span></span><br><span class="line">    Name  <span class="type">string</span> <span class="string">`v:&quot;required|length:2,10&quot;`</span>   <span class="comment">// gf的参数验证规则</span></span><br><span class="line">    Age   <span class="type">int</span>    <span class="string">`v:&quot;min:0|max:150&quot;`</span>          <span class="comment">// 原生Go不识别这些标签，由gf框架解析</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>函数命名与接口设计</strong><br>
+GoFrame 遵循 “<code>CamelCase</code>+ 前缀约定”（如<code>ghttp.Get</code>、<code>gorm.Insert</code>），且大量使用接口抽象（如<code>gdb.ORM</code>接口），而原生 Go 标准库的函数命名更简洁（如<code>http.Get</code>、<code>sql.Query</code>）。</p>
+</li>
+</ol>
+<h3 id="三、实现-API-接口时的区别"><a class="header-anchor" href="#三、实现-API-接口时的区别">¶</a>三、实现 API 接口时的区别</h3>
+<p>以实现一个 “用户注册” API（POST <code>/user/register</code>）为例，对比原生 Go 与 GoFrame 的开发差异：</p>
+<h4 id="1-原生-Go-实现（依赖标准库net-http）"><a class="header-anchor" href="#1-原生-Go-实现（依赖标准库net-http）">¶</a>1. 原生 Go 实现（依赖标准库<code>net/http</code>）</h4>
+<p>需要手动处理路由、参数解析、验证、错误处理等，代码繁琐：</p>
+<p>go</p>
+<p>运行</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;encoding/json&quot;</span></span><br><span class="line">    <span class="string">&quot;net/http&quot;</span></span><br><span class="line">    <span class="string">&quot;strconv&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义请求结构体</span></span><br><span class="line"><span class="keyword">type</span> RegisterRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name  <span class="type">string</span> <span class="string">`json:&quot;name&quot;`</span></span><br><span class="line">    Age   <span class="type">int</span>    <span class="string">`json:&quot;age&quot;`</span></span><br><span class="line">    Email <span class="type">string</span> <span class="string">`json:&quot;email&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 注册路由</span></span><br><span class="line">    http.HandleFunc(<span class="string">&quot;/user/register&quot;</span>, registerHandler)</span><br><span class="line">    http.ListenAndServe(<span class="string">&quot;:8080&quot;</span>, <span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">registerHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    <span class="comment">// 1. 校验请求方法</span></span><br><span class="line">    <span class="keyword">if</span> r.Method != http.MethodPost &#123;</span><br><span class="line">        w.WriteHeader(http.StatusMethodNotAllowed)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;method not allowed&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 解析请求体</span></span><br><span class="line">    <span class="keyword">var</span> req RegisterRequest</span><br><span class="line">    <span class="keyword">if</span> err := json.NewDecoder(r.Body).Decode(&amp;req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;invalid request: &quot;</span> + err.Error()))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 手动验证参数</span></span><br><span class="line">    <span class="keyword">if</span> req.Name == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">        w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;name is required&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> req.Age &lt;= <span class="number">0</span> || req.Age &gt; <span class="number">150</span> &#123;</span><br><span class="line">        w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;age must be 1-150&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4. 模拟数据库操作（需手动写SQL或集成第三方ORM）</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 5. 返回响应</span></span><br><span class="line">    w.Header().Set(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)</span><br><span class="line">    json.NewEncoder(w).Encode(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>&#123;</span><br><span class="line">        <span class="string">&quot;code&quot;</span>:    <span class="string">&quot;0&quot;</span>,</span><br><span class="line">        <span class="string">&quot;message&quot;</span>: <span class="string">&quot;register success&quot;</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-GoFrame-实现"><a class="header-anchor" href="#2-GoFrame-实现">¶</a>2. GoFrame 实现</h4>
+<p>框架封装了路由、参数绑定、验证、ORM 等功能，代码更简洁：</p>
+<p>go</p>
+<p>运行</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;github.com/gogf/gf/v2/frame/g&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/gogf/gf/v2/net/ghttp&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义请求结构体（通过gf标签实现自动验证）</span></span><br><span class="line"><span class="keyword">type</span> RegisterRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">    g.Meta <span class="string">`path:&quot;/user/register&quot; method:&quot;post&quot;`</span> <span class="comment">// 路由和方法定义</span></span><br><span class="line">    Name   <span class="type">string</span> <span class="string">`json:&quot;name&quot; v:&quot;required#姓名不能为空&quot;`</span>   <span class="comment">// 自动验证规则</span></span><br><span class="line">    Age    <span class="type">int</span>    <span class="string">`json:&quot;age&quot; v:&quot;min:1|max:150#年龄必须在1-150之间&quot;`</span> <span class="comment">// 自动验证</span></span><br><span class="line">    Email  <span class="type">string</span> <span class="string">`json:&quot;email&quot; v:&quot;email#邮箱格式错误&quot;`</span>       <span class="comment">// 内置邮箱验证</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义响应结构体</span></span><br><span class="line"><span class="keyword">type</span> RegisterResponse <span class="keyword">struct</span> &#123;</span><br><span class="line">    Code    <span class="type">int</span>    <span class="string">`json:&quot;code&quot;`</span></span><br><span class="line">    Message <span class="type">string</span> <span class="string">`json:&quot;message&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    s := g.Server()</span><br><span class="line">    <span class="comment">// 绑定API处理函数（自动关联路由和验证）</span></span><br><span class="line">    s.BindHandler(<span class="built_in">new</span>(RegisterRequest), registerHandler)</span><br><span class="line">    s.Run(<span class="string">&quot;:8080&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理函数（参数自动绑定和验证）</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">registerHandler</span><span class="params">(r *ghttp.Request)</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> req RegisterRequest</span><br><span class="line">    <span class="comment">// 自动解析请求并验证参数（失败会自动返回错误）</span></span><br><span class="line">    <span class="keyword">if</span> err := r.Parse(&amp;req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        r.Response.WriteJson(RegisterResponse&#123;</span><br><span class="line">            Code:    <span class="number">1</span>,</span><br><span class="line">            Message: err.Error(),</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 数据库操作（通过gf的ORM快速实现，无需手写SQL）</span></span><br><span class="line">    <span class="comment">// g.DB().Model(&quot;user&quot;).Insert(req)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 返回响应</span></span><br><span class="line">    r.Response.WriteJson(RegisterResponse&#123;</span><br><span class="line">        Code:    <span class="number">0</span>,</span><br><span class="line">        Message: <span class="string">&quot;register success&quot;</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="四、GoFrame-主要提升的能力"><a class="header-anchor" href="#四、GoFrame-主要提升的能力">¶</a>四、GoFrame 主要提升的能力</h3>
+<p>GoFrame 的核心价值是<strong>降低 Go 语言开发的 “工程化成本”</strong>，主要提升点包括：</p>
+<ol>
+<li><strong>简化重复工作</strong><br>
+封装了 Web 开发中的通用需求（路由、参数验证、中间件、ORM、缓存等），避免开发者重复造轮子。例如：
 <ul>
-<li>
-<p>注意上述对于包中函数调用的描述同样也适用于变量</p>
-</li>
-<li>
-<p>Type 创建和管理类型，可以创建自定义类型，或者是将类型取一个别名，创建接口，将多个类型分组定义</p>
-</li>
-<li>
-<p>面向接口开发，利于解耦，允许先使用后定义，也就是函数的入参可以放置在函数的下方</p>
-</li>
-<li>
-<p>和c语言，c++一样支持指针操作，<code>var SyncUserList = &amp;qSyncUserList&#123;&#125;</code>代表syncuserlist的值是取qsyncuserlist的地址*abc代表是指针</p>
-</li>
+<li>内置参数验证器（支持正则、范围、自定义规则），无需手动写 if-else 校验；</li>
+<li>ORM 支持自动生成 SQL、事务、关联查询，简化数据库操作。</li>
 </ul>
- <figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> <span class="function"><span class="keyword">func</span> <span class="params">(q *qSyncUserList)</span></span> GetTopic() <span class="type">string</span> &#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> TaskSyncUserList</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代表q指针指向的结构体是gettopic方法的接受体，也就是q指针指向的结构体有这个函数，并且只有这个指针可以调用</p>
-<h3 id="5-结构体定义">5.结构体定义</h3>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> UserGroupRelation <span class="keyword">struct</span> &#123;</span><br><span class="line">CustId <span class="type">string</span> <span class="string">`json:&quot;custId&quot; dc:&quot;客户编码&quot;`</span></span><br><span class="line">GroupId <span class="type">string</span> <span class="string">`json:&quot;groupId&quot; dc:&quot;组别编码&quot;`</span></span><br><span class="line">DataSources <span class="type">string</span> <span class="string">`json:&quot;dataSources&quot; dc:&quot;数据来源&quot;`</span></span><br><span class="line">AvailCode  <span class="type">string</span> <span class="string">`json:&quot;availCode&quot; dc:&quot;有效性标识&quot;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里面每个参数最后的反引号的内容代表了是 Go 语言的<strong>结构体标签</strong>，用于为字段提供额外的元信息，供程序运行时通过反射（reflect）读取和使用。这里包含两类标签：</p>
+</li>
+<li><strong>标准化开发流程</strong><br>
+通过<code>gf cli</code>工具生成标准化项目结构（API 层、业务层、数据层分离），并提供统一的错误处理、日志、配置管理机制，解决团队协作中的 “代码风格混乱” 问题。</li>
+<li><strong>增强企业级特性</strong><br>
+提供微服务、分布式事务、分布式缓存、API 文档自动生成（OpenAPI）等企业级功能，原生 Go 需集成多个第三方库才能实现，而 GoFrame 一站式支持。</li>
+<li><strong>提升开发效率</strong><br>
+支持热重载（<code>gf run</code>）、代码生成（<code>gf gen</code>）、接口自动化测试等工具，大幅缩短开发周期。例如：通过结构体标签自动生成 Swagger 文档，无需手动编写。</li>
+<li><strong>优化性能与稳定性</strong><br>
+框架内部对并发、内存管理做了针对性优化（如对象池、连接池），且经过大量生产环境验证，稳定性优于 “原生 + 零散第三方库” 的组合。</li>
+</ol>
+<h3 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h3>
 <ul>
-<li>json:“custId”：用于     JSON 序列化 / 反序列化时的字段映射。表示当结构体与 JSON 互转时，CustId 字段会对应 JSON 中的 custId 键（小写开头，符合     JSON 命名习惯）。</li>
-<li>dc:“客户编码”：这是一个自定义标签（可能是项目内部约定，如     “数据字典” 或 “文档注释”），用于说明字段的业务含义，方便开发者理解或自动生成文档。</li>
+<li><strong>联系</strong>：GoFrame 是 Go 语言的 “增强工具”，完全基于 Go 语法开发，依赖 Go 的 runtime。</li>
+<li><strong>区别</strong>：Go 是语言基础，GoFrame 是框架；前者提供语法和标准库，后者提供工程化解决方案。</li>
+<li><strong>核心价值</strong>：GoFrame 通过封装通用能力、标准化开发流程，让开发者更专注于业务逻辑，而非重复的技术细节，特别适合快速开发企业级应用。</li>
 </ul>
 ]]></content>
       <categories>
-        <category>go语言教程</category>
+        <category>go,goframe</category>
       </categories>
       <tags>
         <tag>go</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>git快速上手</title>
-    <url>/2025/08/26/git%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</url>
-    <content><![CDATA[<p>要在本地创建Git仓库仓库并连接到远程仓库 <code>git@github.com:xxxx/xxxxxxxx.git</code>，可以按照以下步骤操作：</p>
-<span id="more"></span>
-<h5 id="1-首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：">1.首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：</h5>
-<p><code>cd /path/to/your/local/directory</code></p>
-<h5 id="2-初始化本地Git仓库：">2.初始化本地Git仓库：</h5>
-<p><code>  git init</code></p>
-<h5 id="3-将本地仓库与远程仓库关联：">3.将本地仓库与远程仓库关联：</h5>
-<p><code> git remote add origin git@github.com:xxxxx/xxxxxx.git</code></p>
-<p>验证远程仓库连接是否成功：</p>
-<p><code> git remote -v</code></p>
-<p>如果成功，会显示类似以下内容：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (fetch) </span><br><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (push)</span><br></pre></td></tr></table></figure>
-<p>从远程仓库拉取代码（如果远程已有内容）：</p>
-<p><code>git pull origin main</code></p>
-<p>(如果默认分支不是main，可以替换为实际的分支名，如master）</p>
-<h5 id="4-添加到本地工作区：">4.添加到本地工作区：</h5>
-<p><code> git add</code> .</p>
-<h5 id="5-提交给本地仓库：">5.提交给本地仓库：</h5>
-<p><code>git commit -m &quot;这是提交的描述内容&quot;</code></p>
-<h5 id="6-提交到远程仓库：">6.提交到远程仓库：</h5>
-<p><code>git push origin master (master对应提交的远程仓库分支）</code></p>
-<p>创建并切换本地仓库分支：<br>
-<code>git checkout -b dev</code></p>
-<p>提交当前分支：</p>
-<p><code>git push -u origin dev</code></p>
-]]></content>
-      <categories>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo+next博客搭建</title>
-    <url>/2025/08/28/hexo-next%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
-    <content><![CDATA[<p>以下是使用 Hexo 和 Next 主题搭建个人博客的详细教程：</p>
-<h3 id="一、环境准备">一、环境准备</h3>
-<ol>
-<li>
-<p><strong>安装 Node.js</strong></p>
-<ul>
-<li>访问 <a href="https://nodejs.org/">Node.js 官网</a> 下载并安装（推荐 LTS 版本）</li>
-<li>验证安装：<code>node -v</code> 和 <code>npm -v</code> 能显示版本号</li>
-</ul>
-</li>
-<li>
-<p><strong>安装 Git</strong></p>
-<ul>
-<li>访问 <a href="https://git-scm.com/">Git 官网</a> 下载对应系统版本</li>
-<li>验证安装：<code>git --version</code></li>
-</ul>
-</li>
-<li>
-<p><strong>安装 Hexo</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install -g hexo-cli</span><br></pre></td></tr></table></figure>
-<p>验证安装：<code>hexo -v</code></p>
-</li>
-</ol>
-<h3 id="二、初始化博客">二、初始化博客</h3>
-<ol>
-<li>
-<p><strong>创建博客目录并初始化</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 创建目录</span></span><br><span class="line"><span class="built_in">mkdir</span> my-hexo-blog &amp;&amp; <span class="built_in">cd</span> my-hexo-blog</span><br><span class="line"></span><br><span class="line"><span class="comment"># 初始化 Hexo</span></span><br><span class="line">hexo init</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装依赖</span></span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>本地预览</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 生成静态文件</span></span><br><span class="line">hexo g</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动本地服务器</span></span><br><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-<p>访问 <code>http://localhost:4000</code> 即可看到默认博客页面</p>
-</li>
-</ol>
-<h3 id="三、安装-Next-主题">三、安装 Next 主题</h3>
-<ol>
-<li>
-<p><strong>下载 Next 主题</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入 themes 目录</span></span><br><span class="line"><span class="built_in">cd</span> themes</span><br><span class="line"></span><br><span class="line"><span class="comment"># 克隆 Next 仓库</span></span><br><span class="line">git <span class="built_in">clone</span> https://github.com/next-theme/hexo-theme-next.git next</span><br><span class="line"></span><br><span class="line"><span class="comment"># 返回博客根目录</span></span><br><span class="line"><span class="built_in">cd</span> ..</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>配置 Next 主题</strong><br>
-编辑博客根目录下的 <code>_config.yml</code>：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 找到 theme 配置项，修改为 next</span></span><br><span class="line"><span class="attr">theme:</span> <span class="string">next</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>验证主题安装</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean  <span class="comment"># 清除缓存</span></span><br><span class="line">hexo g      <span class="comment"># 重新生成</span></span><br><span class="line">hexo s      <span class="comment"># 启动服务器</span></span><br></pre></td></tr></table></figure>
-<p>刷新页面即可看到 Next 主题效果</p>
-</li>
-</ol>
-<h3 id="四、基础配置">四、基础配置</h3>
-<ol>
-<li>
-<p><strong>站点配置</strong>（<code>_config.yml</code>）</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">title:</span> <span class="string">你的博客名称</span></span><br><span class="line"><span class="attr">subtitle:</span> <span class="string">博客副标题</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">博客描述</span></span><br><span class="line"><span class="attr">author:</span> <span class="string">你的名字</span></span><br><span class="line"><span class="attr">language:</span> <span class="string">zh-CN</span>  <span class="comment"># 设置为中文</span></span><br><span class="line"><span class="attr">timezone:</span> <span class="string">Asia/Shanghai</span>  <span class="comment"># 设置时区</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>Next 主题配置</strong><br>
-复制 <code>themes/next/_config.yml</code> 到根目录，并重命名为 <code>_config.next.yml</code>，然后进行配置：</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 选择主题风格</span></span><br><span class="line"><span class="attr">scheme:</span> <span class="string">Muse</span>  <span class="comment"># 可选: Muse, Mist, Pisces, Gemini</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 菜单配置</span></span><br><span class="line"><span class="attr">menu:</span></span><br><span class="line">  <span class="attr">home:</span> <span class="string">/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-home</span></span><br><span class="line">  <span class="attr">about:</span> <span class="string">/about/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-user</span></span><br><span class="line">  <span class="attr">tags:</span> <span class="string">/tags/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-tags</span></span><br><span class="line">  <span class="attr">categories:</span> <span class="string">/categories/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-th</span></span><br><span class="line">  <span class="attr">archives:</span> <span class="string">/archives/</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-archive</span></span><br><span class="line">  </span><br><span class="line"><span class="comment"># 社交链接</span></span><br><span class="line"><span class="attr">social:</span></span><br><span class="line">  <span class="attr">GitHub:</span> <span class="string">https://github.com/yourname</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-github</span></span><br><span class="line">  <span class="attr">Twitter:</span> <span class="string">https://twitter.com/yourname</span> <span class="string">||</span> <span class="string">fa</span> <span class="string">fa-twitter</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="五、发布文章">五、发布文章</h3>
-<ol>
-<li>
-<p><strong>创建新文章</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new <span class="string">&quot;我的第一篇文章&quot;</span></span><br></pre></td></tr></table></figure>
-<p>文章会生成在 <code>source/_posts/</code> 目录下，格式为 Markdown</p>
-</li>
-<li>
-<p><strong>文章头部配置示例</strong></p>
-<figure class="highlight markdown"><table><tr><td class="code"><pre><span class="line">---</span><br><span class="line">title: 我的第一篇文章</span><br><span class="line">date: 2023-10-01 12:00:00</span><br><span class="line">tags:</span><br><span class="line"><span class="bullet">  -</span> 教程</span><br><span class="line"><span class="bullet">  -</span> Hexo</span><br><span class="line">categories:</span><br><span class="line"><span class="section">  - 技术</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line">这里是文章内容...</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>创建页面</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new page <span class="string">&quot;about&quot;</span>  <span class="comment"># 创建关于页面</span></span><br><span class="line">hexo new page <span class="string">&quot;tags&quot;</span>   <span class="comment"># 创建标签页</span></span><br><span class="line">hexo new page <span class="string">&quot;categories&quot;</span>  <span class="comment"># 创建分类页</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="六、部署到-GitHub-Pages">六、部署到 GitHub Pages</h3>
-<ol>
-<li>
-<p><strong>安装部署插件</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>配置部署信息</strong>（<code>_config.yml</code>）</p>
-<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">deploy:</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">git</span></span><br><span class="line">  <span class="attr">repo:</span> <span class="string">https://github.com/yourname/yourname.github.io.git</span></span><br><span class="line">  <span class="attr">branch:</span> <span class="string">main</span></span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>部署博客</strong></p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo clean</span><br><span class="line">hexo g -d  <span class="comment"># 生成并部署</span></span><br></pre></td></tr></table></figure>
-</li>
-</ol>
-<h3 id="七、常用命令总结">七、常用命令总结</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">hexo new <span class="string">&quot;文章标题&quot;</span>   <span class="comment"># 创建新文章</span></span><br><span class="line">hexo new page <span class="string">&quot;页面名&quot;</span> <span class="comment"># 创建新页面</span></span><br><span class="line">hexo clean            <span class="comment"># 清除缓存</span></span><br><span class="line">hexo generate (hexo g) <span class="comment"># 生成静态文件</span></span><br><span class="line">hexo server (hexo s)   <span class="comment"># 启动本地服务器</span></span><br><span class="line">hexo deploy (hexo d)   <span class="comment"># 部署博客</span></span><br></pre></td></tr></table></figure>
-<h3 id="八、个性化定制">八、个性化定制</h3>
-<ol>
-<li>可以在 <code>_config.next.yml</code> 中修改主题颜色、字体、动画等</li>
-<li>安装第三方插件扩展功能（如评论系统、阅读统计等）</li>
-<li>自定义 CSS 样式，放在 <code>source/css/_custom/custom.styl</code> 中</li>
-</ol>
-<p>按照以上步骤，你就可以搭建一个功能完善的 Hexo + Next 博客了。如果需要更深入的定制，可以参考 <a href="https://hexo.io/zh-cn/docs/">Hexo 官方文档</a> 和 <a href="https://theme-next.js.org/">Next 主题文档</a>。</p>
-]]></content>
-      <categories>
-        <category>博客搭建</category>
-      </categories>
-      <tags>
-        <tag>博客搭建</tag>
+        <tag>goframe</tag>
       </tags>
   </entry>
 </search>
