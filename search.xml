@@ -1,43 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>123</title>
-    <url>/2025/09/01/123/</url>
-    <content><![CDATA[<p>123</p>
-]]></content>
-      <categories>
-        <category>123</category>
-      </categories>
-      <tags>
-        <tag>123</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>234</title>
-    <url>/2025/09/01/234/</url>
-    <content><![CDATA[<p>234</p>
-]]></content>
-      <categories>
-        <category>234</category>
-      </categories>
-      <tags>
-        <tag>234</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>789</title>
-    <url>/2025/09/01/789/</url>
-    <content><![CDATA[<p>666</p>
-]]></content>
-      <categories>
-        <category>789,234</category>
-      </categories>
-      <tags>
-        <tag>789</tag>
-        <tag>546</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>git快速上手</title>
     <url>/2025/08/26/git%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</url>
     <content><![CDATA[<p>要在本地创建Git仓库仓库并连接到远程仓库 <code>git@github.com:xxxx/xxxxxxxx.git</code>，可以按照以下步骤操作：</p>
@@ -80,7 +43,7 @@
       </tags>
   </entry>
   <entry>
-    <title>博客系统的登录页面详解</title>
+    <title>Token详解</title>
     <url>/2025/09/01/Token%E8%AF%A6%E8%A7%A3/</url>
     <content><![CDATA[<h5 id="前后端token的生成，发送和验证流程"><a class="header-anchor" href="#前后端token的生成，发送和验证流程">¶</a>前后端token的生成，发送和验证流程</h5>
 <img src="/img/token.png">
