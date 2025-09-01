@@ -1508,4 +1508,119 @@ Markdown 文章头部包含 Front-matter 配置：</li>
         <tag>博客搭建</tag>
       </tags>
   </entry>
+  <entry>
+    <title>sagooiot后端api实现</title>
+    <url>/2025/09/01/sagooiot%E5%90%8E%E7%AB%AFapi%E5%AE%9E%E7%8E%B0/</url>
+    <content><![CDATA[<h1>sagooiot-professional项目API接口实现步骤详解</h1>
+<h2 id="API接口实现架构概述"><a class="header-anchor" href="#API接口实现架构概述">¶</a>API接口实现架构概述</h2>
+<p>sagooiot-professional项目采用GoFrame框架构建，遵循清晰的分层架构设计，其API接口实现主要通过GoFrame CLI工具自动生成骨架，再由开发者进行业务逻辑填充。下面详细解析整个实现流程和架构设计。</p>
+<h2 id="API接口实现完整步骤"><a class="header-anchor" href="#API接口实现完整步骤">¶</a>API接口实现完整步骤</h2>
+<h3 id="1-接口定义层（api层）"><a class="header-anchor" href="#1-接口定义层（api层）">¶</a>1. 接口定义层（api层）</h3>
+<p>API接口首先在<code>api/v1/&#123;module&#125;</code>目录下定义，如<code>api/v1/system/sys_user.go</code>：</p>
+<ul>
+<li>定义请求（Req）和响应（Res）结构体</li>
+<li>使用GoFrame的<code>g.Meta</code>标签声明接口元数据（路径、HTTP方法、摘要、标签等）</li>
+<li>定义参数验证规则</li>
+</ul>
+<p>示例代码：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// UserListReq 用户列表请求参数</span></span><br><span class="line"><span class="keyword">type</span> UserListReq <span class="keyword">struct</span> &#123;</span><br><span class="line">    g.Meta <span class="string">`path:&quot;/system/user/list&quot; method:&quot;get&quot; summary:&quot;获取用户列表&quot; tags:&quot;用户管理&quot;`</span></span><br><span class="line">    PageNum  <span class="type">int</span>    <span class="string">`json:&quot;pageNum&quot;  v:&quot;required|min:1&quot; dc:&quot;页码&quot;`</span></span><br><span class="line">    PageSize <span class="type">int</span>    <span class="string">`json:&quot;pageSize&quot; v:&quot;required|min:1|max:100&quot; dc:&quot;每页数量&quot;`</span></span><br><span class="line">    KeyWords <span class="type">string</span> <span class="string">`json:&quot;keyWords&quot; dc:&quot;关键词搜索&quot;`</span></span><br><span class="line">    DeptId   <span class="type">int</span>    <span class="string">`json:&quot;deptId&quot; dc:&quot;部门ID&quot;`</span></span><br><span class="line">    Status   <span class="type">int</span>    <span class="string">`json:&quot;status&quot; dc:&quot;状态&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// UserListRes 用户列表响应参数</span></span><br><span class="line"><span class="keyword">type</span> UserListRes <span class="keyword">struct</span> &#123;</span><br><span class="line">    List       []*UserInfoRes <span class="string">`json:&quot;data&quot; dc:&quot;用户列表数据&quot;`</span></span><br><span class="line">    Total      <span class="type">int</span>            <span class="string">`json:&quot;total&quot; dc:&quot;总数&quot;`</span></span><br><span class="line">    CurrentPage <span class="type">int</span>           <span class="string">`json:&quot;currentPage&quot; dc:&quot;当前页码&quot;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><mcfile name="sys_user.go" path="e:\QingFengdesk\sagoo-iot-workspace\sagooiot-professional\api\v1\system\sys_user.go"></mcfile></p>
+<h3 id="2-控制器层（controller层）"><a class="header-anchor" href="#2-控制器层（controller层）">¶</a>2. 控制器层（controller层）</h3>
+<p>控制器层位于<code>internal/controller/&#123;module&#125;</code>目录下，如<code>internal/controller/system/sys_user.go</code>：</p>
+<ul>
+<li>定义控制器结构体和全局变量</li>
+<li>实现API接口对应的处理函数</li>
+<li>处理请求参数转换和验证</li>
+<li>调用服务层（service）的方法处理业务逻辑</li>
+<li>构造并返回响应数据</li>
+</ul>
+<p>示例代码：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// SysUser 用户</span></span><br><span class="line"><span class="keyword">var</span> SysUser = cSysUser&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> cSysUser <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// UserList 用户列表</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *cSysUser)</span></span> UserList(ctx context.Context, req *system.UserListReq) (res *system.UserListRes, err <span class="type">error</span>) &#123;</span><br><span class="line">    <span class="comment">//获取所有用户列表</span></span><br><span class="line">    <span class="keyword">var</span> input *model.UserListDoInput</span><br><span class="line">    <span class="keyword">if</span> err = gconv.Scan(req, &amp;input); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    total, out, err := service.SysUser().UserList(ctx, input)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    res = <span class="built_in">new</span>(system.UserListRes)</span><br><span class="line">    res.Total = total</span><br><span class="line">    res.CurrentPage = req.PageNum</span><br><span class="line">    <span class="keyword">if</span> out != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> err = gconv.Scan(out, &amp;res.Data); err != <span class="literal">nil</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><mcfile name="sys_user.go" path="e:\QingFengdesk\sagoo-iot-workspace\sagooiot-professional\internal\controller\system\sys_user.go"></mcfile></p>
+<h3 id="3-服务接口层（service层）"><a class="header-anchor" href="#3-服务接口层（service层）">¶</a>3. 服务接口层（service层）</h3>
+<p>服务接口层位于<code>internal/service</code>目录下，如<code>internal/service/system.go</code>：</p>
+<ul>
+<li>定义服务接口（如<code>ISysUser</code>）</li>
+<li>定义全局访问函数（如<code>SysUser()</code>）和注册函数（如<code>RegisterSysUser()</code>）</li>
+<li>实现单例模式的服务访问机制</li>
+</ul>
+<p>示例代码：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> ISysUser <span class="keyword">interface</span> &#123;</span><br><span class="line">    <span class="comment">// UserList 用户列表</span></span><br><span class="line">    UserList(ctx context.Context, input *model.UserListDoInput) (total <span class="type">int</span>, out []*model.UserListOut, err <span class="type">error</span>)</span><br><span class="line">    <span class="comment">// Add 添加用户</span></span><br><span class="line">    Add(ctx context.Context, input *model.AddUserInput) (err <span class="type">error</span>)</span><br><span class="line">    <span class="comment">// 其他方法...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">SysUser</span><span class="params">()</span></span> ISysUser &#123;</span><br><span class="line">    <span class="keyword">if</span> localSysUser == <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="built_in">panic</span>(<span class="string">&quot;implement not found for interface ISysUser, forgot register?&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> localSysUser</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterSysUser</span><span class="params">(i ISysUser)</span></span> &#123;</span><br><span class="line">    localSysUser = i</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><mcfile name="system.go" path="e:\QingFengdesk\sagoo-iot-workspace\sagooiot-professional\internal\service\system.go"></mcfile></p>
+<h3 id="4-业务逻辑层（logic层）"><a class="header-anchor" href="#4-业务逻辑层（logic层）">¶</a>4. 业务逻辑层（logic层）</h3>
+<p>业务逻辑层位于<code>internal/logic/&#123;module&#125;</code>目录下，如<code>internal/logic/system/sys_user.go</code>：</p>
+<ul>
+<li>实现服务接口定义的所有方法</li>
+<li>包含具体的业务逻辑实现</li>
+<li>调用数据访问层（dao）进行数据操作</li>
+<li>在<code>init()</code>函数中注册服务实现</li>
+</ul>
+<p>示例代码：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> sSysUser <span class="keyword">struct</span> &#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    service.RegisterSysUser(sysUserNew())</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sysUserNew</span><span class="params">()</span></span> *sSysUser &#123;</span><br><span class="line">    <span class="keyword">return</span> &amp;sSysUser&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// UserList 用户列表</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *sSysUser)</span></span> UserList(ctx context.Context, input *model.UserListDoInput) (total <span class="type">int</span>, out []*model.UserListOut, err <span class="type">error</span>) &#123;</span><br><span class="line">    m := dao.SysUser.Ctx(ctx)</span><br><span class="line">    <span class="comment">// 构建查询条件</span></span><br><span class="line">    <span class="keyword">if</span> input.KeyWords != <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">        keyWords := <span class="string">&quot;%&quot;</span> + input.KeyWords + <span class="string">&quot;%&quot;</span></span><br><span class="line">        m = m.Where(<span class="string">&quot;user_name like ? or user_nickname like ?&quot;</span>, keyWords, keyWords)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 其他查询条件...</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">//根据数据权限过滤数据</span></span><br><span class="line">    m, _ = service.SysAuthorize().FilterDataByPermissions(ctx, m)</span><br><span class="line"></span><br><span class="line">    <span class="comment">//获取总数</span></span><br><span class="line">    total, err = m.Count()</span><br><span class="line">    <span class="comment">// 获取分页数据</span></span><br><span class="line">    <span class="comment">// 处理结果...</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><mcfile name="sys_user.go" path="e:\QingFengdesk\sagoo-iot-workspace\sagooiot-professional\internal\logic\system\sys_user.go"></mcfile></p>
+<h3 id="5-数据访问层（dao层）"><a class="header-anchor" href="#5-数据访问层（dao层）">¶</a>5. 数据访问层（dao层）</h3>
+<p>数据访问层位于<code>internal/dao</code>目录下，如<code>internal/dao/sys_user.go</code>：</p>
+<ul>
+<li>提供数据库表的访问对象</li>
+<li>封装数据库操作方法</li>
+<li>由GoFrame CLI工具自动生成基础代码</li>
+</ul>
+<p>示例代码：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// =================================================================================</span></span><br><span class="line"><span class="comment">// This is auto-generated by GoFrame CLI tool only once. Fill this file as you wish.</span></span><br><span class="line"><span class="comment">// =================================================================================</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> dao</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;sagooiot/internal/dao/internal&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// SysUser is globally public accessible object for table sys_user operations.</span></span><br><span class="line"><span class="keyword">var</span> SysUser = sysUserDao&#123;</span><br><span class="line">    internal.NewSysUserDao(),</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><mcfile name="sys_user.go" path="e:\QingFengdesk\sagoo-iot-workspace\sagooiot-professional\internal\dao\sys_user.go"></mcfile></p>
+<h3 id="6-数据模型层（model层）"><a class="header-anchor" href="#6-数据模型层（model层）">¶</a>6. 数据模型层（model层）</h3>
+<p>数据模型层位于<code>internal/model</code>目录下，包含多个子目录：</p>
+<ul>
+<li><code>entity</code>：数据库实体模型，由GoFrame CLI自动生成</li>
+<li><code>do</code>：数据操作模型</li>
+<li>其他业务模型</li>
+</ul>
+<p>示例代码（entity）：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// =================================================================================</span></span><br><span class="line"><span class="comment">// Code generated and maintained by GoFrame CLI tool. DO NOT EDIT.</span></span><br><span class="line"><span class="comment">// =================================================================================</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">package</span> entity</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;github.com/gogf/gf/v2/os/gtime&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// SysUser is the golang structure for table sys_user.</span></span><br><span class="line"><span class="keyword">type</span> SysUser <span class="keyword">struct</span> &#123;</span><br><span class="line">    Id            <span class="type">int64</span>       <span class="string">`json:&quot;id&quot; orm:&quot;id&quot;`</span></span><br><span class="line">    UserName      <span class="type">string</span>      <span class="string">`json:&quot;userName&quot; orm:&quot;user_name&quot; description:&quot;用户名&quot;`</span></span><br><span class="line">    UserTypes     <span class="type">string</span>      <span class="string">`json:&quot;userTypes&quot; orm:&quot;user_types&quot; description:&quot;系统 system 企业 company&quot;`</span></span><br><span class="line">    <span class="comment">// 其他字段...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><mcfile name="sys_user.go" path="e:\QingFengdesk\sagoo-iot-workspace\sagooiot-professional\internal\model\entity\sys_user.go"></mcfile></p>
+<h2 id="自动生成与手动实现的结合方式"><a class="header-anchor" href="#自动生成与手动实现的结合方式">¶</a>自动生成与手动实现的结合方式</h2>
+<p>项目采用&quot;自动生成骨架 + 手动实现业务&quot;的混合方式：</p>
+<ol>
+<li>
+<p><strong>自动生成部分</strong>：</p>
+<ul>
+<li>API接口定义和基础结构</li>
+<li>数据模型（entity、dao）</li>
+<li>服务接口定义</li>
+<li>控制器基本框架</li>
+<li>从代码注释可以看出：<code>// Code generated and maintained by GoFrame CLI tool. DO NOT EDIT.</code></li>
+</ul>
+</li>
+<li>
+<p><strong>手动实现部分</strong>：</p>
+<ul>
+<li>具体业务逻辑（logic层）</li>
+<li>复杂参数验证和转换</li>
+<li>自定义查询和数据处理</li>
+<li>事务管理和错误处理</li>
+</ul>
+</li>
+</ol>
+<h2 id="关键技术特点"><a class="header-anchor" href="#关键技术特点">¶</a>关键技术特点</h2>
+<ol>
+<li><strong>接口与实现分离</strong>：通过service层定义接口，logic层实现接口，降低耦合度</li>
+<li><strong>依赖注入</strong>：通过Register函数注册服务实现，支持测试和替换</li>
+<li><strong>单例模式</strong>：通过全局变量和访问函数实现服务的单例访问</li>
+<li><strong>参数转换</strong>：使用<code>gconv.Scan</code>实现不同结构体间的参数转换</li>
+<li><strong>数据权限控制</strong>：在service层集成数据权限过滤机制</li>
+<li><strong>国际化支持</strong>：使用<code>gi18n.Translate</code>实现错误信息的国际化</li>
+</ol>
+<h2 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h2>
+<p>sagooiot-professional项目的API接口实现采用了GoFrame框架推荐的分层架构，结合了自动生成和手动编码的方式。GoFrame CLI工具负责生成基础代码骨架，开发者在此基础上实现具体业务逻辑。这种方式既提高了开发效率，又保证了代码的规范性和可维护性。</p>
+]]></content>
+      <categories>
+        <category>sagooiot</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+        <tag>goframe</tag>
+        <tag>sagooiot</tag>
+        <tag>api</tag>
+      </tags>
+  </entry>
 </search>
