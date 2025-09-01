@@ -1415,7 +1415,7 @@ Java 8+ 的 <code>CompletableFuture</code> 支持超时机制（<code>orTimeout(
       </tags>
   </entry>
   <entry>
-    <title>hexo测试</title>
+    <title>hexo-next博客系统搭建</title>
     <url>/2025/09/01/hexo-next/</url>
     <content><![CDATA[<h3 id="Hexo-Next-博客系统搭建及常用操作指南"><a class="header-anchor" href="#Hexo-Next-博客系统搭建及常用操作指南">¶</a>Hexo Next 博客系统搭建及常用操作指南</h3>
 <h4 id="一、环境准备"><a class="header-anchor" href="#一、环境准备">¶</a>一、环境准备</h4>
@@ -1507,26 +1507,5 @@ Markdown 文章头部包含 Front-matter 配置：</li>
       <tags>
         <tag>博客搭建</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>hexo测试</title>
-    <url>/2025/09/01/hexo%E6%B5%8B%E8%AF%95/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
-    <title>hexo123</title>
-    <url>/2025/09/01/hexo123/</url>
-    <content><![CDATA[]]></content>
-      <categories>
-        <category>hexo</category>
-      </categories>
-      <tags>
-        <tag>hexo</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>hexo测试1</title>
-    <url>/2025/09/01/hexo%E6%B5%8B%E8%AF%951/</url>
-    <content><![CDATA[]]></content>
   </entry>
 </search>
