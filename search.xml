@@ -1,280 +1,367 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>git快速上手</title>
-    <url>/2025/08/26/git%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</url>
-    <content><![CDATA[<p>要在本地创建Git仓库仓库并连接到远程仓库 <code>git@github.com:xxxx/xxxxxxxx.git</code>，可以按照以下步骤操作：</p>
-<span id="more"></span>
-<h5 id="1-首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录："><a class="header-anchor" href="#1-首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：">¶</a>1.首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：</h5>
-<p><code>cd /path/to/your/local/directory</code></p>
-<h5 id="2-初始化本地Git仓库："><a class="header-anchor" href="#2-初始化本地Git仓库：">¶</a>2.初始化本地Git仓库：</h5>
-<p><code>  git init</code></p>
-<h5 id="3-将本地仓库与远程仓库关联："><a class="header-anchor" href="#3-将本地仓库与远程仓库关联：">¶</a>3.将本地仓库与远程仓库关联：</h5>
-<p><code> git remote add origin git@github.com:xxxxx/xxxxxx.git</code></p>
-<p>验证远程仓库连接是否成功：</p>
-<p><code> git remote -v</code></p>
-<p>如果成功，会显示类似以下内容：</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (fetch) </span><br><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (push)</span><br></pre></td></tr></table></figure>
-<p>从远程仓库拉取代码（如果远程已有内容）：</p>
-<p><code>git pull origin main</code></p>
-<p>(如果默认分支不是main，可以替换为实际的分支名，如master）</p>
-<h5 id="4-添加到本地工作区："><a class="header-anchor" href="#4-添加到本地工作区：">¶</a>4.添加到本地工作区：</h5>
-<p><code> git add</code> .</p>
-<h5 id="5-提交给本地仓库："><a class="header-anchor" href="#5-提交给本地仓库：">¶</a>5.提交给本地仓库：</h5>
-<p><code>git commit -m &quot;这是提交的描述内容&quot;</code></p>
-<h5 id="6-提交到远程仓库："><a class="header-anchor" href="#6-提交到远程仓库：">¶</a>6.提交到远程仓库：</h5>
-<p><code>git push origin master (master对应提交的远程仓库分支）</code></p>
-<p>创建并切换本地仓库分支：<br>
-<code>git checkout -b dev</code></p>
-<p>提交当前分支：</p>
-<p><code>git push -u origin dev</code></p>
-<h5 id="7-切换本地分支："><a class="header-anchor" href="#7-切换本地分支：">¶</a>7.切换本地分支：</h5>
-<p><code>git checkout master </code></p>
-<h5 id="8-合并分支："><a class="header-anchor" href="#8-合并分支：">¶</a>8.合并分支：</h5>
-<p>在master分支合并dev分支，合并之后dev分支仍然存在<br>
-<code>git merge dev</code></p>
-<p>然后<code>git push</code>提交</p>
-]]></content>
-      <categories>
-        <category>git</category>
-      </categories>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>goframe框架介绍</title>
-    <url>/2025/08/31/goframe%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
-    <content><![CDATA[<p>Go（又称 Golang）是 Google 开发的静态强类型编程语言，而 GoFrame（简称 gf）是基于 Go 语言的一款现代化、企业级开发框架。二者的关系类似于 “JavaScript 与 Vue.js”“Java 与 Spring”——<strong>Go 是基础语言，GoFrame 是基于 Go 语言的上层框架</strong>，用于简化 Go 语言的工程化开发。</p>
-<h3 id="一、区别与联系"><a class="header-anchor" href="#一、区别与联系">¶</a>一、区别与联系</h3>
+    <title>Token全面解析</title>
+    <url>/2025/09/01/Token%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/</url>
+    <content><![CDATA[<h1>Token 全面解析：概念、安全设计、存储方案与当前适用性</h1>
+<h5 id="Token的数据传输流程"><a class="header-anchor" href="#Token的数据传输流程">¶</a>Token的数据传输流程</h5>
+<img src="/img/token.png">
+<p>Token（令牌）是计算机系统中用于<strong>身份验证、授权或信息交换</strong>的一串字符序列，本质是 “临时凭证”—— 替代传统密码或 Session ID，在客户端与服务端之间传递 “信任信息”。它广泛应用于前后端分离、微服务、跨域系统及移动端应用中，是现代身份认证体系的核心组件之一。</p>
+<h2 id="一、Token-基础详解"><a class="header-anchor" href="#一、Token-基础详解">¶</a>一、Token 基础详解</h2>
+<p>要理解 Token，需先明确其核心定位、与传统方案的差异及常见类型，避免概念混淆。</p>
+<h3 id="1-Token-的核心定义与作用"><a class="header-anchor" href="#1-Token-的核心定义与作用">¶</a>1. Token 的核心定义与作用</h3>
+<p>Token 的核心是 <strong>“无状态信任凭证”</strong>：服务端通过加密 / 签名生成 Token 后，无需在本地存储用户状态（如 Session 的服务器内存存储），只需通过 Token 本身的校验（签名、有效期等）即可确认用户身份或权限。</p>
+<p>其核心作用包括：</p>
+<ul>
+<li><strong>身份认证</strong>：验证 “你是谁”（如登录后生成 Token，后续请求携带 Token 证明身份）；</li>
+<li><strong>权限授权</strong>：验证 “你能做什么”（如 Token 中包含 “只读”“管理员” 等权限标识）；</li>
+<li><strong>信息传递</strong>：安全携带非敏感业务信息（如用户 ID、角色），减少数据库查询。</li>
+</ul>
+<h3 id="2-Token-与传统-Session-的核心区别"><a class="header-anchor" href="#2-Token-与传统-Session-的核心区别">¶</a>2. Token 与传统 Session 的核心区别</h3>
+<p>传统 Session（会话）与 Token 是两种主流认证方案，差异主要体现在 “状态存储” 和 “扩展性” 上，具体对比如下：</p>
 <table>
 <thead>
 <tr>
-<th>维度</th>
-<th>Go（语言）</th>
-<th>GoFrame（框架）</th>
+<th>对比维度</th>
+<th>Session（会话）</th>
+<th>Token（令牌）</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>定位</strong></td>
-<td>编程语言，提供语法、 runtime、标准库等基础能力</td>
-<td>基于 Go 的开发框架，封装了 Web、ORM、缓存等上层组件</td>
+<td>状态存储位置</td>
+<td>服务端（内存 / 数据库 / 缓存）</td>
+<td>客户端（Cookie/LocalStorage 等）</td>
 </tr>
 <tr>
-<td><strong>依赖关系</strong></td>
-<td>独立存在，是 GoFrame 的基础</td>
-<td>完全依赖 Go 语言，无法脱离 Go 运行</td>
+<td>服务端依赖</td>
+<td>需维护 Session 状态，分布式需共享 Session（如 Redis）</td>
+<td>无状态，仅需校验 Token 合法性</td>
 </tr>
 <tr>
-<td><strong>核心目标</strong></td>
-<td>提供简洁、高效、并发安全的语言特性</td>
-<td>提供工程化开发规范和工具链，简化复杂业务开发</td>
+<td>跨域支持</td>
+<td>弱（依赖 Cookie，跨域需特殊配置）</td>
+<td>强（可在 Header/Body 中携带，无跨域限制）</td>
 </tr>
 <tr>
-<td><strong>使用场景</strong></td>
-<td>所有 Go 语言能覆盖的领域（后端、云原生等）</td>
-<td>主要用于快速开发企业级应用（Web API、微服务等）</td>
+<td>移动端适配</td>
+<td>差（移动端无 Cookie 默认存储，需手动处理）</td>
+<td>优（可存储在 App 本地，灵活携带）</td>
+</tr>
+<tr>
+<td>扩展性</td>
+<td>低（服务端状态存储限制集群扩容）</td>
+<td>高（微服务 / 多服务可直接复用 Token）</td>
 </tr>
 </tbody>
 </table>
-<h3 id="二、语法区别"><a class="header-anchor" href="#二、语法区别">¶</a>二、语法区别</h3>
-<p>GoFrame<strong>不改变 Go 语言本身的语法</strong>（它是框架而非语言扩展），但在<strong>代码规范、开发模式</strong>上有自己的约定，与原生 Go 开发相比有以下差异：</p>
-<ol>
-<li>
-<p><strong>代码组织规范</strong><br>
-原生 Go 没有强制的项目结构，而 GoFrame 通过<code>gf cli</code>工具生成标准化项目结构（如<code>api</code>、<code>model</code>、<code>service</code>分层），强制约束代码组织方式，便于团队协作。</p>
-</li>
-<li>
-<p><strong>结构体标签（Tag）扩展</strong><br>
-GoFrame 定义了专属的结构体标签（如<code>v:&quot;required&quot;</code>用于参数验证、<code>orm:&quot;name&quot;</code>用于数据库映射），这些标签是框架层面的约定，而非 Go 语言原生语法：</p>
-<p>go</p>
-<p>运行</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// GoFrame中用于参数验证和ORM映射的结构体</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    Id    <span class="type">int</span>    <span class="string">`v:&quot;required&quot; orm:&quot;id,pk&quot;`</span>  <span class="comment">// gf的验证和ORM标签</span></span><br><span class="line">    Name  <span class="type">string</span> <span class="string">`v:&quot;required|length:2,10&quot;`</span>   <span class="comment">// gf的参数验证规则</span></span><br><span class="line">    Age   <span class="type">int</span>    <span class="string">`v:&quot;min:0|max:150&quot;`</span>          <span class="comment">// 原生Go不识别这些标签，由gf框架解析</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong>函数命名与接口设计</strong><br>
-GoFrame 遵循 “<code>CamelCase</code>+ 前缀约定”（如<code>ghttp.Get</code>、<code>gorm.Insert</code>），且大量使用接口抽象（如<code>gdb.ORM</code>接口），而原生 Go 标准库的函数命名更简洁（如<code>http.Get</code>、<code>sql.Query</code>）。</p>
-</li>
-</ol>
-<h3 id="三、实现-API-接口时的区别"><a class="header-anchor" href="#三、实现-API-接口时的区别">¶</a>三、实现 API 接口时的区别</h3>
-<p>以实现一个 “用户注册” API（POST <code>/user/register</code>）为例，对比原生 Go 与 GoFrame 的开发差异：</p>
-<h4 id="1-原生-Go-实现（依赖标准库net-http）"><a class="header-anchor" href="#1-原生-Go-实现（依赖标准库net-http）">¶</a>1. 原生 Go 实现（依赖标准库<code>net/http</code>）</h4>
-<p>需要手动处理路由、参数解析、验证、错误处理等，代码繁琐：</p>
-<p>go</p>
-<p>运行</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;encoding/json&quot;</span></span><br><span class="line">    <span class="string">&quot;net/http&quot;</span></span><br><span class="line">    <span class="string">&quot;strconv&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义请求结构体</span></span><br><span class="line"><span class="keyword">type</span> RegisterRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name  <span class="type">string</span> <span class="string">`json:&quot;name&quot;`</span></span><br><span class="line">    Age   <span class="type">int</span>    <span class="string">`json:&quot;age&quot;`</span></span><br><span class="line">    Email <span class="type">string</span> <span class="string">`json:&quot;email&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 注册路由</span></span><br><span class="line">    http.HandleFunc(<span class="string">&quot;/user/register&quot;</span>, registerHandler)</span><br><span class="line">    http.ListenAndServe(<span class="string">&quot;:8080&quot;</span>, <span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">registerHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    <span class="comment">// 1. 校验请求方法</span></span><br><span class="line">    <span class="keyword">if</span> r.Method != http.MethodPost &#123;</span><br><span class="line">        w.WriteHeader(http.StatusMethodNotAllowed)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;method not allowed&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 解析请求体</span></span><br><span class="line">    <span class="keyword">var</span> req RegisterRequest</span><br><span class="line">    <span class="keyword">if</span> err := json.NewDecoder(r.Body).Decode(&amp;req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;invalid request: &quot;</span> + err.Error()))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 手动验证参数</span></span><br><span class="line">    <span class="keyword">if</span> req.Name == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">        w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;name is required&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> req.Age &lt;= <span class="number">0</span> || req.Age &gt; <span class="number">150</span> &#123;</span><br><span class="line">        w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;age must be 1-150&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4. 模拟数据库操作（需手动写SQL或集成第三方ORM）</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 5. 返回响应</span></span><br><span class="line">    w.Header().Set(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)</span><br><span class="line">    json.NewEncoder(w).Encode(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>&#123;</span><br><span class="line">        <span class="string">&quot;code&quot;</span>:    <span class="string">&quot;0&quot;</span>,</span><br><span class="line">        <span class="string">&quot;message&quot;</span>: <span class="string">&quot;register success&quot;</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="2-GoFrame-实现"><a class="header-anchor" href="#2-GoFrame-实现">¶</a>2. GoFrame 实现</h4>
-<p>框架封装了路由、参数绑定、验证、ORM 等功能，代码更简洁：</p>
-<p>go</p>
-<p>运行</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;github.com/gogf/gf/v2/frame/g&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/gogf/gf/v2/net/ghttp&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义请求结构体（通过gf标签实现自动验证）</span></span><br><span class="line"><span class="keyword">type</span> RegisterRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">    g.Meta <span class="string">`path:&quot;/user/register&quot; method:&quot;post&quot;`</span> <span class="comment">// 路由和方法定义</span></span><br><span class="line">    Name   <span class="type">string</span> <span class="string">`json:&quot;name&quot; v:&quot;required#姓名不能为空&quot;`</span>   <span class="comment">// 自动验证规则</span></span><br><span class="line">    Age    <span class="type">int</span>    <span class="string">`json:&quot;age&quot; v:&quot;min:1|max:150#年龄必须在1-150之间&quot;`</span> <span class="comment">// 自动验证</span></span><br><span class="line">    Email  <span class="type">string</span> <span class="string">`json:&quot;email&quot; v:&quot;email#邮箱格式错误&quot;`</span>       <span class="comment">// 内置邮箱验证</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义响应结构体</span></span><br><span class="line"><span class="keyword">type</span> RegisterResponse <span class="keyword">struct</span> &#123;</span><br><span class="line">    Code    <span class="type">int</span>    <span class="string">`json:&quot;code&quot;`</span></span><br><span class="line">    Message <span class="type">string</span> <span class="string">`json:&quot;message&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    s := g.Server()</span><br><span class="line">    <span class="comment">// 绑定API处理函数（自动关联路由和验证）</span></span><br><span class="line">    s.BindHandler(<span class="built_in">new</span>(RegisterRequest), registerHandler)</span><br><span class="line">    s.Run(<span class="string">&quot;:8080&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理函数（参数自动绑定和验证）</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">registerHandler</span><span class="params">(r *ghttp.Request)</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> req RegisterRequest</span><br><span class="line">    <span class="comment">// 自动解析请求并验证参数（失败会自动返回错误）</span></span><br><span class="line">    <span class="keyword">if</span> err := r.Parse(&amp;req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        r.Response.WriteJson(RegisterResponse&#123;</span><br><span class="line">            Code:    <span class="number">1</span>,</span><br><span class="line">            Message: err.Error(),</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 数据库操作（通过gf的ORM快速实现，无需手写SQL）</span></span><br><span class="line">    <span class="comment">// g.DB().Model(&quot;user&quot;).Insert(req)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 返回响应</span></span><br><span class="line">    r.Response.WriteJson(RegisterResponse&#123;</span><br><span class="line">        Code:    <span class="number">0</span>,</span><br><span class="line">        Message: <span class="string">&quot;register success&quot;</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="四、GoFrame-主要提升的能力"><a class="header-anchor" href="#四、GoFrame-主要提升的能力">¶</a>四、GoFrame 主要提升的能力</h3>
-<p>GoFrame 的核心价值是<strong>降低 Go 语言开发的 “工程化成本”</strong>，主要提升点包括：</p>
-<ol>
-<li><strong>简化重复工作</strong><br>
-封装了 Web 开发中的通用需求（路由、参数验证、中间件、ORM、缓存等），避免开发者重复造轮子。例如：
+<h3 id="3-常见-Token-类型"><a class="header-anchor" href="#3-常见-Token-类型">¶</a>3. 常见 Token 类型</h3>
+<p>不同场景下的 Token 设计差异较大，主流类型分为三类：</p>
+<h4 id="（1）JWT（JSON-Web-Token）"><a class="header-anchor" href="#（1）JWT（JSON-Web-Token）">¶</a>（1）JWT（JSON Web Token）</h4>
+<p>最常用的 Token 格式，本质是 <strong>“带签名的 JSON 数据”</strong>，结构为<code>Header.Payload.Signature</code>（三点分隔的 Base64 编码字符串）：</p>
 <ul>
-<li>内置参数验证器（支持正则、范围、自定义规则），无需手动写 if-else 校验；</li>
-<li>ORM 支持自动生成 SQL、事务、关联查询，简化数据库操作。</li>
+<li><strong>Header</strong>：指定 Token 类型（JWT）和签名算法（如 HS256、RS256）；</li>
+<li><strong>Payload</strong>：存储 “声明”（非敏感信息，如用户 ID、过期时间<code>exp</code>、角色<code>role</code>），Base64 编码可解码（<strong>不可存密码、手机号等敏感数据</strong>）；</li>
+<li><strong>Signature</strong>：用 Header 指定的算法，结合 “密钥” 对 Header+Payload 签名，确保 Token 未被篡改。</li>
 </ul>
-</li>
-<li><strong>标准化开发流程</strong><br>
-通过<code>gf cli</code>工具生成标准化项目结构（API 层、业务层、数据层分离），并提供统一的错误处理、日志、配置管理机制，解决团队协作中的 “代码风格混乱” 问题。</li>
-<li><strong>增强企业级特性</strong><br>
-提供微服务、分布式事务、分布式缓存、API 文档自动生成（OpenAPI）等企业级功能，原生 Go 需集成多个第三方库才能实现，而 GoFrame 一站式支持。</li>
-<li><strong>提升开发效率</strong><br>
-支持热重载（<code>gf run</code>）、代码生成（<code>gf gen</code>）、接口自动化测试等工具，大幅缩短开发周期。例如：通过结构体标签自动生成 Swagger 文档，无需手动编写。</li>
-<li><strong>优化性能与稳定性</strong><br>
-框架内部对并发、内存管理做了针对性优化（如对象池、连接池），且经过大量生产环境验证，稳定性优于 “原生 + 零散第三方库” 的组合。</li>
-</ol>
-<h3 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h3>
+<p><strong>适用场景</strong>：前后端分离、API 接口认证、短期权限校验（如 15 分钟有效期）。</p>
+<h4 id="（2）Access-Token-Refresh-Token（双令牌）"><a class="header-anchor" href="#（2）Access-Token-Refresh-Token（双令牌）">¶</a>（2）Access Token + Refresh Token（双令牌）</h4>
+<p>OAuth2.0/OpenID Connect 协议的核心设计，分 “短期访问令牌” 和 “长期刷新令牌”：</p>
 <ul>
-<li><strong>联系</strong>：GoFrame 是 Go 语言的 “增强工具”，完全基于 Go 语法开发，依赖 Go 的 runtime。</li>
-<li><strong>区别</strong>：Go 是语言基础，GoFrame 是框架；前者提供语法和标准库，后者提供工程化解决方案。</li>
-<li><strong>核心价值</strong>：GoFrame 通过封装通用能力、标准化开发流程，让开发者更专注于业务逻辑，而非重复的技术细节，特别适合快速开发企业级应用。</li>
+<li><strong>Access Token</strong>：短期有效（如 5-30 分钟），用于接口授权，泄露风险低；</li>
+<li><strong>Refresh Token</strong>：长期有效（如 7 天 - 30 天），仅用于获取新的 Access Token，不直接参与业务接口调用。</li>
 </ul>
-]]></content>
-      <categories>
-        <category>go,goframe</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-        <tag>goframe</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>go中的context</title>
-    <url>/2025/08/31/go%E4%B8%AD%E7%9A%84context/</url>
-    <content><![CDATA[<p>在 Go 语言中，<code>context.Context</code> 主要用于 <strong>传递跨 goroutine 的取消信号、超时控制和元数据</strong>，是 Go 并发模型中协调多个 goroutine 生命周期的核心机制。其设计与 Go 语言的 <strong>轻量并发（goroutine）</strong> 和 <strong>函数式编程风格</strong> 密切相关。</p>
-<h3 id="一、Go-中大量使用-context-的原因"><a class="header-anchor" href="#一、Go-中大量使用-context-的原因">¶</a>一、Go 中大量使用 <code>context</code> 的原因</h3>
-<ol>
-<li><strong>goroutine 生命周期管理</strong><br>
-Go 中创建 goroutine 非常轻量（几 KB 栈空间），实际开发中常同时启动成百上千个 goroutine 处理任务（如 HTTP 服务的每个请求对应一个 goroutine）。<code>context</code> 用于在这些 goroutine 之间传递 <strong>取消信号</strong>（如客户端断开连接、超时），避免资源泄漏。<br>
-例如：HTTP 服务器处理请求时，若客户端提前关闭连接，<code>context</code> 会收到取消信号，后续的数据库查询、RPC 调用等可立即终止。</li>
-<li><strong>超时与截止时间控制</strong><br>
-网络请求、数据库操作等需要设置超时时间，<code>context.WithTimeout</code> 或 <code>context.WithDeadline</code> 可生成带超时的上下文，传递给下游函数，确保操作不会无限阻塞。</li>
-<li><strong>元数据传递</strong><br>
-<code>context</code> 可携带少量跨函数的共享数据（如请求 ID、用户身份信息），避免在函数参数中显式传递这些 “附加信息”，简化接口设计。</li>
-</ol>
-<h3 id="二、其他语言中的同类机制"><a class="header-anchor" href="#二、其他语言中的同类机制">¶</a>二、其他语言中的同类机制</h3>
-<p><code>context</code> 并非 Go 独有，其他语言也有类似功能的机制，只是实现方式和命名不同：</p>
-<h4 id="1-Java-中的同类机制"><a class="header-anchor" href="#1-Java-中的同类机制">¶</a>1. Java 中的同类机制</h4>
+<p><strong>核心逻辑</strong>：Access Token 过期后，客户端用 Refresh Token 向 “令牌端点” 申请新的 Access Token，避免用户频繁登录。<br>
+<strong>适用场景</strong>：第三方登录（如微信、GitHub 登录）、移动端 App、长期登录态维持。</p>
+<h4 id="（3）Session-Token（会话令牌）"><a class="header-anchor" href="#（3）Session-Token（会话令牌）">¶</a>（3）Session Token（会话令牌）</h4>
+<p>传统 Session 的 “改良版”：服务端不存储完整 Session 数据，仅存储 Token 的 “校验信息”（如 Token 对应的用户 ID、过期时间），客户端携带 Token 后，服务端通过数据库 / Redis 查询校验。</p>
+<p><strong>特点</strong>：兼具 Session 的 “可吊销性”（服务端删除 Token 记录即可失效）和 Token 的 “弱状态性”，适合需强制登出的场景（如账号异常冻结）。</p>
+<h2 id="二、Token-安全设计的关键策略"><a class="header-anchor" href="#二、Token-安全设计的关键策略">¶</a>二、Token 安全设计的关键策略</h2>
+<p>Token 的安全性直接决定系统的身份认证防线强度，需从 “生成、传输、校验、销毁” 全生命周期设计，核心策略如下：</p>
+<h3 id="1-确保-Token-本身的-“不可伪造性”"><a class="header-anchor" href="#1-确保-Token-本身的-“不可伪造性”">¶</a>1. 确保 Token 本身的 “不可伪造性”</h3>
+<p>Token 被伪造是最致命的风险，需通过<strong>加密签名、复杂度设计</strong>规避：</p>
 <ul>
 <li>
-<p><strong><code>ThreadLocal</code> + 线程池</strong><br>
-Java 中常用 <code>ThreadLocal</code> 传递线程级别的上下文（如用户信息、日志 ID），配合线程池的 <code>shutdown()</code> 或 <code>shutdownNow()</code> 控制线程生命周期。但 <code>ThreadLocal</code> 不直接支持取消信号，需手动实现。</p>
-</li>
-<li>
-<p><strong><code>CompletableFuture</code> + 超时控制</strong><br>
-Java 8+ 的 <code>CompletableFuture</code> 支持超时机制（<code>orTimeout()</code>），可实现类似 <code>context.WithTimeout</code> 的功能：</p>
-<p>java</p>
-<p>运行</p>
-<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">CompletableFuture&lt;String&gt; future = CompletableFuture.supplyAsync(() -&gt; &#123;</span><br><span class="line">    <span class="comment">// 耗时操作</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;result&quot;</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 超时控制（5秒）</span></span><br><span class="line">future.orTimeout(<span class="number">5</span>, TimeUnit.SECONDS)</span><br><span class="line">      .exceptionally(ex -&gt; <span class="string">&quot;超时处理&quot;</span>);</span><br></pre></td></tr></table></figure>
-</li>
-<li>
-<p><strong><code>Spring</code> 框架的 <code>RequestContextHolder</code></strong><br>
-在 Spring Web 中，<code>RequestContextHolder</code> 存储 HTTP 请求上下文，类似 <code>context</code> 传递请求级别的元数据，但其生命周期与请求绑定，不支持主动取消。</p>
-</li>
-</ul>
-<h4 id="2-C-语言中的同类机制"><a class="header-anchor" href="#2-C-语言中的同类机制">¶</a>2. C 语言中的同类机制</h4>
-<p>C 语言没有内置的 “上下文” 机制，需手动实现类似功能：</p>
+<p>使用非对称加密算法签名</p>
+<p>：优先选择</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">RS256</span><br></pre></td></tr></table></figure>
+<p>（RSA 非对称加密）而非</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">HS256</span><br></pre></td></tr></table></figure>
+<p>（HMAC 对称加密）。</p>
 <ul>
-<li>
-<p><strong>自定义结构体传递取消信号</strong><br>
-通过指针传递包含 “取消标志” 的结构体，函数定期检查标志以决定是否终止：</p>
-<p>c</p>
-<p>运行</p>
-<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 自定义上下文结构体</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> is_canceled;  <span class="comment">// 取消标志</span></span><br><span class="line">    <span class="type">int</span> timeout;      <span class="comment">// 超时时间（毫秒）</span></span><br><span class="line">&#125; Context;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数接收上下文，定期检查是否取消</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_task</span><span class="params">(Context* ctx)</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (ctx-&gt;is_canceled) &#123;</span><br><span class="line">            <span class="keyword">return</span>;  <span class="comment">// 收到取消信号，退出</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 执行任务...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<li>原理：私钥（仅服务端持有）用于生成 Token 签名，公钥（可公开）用于校验签名；即使公钥泄露，攻击者也无法伪造 Token（需私钥）。</li>
+</ul>
 </li>
 <li>
-<p><strong>信号量（<code>signal</code>）与定时器</strong><br>
-利用系统信号（如 <code>SIGINT</code>）或定时器（<code>setitimer</code>）实现超时和取消，但跨线程 / 进程传递信号较复杂，缺乏 Go 中 <code>context</code> 的简洁性。</p>
+<p><strong>足够长的字符长度</strong>：Token 长度至少 32 位（如 JWT 建议总长度≥128 字符），避免被暴力破解；</p>
+</li>
+<li>
+<p><strong>避免 “可预测性”</strong>：Token 需包含随机因子（如<code>nonce</code>随机数、用户设备信息哈希），禁止用 “用户 ID + 时间戳” 直接生成（易被猜测）。</p>
 </li>
 </ul>
-<h3 id="三、核心差异总结"><a class="header-anchor" href="#三、核心差异总结">¶</a>三、核心差异总结</h3>
+<h3 id="2-严格控制-Token-有效期（防长期泄露）"><a class="header-anchor" href="#2-严格控制-Token-有效期（防长期泄露）">¶</a>2. 严格控制 Token 有效期（防长期泄露）</h3>
+<p>Token 一旦泄露，有效期越长，风险越高，需按 “类型差异化设置”：</p>
+<ul>
+<li><strong>Access Token</strong>：短期有效（5-30 分钟），业务接口仅接受此 Token，即使泄露，攻击者可用时间窗口极短；</li>
+<li><strong>Refresh Token</strong>：长期有效但需 “可吊销”（服务端存储 Refresh Token 的黑名单 / 有效期，异常时立即失效）；</li>
+<li><strong>强制过期机制</strong>：即使 Token 未泄露，超过最大有效期（如 Refresh Token 最长 30 天）也需重新登录，避免 “永久凭证”。</li>
+</ul>
+<h3 id="3-传输过程：杜绝-“中间人窃取”"><a class="header-anchor" href="#3-传输过程：杜绝-“中间人窃取”">¶</a>3. 传输过程：杜绝 “中间人窃取”</h3>
+<p>Token 在客户端→服务端的传输中，易被中间人拦截（如 HTTP 明文传输），需通过以下方式防护：</p>
+<ul>
+<li><strong>强制使用 HTTPS</strong>：所有携带 Token 的请求必须走 HTTPS（TLS 1.2+），加密传输内容，防止抓包窃取；</li>
+<li><strong>避免 URL 携带 Token</strong>：URL 中的 Token 会被浏览器历史记录、服务器日志记录，应放在<code>Authorization</code>请求头（如<code>Bearer &lt;token&gt;</code>）或请求体中；</li>
+<li><strong>禁用 HTTP 缓存</strong>：在响应头添加<code>Cache-Control: no-store</code>和<code>Pragma: no-cache</code>，禁止浏览器缓存 Token。</li>
+</ul>
+<h3 id="4-内容设计：最小权限与无敏感信息"><a class="header-anchor" href="#4-内容设计：最小权限与无敏感信息">¶</a>4. 内容设计：最小权限与无敏感信息</h3>
+<p>Token 的 Payload（如 JWT）应遵循 “最小权限原则”，避免冗余信息泄露：</p>
+<ul>
+<li><strong>不存敏感数据</strong>：Payload 用 Base64 编码（可解码），禁止存储密码、手机号、身份证号等；仅存用户 ID、角色、过期时间等非敏感标识；</li>
+<li><strong>最小权限标识</strong>：Token 中仅包含当前场景必需的权限（如 “订单查询” 权限，不包含 “订单修改”），避免权限滥用；</li>
+<li><strong>添加 “环境绑定” 信息</strong>：在 Token 中嵌入客户端唯一标识（如设备 ID<code>deviceId</code>、IP 哈希、浏览器 UA 哈希），校验时对比当前请求环境，不一致则拒绝（防 Token 在其他设备复用）。</li>
+</ul>
+<h3 id="5-防重放攻击（Replay-Attack）"><a class="header-anchor" href="#5-防重放攻击（Replay-Attack）">¶</a>5. 防重放攻击（Replay Attack）</h3>
+<p>攻击者窃取 Token 后，重复发送请求伪造操作（如重复支付），需通过以下机制防护：</p>
+<ul>
+<li><strong>添加时间戳（timestamp）</strong>：Token 中包含生成时间，服务端校验时判断 “当前时间 - Token 时间戳” 是否超过阈值（如 5 分钟），超过则拒绝；</li>
+<li><strong>添加随机数（nonce）</strong>：Token 中包含唯一随机数，服务端存储已使用的 nonce（如 Redis，有效期与时间戳阈值一致），重复 nonce 直接拒绝；</li>
+<li><strong>业务层幂等设计</strong>：即使 Token 被重放，业务接口需通过 “订单号唯一”“操作 ID 唯一” 等机制，避免重复执行（如支付接口仅允许同一订单支付一次）。</li>
+</ul>
+<h3 id="6-Refresh-Token-的额外安全措施"><a class="header-anchor" href="#6-Refresh-Token-的额外安全措施">¶</a>6. Refresh Token 的额外安全措施</h3>
+<p>Refresh Token 是 “长期凭证”，泄露风险更高，需额外防护：</p>
+<ul>
+<li><strong>独立存储与访问控制</strong>：Refresh Token 不与 Access Token 存同一位置（如 Access Token 存内存，Refresh Token 存加密的本地数据库）；</li>
+<li><strong>定期轮换（Rotation）</strong>：每次用 Refresh Token 获取新 Access Token 时，同时返回新的 Refresh Token，旧的立即失效（避免 Refresh Token 长期不变）；</li>
+<li><strong>吊销机制（Revocation）</strong>：服务端维护 Refresh Token 黑名单（如 Redis），用户登出、账号冻结、密码修改时，立即将对应的 Refresh Token 加入黑名单，拒绝后续使用。</li>
+</ul>
+<h2 id="三、Token-的最佳存储位置"><a class="header-anchor" href="#三、Token-的最佳存储位置">¶</a>三、Token 的最佳存储位置</h2>
+<p>Token 的存储位置直接影响其安全性，不同存储方案的风险（如 XSS、CSRF）差异极大，需结合 “应用类型” 选择。</p>
+<h3 id="1-主流存储位置对比"><a class="header-anchor" href="#1-主流存储位置对比">¶</a>1. 主流存储位置对比</h3>
+<p>不同存储位置的安全性、可用性及适用场景如下表：</p>
 <table>
 <thead>
 <tr>
-<th>语言</th>
-<th>同类机制</th>
-<th>特点</th>
+<th>存储位置</th>
+<th>安全性（防 XSS/CSRF）</th>
+<th>可用性（持久化 / 跨页面）</th>
+<th>适用场景</th>
+<th>核心风险点</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Go</td>
-<td><code>context.Context</code></td>
-<td>原生支持，轻量，与 goroutine 绑定，统一传递取消信号、超时和元数据</td>
+<td><strong>HttpOnly Cookie</strong></td>
+<td>高（防 XSS：JS 无法访问；需配置 SameSite 防 CSRF）</td>
+<td>中（自动携带，关闭浏览器后失效或持久化）</td>
+<td>传统后端渲染（SSR）、需防 XSS 的场景</td>
+<td>未配置 SameSite 易受 CSRF 攻击</td>
 </tr>
 <tr>
-<td>Java</td>
-<td><code>ThreadLocal</code> + 超时 API</td>
-<td>依赖线程模型，需结合框架（如 Spring）实现上下文传递，取消机制较分散</td>
+<td><strong>LocalStorage</strong></td>
+<td>低（JS 可访问，易受 XSS 攻击窃取）</td>
+<td>高（永久存储，跨页面共享）</td>
+<td>无敏感操作的静态页面（如博客）</td>
+<td>XSS 攻击导致 Token 泄露</td>
 </tr>
 <tr>
-<td>C</td>
-<td>自定义结构体 + 信号量</td>
-<td>无原生支持，需手动实现，功能简陋，缺乏语言层面的统一标准</td>
+<td><strong>SessionStorage</strong></td>
+<td>低（JS 可访问，易受 XSS 攻击）</td>
+<td>低（仅当前标签页，关闭即失）</td>
+<td>临时会话（如一次性操作）</td>
+<td>标签页关闭后需重新获取</td>
+</tr>
+<tr>
+<td><strong>内存存储（如 SPA 的 Vue/React 状态）</strong></td>
+<td>高（JS 可访问但页面刷新 / 关闭后失，XSS 需实时注入）</td>
+<td>低（页面刷新 / 关闭即失）</td>
+<td>前后端分离（SPA）、移动端 App</td>
+<td>页面刷新需重新获取 Token</td>
+</tr>
+<tr>
+<td><strong>加密的本地数据库（如 App 的 SQLCipher）</strong></td>
+<td>高（需解密密钥，JS / 普通应用无法访问）</td>
+<td>高（持久化存储）</td>
+<td>移动端 App（iOS/Android）、桌面应用</td>
+<td>设备 root / 越狱后可能泄露</td>
 </tr>
 </tbody>
 </table>
-<h3 id="为什么-Go-中-context-更-“显性”？"><a class="header-anchor" href="#为什么-Go-中-context-更-“显性”？">¶</a>为什么 Go 中 <code>context</code> 更 “显性”？</h3>
-<p>Go 语言将 <code>context</code> 作为函数参数显式传递，是因为：</p>
-<ol>
-<li><strong>并发模型的需要</strong>：goroutine 比线程更轻量，数量更多，必须有统一的生命周期管理机制；</li>
-<li><strong>接口设计哲学</strong>：Go 强调 “显式优于隐式”，<code>context</code> 作为参数传递，让函数的依赖和行为更清晰；</li>
-<li><strong>标准化</strong>：<code>context</code> 是 Go 标准库的一部分，所有库（如 <code>net/http</code>、<code>database/sql</code>）都遵循同一套上下文协议，避免了生态碎片化。</li>
-</ol>
-<p>其他语言因历史原因（如 Java 基于线程模型）或设计理念不同，没有采用这种 “显式上下文参数” 的模式，但核心解决的问题（生命周期管理、元数据传递）是相通的。</p>
-]]></content>
-      <categories>
-        <category>go</category>
-      </categories>
-      <tags>
-        <tag>go</tag>
-        <tag>context</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>go项目发送接口设计流程</title>
-    <url>/2025/08/29/go%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/</url>
-    <content><![CDATA[<h3 id="Go发送接口设计的整体结构"><a class="header-anchor" href="#Go发送接口设计的整体结构">¶</a>Go发送接口设计的整体结构</h3>
-<img src="/img/屏幕截图 2025-08-29 104725.png" alt="678" />
-<h3 id="service层实现"><a class="header-anchor" href="#service层实现">¶</a>service层实现</h3>
-<p>分为以下三个部分</p>
+<h3 id="2-不同场景的存储推荐"><a class="header-anchor" href="#2-不同场景的存储推荐">¶</a>2. 不同场景的存储推荐</h3>
+<h4 id="（1）前后端分离（SPA，如-Vue-React）"><a class="header-anchor" href="#（1）前后端分离（SPA，如-Vue-React）">¶</a>（1）前后端分离（SPA，如 Vue/React）</h4>
 <ul>
+<li><strong>Access Token</strong>：存储在<strong>内存</strong>（如 Vuex/Redux 状态），页面刷新后通过 Refresh Token 重新获取；<br>
+理由：内存存储无持久化，XSS 攻击需 “实时注入 JS”（难度高），且避免 LocalStorage 的 XSS 泄露风险。</li>
+<li><strong>Refresh Token</strong>：存储在<strong>HttpOnly + Secure + SameSite=Strict/Lax 的 Cookie</strong>；<br>
+理由：HttpOnly 防止 JS 访问（防 XSS），SameSite=Strict 禁止跨域请求携带（防 CSRF），Secure 仅 HTTPS 传输。</li>
+</ul>
+<h4 id="（2）移动端-App（iOS-Android）"><a class="header-anchor" href="#（2）移动端-App（iOS-Android）">¶</a>（2）移动端 App（iOS/Android）</h4>
+<ul>
+<li><strong>Access Token</strong>：存储在<strong>内存</strong>（如 App 的全局变量），退出 App 后失效；</li>
+<li><strong>Refresh Token</strong>：存储在<strong>加密的本地数据库</strong>（如 iOS 的 Keychain、Android 的 EncryptedSharedPreferences）；<br>
+理由：移动端无浏览器 Cookie 的 CSRF 风险，加密存储可防设备被 root / 越狱后的数据窃取。</li>
+</ul>
+<h4 id="（3）传统后端渲染（SSR，如-JSP-PHP）"><a class="header-anchor" href="#（3）传统后端渲染（SSR，如-JSP-PHP）">¶</a>（3）传统后端渲染（SSR，如 JSP/PHP）</h4>
+<ul>
+<li><strong>Token（或 Session Token）</strong>：存储在<strong>HttpOnly + Secure + SameSite=Strict 的 Cookie</strong>；<br>
+理由：后端渲染场景下，Cookie 会自动携带到请求中，无需手动处理；HttpOnly 防 XSS，SameSite 防 CSRF，契合传统应用的使用习惯。</li>
+</ul>
+<h4 id="（4）第三方登录（OAuth2-0）"><a class="header-anchor" href="#（4）第三方登录（OAuth2-0）">¶</a>（4）第三方登录（OAuth2.0）</h4>
+<ul>
+<li><strong>Access Token</strong>：存储在<strong>内存</strong>（短期有效，用完即弃）；</li>
+<li><strong>Refresh Token</strong>：存储在<strong>服务端数据库</strong>（仅客户端持有 “Refresh Token ID”，服务端通过 ID 查询真实 Token）；<br>
+理由：第三方登录需严格控制 Refresh Token 泄露风险，服务端存储可直接吊销，避免客户端存储的安全隐患。</li>
+</ul>
+<h2 id="四、当下使用-Token-是否仍为好选择？"><a class="header-anchor" href="#四、当下使用-Token-是否仍为好选择？">¶</a>四、当下使用 Token 是否仍为好选择？</h2>
+<p>截至 2024 年，Token 仍是主流身份认证方案，但需客观看待其优势与局限性，结合场景判断是否适用。</p>
+<h3 id="1-Token-的核心优势（为何仍被广泛使用）"><a class="header-anchor" href="#1-Token-的核心优势（为何仍被广泛使用）">¶</a>1. Token 的核心优势（为何仍被广泛使用）</h3>
+<ul>
+<li><strong>无状态，适配分布式 / 微服务</strong>：服务端无需存储用户状态，微服务集群可直接通过 Token 校验身份，无需共享 Session（如 Redis），降低架构复杂度；</li>
+<li><strong>跨域与多端兼容</strong>：Token 可在 Header/Body 中携带，完美支持跨域（如前端部署在 CDN，后端在另一域名），且适配移动端、桌面端、小程序等多终端；</li>
+<li><strong>轻量高效</strong>：Token（如 JWT）可直接携带用户权限信息，减少服务端查询数据库的次数，提升接口响应速度；</li>
+<li><strong>成熟生态</strong>：OAuth2.0、OpenID Connect 等基于 Token 的协议已成为行业标准，第三方登录（微信、支付宝、GitHub）均支持，开发成本低。</li>
+</ul>
+<h3 id="2-Token-的局限性（需规避的问题）"><a class="header-anchor" href="#2-Token-的局限性（需规避的问题）">¶</a>2. Token 的局限性（需规避的问题）</h3>
+<ul>
+<li><strong>JWT 无法实时吊销</strong>：JWT 的有效性仅依赖签名和有效期，一旦生成，服务端无法主动 “废除”（除非维护黑名单），不适合需 “立即登出” 的场景（如账号被盗）；</li>
+<li><strong>存储风险不可完全规避</strong>：客户端存储（如 Cookie、LocalStorage）仍面临 XSS/CSRF 风险，需额外配置防护（如 HttpOnly、SameSite）；</li>
+<li><strong>Refresh Token 管理复杂</strong>：双令牌方案需维护 Refresh Token 的生命周期（轮换、吊销、黑名单），增加服务端开发成本；</li>
+<li><strong>不适合高安全场景</strong>：对于金融、医疗等超高安全需求，Token 需结合多因素认证（MFA，如短信验证码、U 盾），单纯 Token 不足以满足安全要求。</li>
+</ul>
+<h3 id="3-当下结论：Token-仍是-“优选方案”，但需-“正确使用”"><a class="header-anchor" href="#3-当下结论：Token-仍是-“优选方案”，但需-“正确使用”">¶</a>3. 当下结论：Token 仍是 “优选方案”，但需 “正确使用”</h3>
+<p>在当前的技术生态中，Token 仍是<strong>前后端分离、微服务、多端适配场景下的最优解之一</strong>，但需满足两个前提：</p>
+<ol>
+<li><strong>严格遵循安全设计原则</strong>：如短期 Access Token + 可吊销 Refresh Token、HTTPS 传输、HttpOnly 存储、非对称签名等；</li>
+<li><strong>结合场景选择类型</strong>：高安全场景用 “双令牌 + 服务端黑名单”，轻量场景用 JWT，传统后端用 Session Token。</li>
+</ol>
+<p><strong>替代方案对比</strong>：目前 Passkey（基于 WebAuthn 的无密码认证）是新兴方向，通过设备指纹（如指纹识别、Face ID）替代 Token，安全性更高，但兼容性仍不足（部分旧浏览器 / 设备不支持），短期内无法完全替代 Token。</p>
+<h2 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h2>
+<p>Token 是现代身份认证体系的核心，其价值在于 “无状态、跨域、多端适配”，但安全性依赖 “设计 + 存储” 的双重保障：</p>
+<ul>
+<li><strong>安全设计</strong>：非对称签名、短期有效期、HTTPS 传输、防重放机制、Refresh Token 轮换与吊销；</li>
+<li><strong>存储选择</strong>：SPA 优先 “内存 + HttpOnly Cookie”，移动端优先 “内存 + 加密本地库”，传统后端优先 “HttpOnly Cookie”；</li>
+<li><strong>当下适用性</strong>：Token 仍是主流方案，需结合安全措施使用，未来会与 Passkey 等新兴方案互补，而非被完全替代。</li>
+</ul>
+<h2 id="什么是Token的无状态"><a class="header-anchor" href="#什么是Token的无状态">¶</a>什么是Token的无状态</h2>
+<p>要理解 <strong>Token 的无状态</strong>，首先需要结合 Web 开发中 “状态” 的定义，以及 Token 与传统认证方式（如 Session）的核心差异。简单来说，Token 的无状态是指：<strong>服务器无需存储与 Token 关联的用户状态信息，仅通过 Token 本身携带的内容和预设规则，就能完成身份验证和权限判断</strong>。</p>
+<h3 id="一、先明确：什么是-“状态”？"><a class="header-anchor" href="#一、先明确：什么是-“状态”？">¶</a>一、先明确：什么是 “状态”？</h3>
+<p>在 Web 交互中，“状态” 指的是 <strong>服务器需要记忆的、与用户会话相关的信息</strong>。比如：</p>
+<ul>
+<li>用户是否已登录？</li>
+<li>用户的 ID、角色、权限范围是什么？</li>
+<li>会话的有效期到什么时候？</li>
+</ul>
+<p>传统的 <strong>Session 认证</strong> 是 “有状态” 的典型代表：</p>
+<ol>
+<li>用户登录成功后，服务器会创建一个 Session（包含用户 ID、权限等信息），并生成一个 Session ID；</li>
+<li>服务器需要将 Session 存储在内存、数据库或缓存中（比如 Redis）；</li>
+<li>后续用户请求时，需携带 Session ID，服务器要先通过 Session ID 查询存储的 Session，才能确认用户身份和权限。</li>
+</ol>
+<p>这种模式下，服务器必须 “记住” Session 的存在 —— 这就是 “有状态” 的核心问题：分布式部署时需同步 Session（否则用户换服务器就会重新登录），且服务器存储压力随用户量增长而增加。</p>
+<h3 id="二、Token-的无状态：核心是-“状态藏在-Token-里，而非服务器”"><a class="header-anchor" href="#二、Token-的无状态：核心是-“状态藏在-Token-里，而非服务器”">¶</a>二、Token 的无状态：核心是 “状态藏在 Token 里，而非服务器”</h3>
+<p>Token 的无状态本质是 <strong>将原本需要服务器存储的 “用户会话状态”，直接编码到 Token 本身</strong>。服务器验证时，无需查询任何外部存储（数据库、缓存等），仅通过 Token 自带的信息和预设的验证规则（如签名校验），就能独立完成身份确认。</p>
+<p>以最常用的 <strong>JWT（JSON Web Token）</strong> 为例，其结构完美体现了无状态特性：<br>
+JWT 由三部分组成（用<code>.</code>分隔）：<code>Header.Payload.Signature</code>，每部分都与 “无状态验证” 直接相关：</p>
+<table>
+<thead>
+<tr>
+<th>部分</th>
+<th>作用（核心是 “携带状态 + 确保不可篡改”）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Header</strong></td>
+<td>声明 Token 的类型（如 JWT）和签名算法（如 HS256、RS256），告诉服务器 “用什么规则验证我”。</td>
+</tr>
+<tr>
+<td><strong>Payload</strong></td>
+<td>存储 “用户会话状态” 的核心数据（称为 “Claim”），比如： - <code>sub</code>：用户 ID（Subject） - <code>role</code>：用户角色 - <code>exp</code>：Token 过期时间（Expiration Time） 这些数据是明文编码（Base64URL），服务器可直接解析，无需查库。</td>
+</tr>
+<tr>
+<td><strong>Signature</strong></td>
+<td>用 Header 指定的算法，结合服务器的 “密钥”（对称密钥 HS256）或 “私钥”（非对称密钥 RS256），对 Header 和 Payload 的拼接字符串进行签名。 作用：确保 Token 未被篡改（一旦 Payload 被改，签名会失效）。</td>
+</tr>
+</tbody>
+</table>
+<h4 id="Token-无状态验证的完整流程（以-JWT-为例）："><a class="header-anchor" href="#Token-无状态验证的完整流程（以-JWT-为例）：">¶</a>Token 无状态验证的完整流程（以 JWT 为例）：</h4>
+<ol>
 <li>
-<p>接口的定义</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> (</span><br><span class="line">	IDatasync <span class="keyword">interface</span> &#123;<span class="comment">//定义一个interface（接口类型）的IDatasync</span></span><br><span class="line">		Func1(ctx context.Context) (err <span class="type">error</span>)<span class="comment">//前面的括号是入参，后面的括号是出参</span></span><br><span class="line">		Func2(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">		Func3(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"><span class="comment">//只定义抽象的接口名称，接口入参出参类型</span></span><br><span class="line"><span class="comment">//数据实现层的接口的数量，名称，入参出参都要和这一致</span></span><br></pre></td></tr></table></figure>
+<p><strong>用户登录</strong>：用户提交账号密码，服务器验证通过后，生成 JWT（将用户 ID、角色、过期时间等状态编码到 Payload，用密钥签名），并返回给客户端；</p>
 </li>
 <li>
-<p>全局变量以及单例模式的定义实现</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	localDatasync IDatasync<span class="comment">//定义全局变量</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Datasync</span><span class="params">()</span></span> IDatasync &#123;<span class="comment">//全局访问点，当系统其他地方需要调用接口方法是通过这个方法.Func1(ctx 		     context.Context)</span></span><br><span class="line">	<span class="keyword">if</span> localDatasync == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;implement not found for interface IDatasync, forgot register?&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> localDatasync</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>客户端存储</strong>：客户端将 JWT 存到 LocalStorage、SessionStorage 或 Cookie 中；</p>
 </li>
 <li>
-<p>注册具体方法实现</p>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterDatasync</span><span class="params">(i IDatasync)</span></span> &#123;</span><br><span class="line">	localDatasync = i</span><br><span class="line">&#125;<span class="comment">//将逻辑实现层中的方法具体实现注册进来</span></span><br></pre></td></tr></table></figure>
+<p><strong>后续请求</strong>：客户端每次请求时，在 Header（如<code>Authorization: Bearer &lt;JWT&gt;</code>）中携带 Token；</p>
+</li>
+<li>
+<p>服务器验证（无状态关键步骤）</p>
+<p>：</p>
+<ul>
+<li>服务器接收到 Token 后，先拆分出 Header、Payload、Signature；</li>
+<li>用 Header 指定的算法和自己的密钥，重新计算 Header+Payload 的签名，并与 Token 中的 Signature 对比（校验是否被篡改）；</li>
+<li>解析 Payload，检查<code>exp</code>字段（判断 Token 是否过期）；</li>
+<li>从 Payload 中直接读取用户 ID、角色等信息，完成身份和权限判断。</li>
+</ul>
+</li>
+</ol>
+<p>整个过程中，服务器 <strong>没有存储任何与该 Token 相关的信息</strong>—— 所有必要的 “状态” 都在 Token 里，验证仅依赖 Token 本身和服务器预设的密钥。这就是 Token 无状态的核心。</p>
+<h3 id="三、Token-无状态的关键特性（与有状态对比）"><a class="header-anchor" href="#三、Token-无状态的关键特性（与有状态对比）">¶</a>三、Token 无状态的关键特性（与有状态对比）</h3>
+<ol>
+<li><strong>服务器无需存储会话信息</strong><br>
+无需像 Session 那样维护 Session 池，减轻服务器存储压力（尤其适合高并发、大用户量场景）。</li>
+<li><strong>天然支持分布式 / 微服务</strong><br>
+由于服务器无需共享会话状态，多台服务器（或微服务节点）只要持有相同的密钥，就能独立验证 Token。用户请求无论路由到哪台服务器，都能正常通过验证，无需同步 Session（解决了 Session 的分布式痛点）。</li>
+<li><strong>验证过程 “自包含”</strong><br>
+验证不依赖外部存储（数据库、缓存），仅需本地计算（签名校验、过期判断），响应速度更快。</li>
+<li><strong>状态信息的 “只读性”（依赖签名）</strong><br>
+虽然 Payload 是 Base64URL 编码（可解码），但由于 Signature 的存在，客户端无法篡改 Payload 中的状态信息（一旦篡改，服务器校验签名会失败），确保了状态的可信度。</li>
+</ol>
+<h3 id="四、常见误区：“无状态”≠“不可控”"><a class="header-anchor" href="#四、常见误区：“无状态”≠“不可控”">¶</a>四、常见误区：“无状态”≠“不可控”</h3>
+<p>很多人误以为 Token 的无状态意味着 “一旦签发就无法撤销”（比如用户登出后，Token 仍在有效期内），但这并非 “无状态” 本身的问题，而是原生 JWT 的局限性。实际上，我们可以通过 “补充机制” 在保持核心无状态的同时，实现可控性：</p>
+<ul>
+<li><strong>短期 Token + 刷新 Token</strong>：将访问 Token 设为短期（如 15 分钟），过期后用长期的 “刷新 Token” 重新获取，即使访问 Token 泄露，风险窗口也很小；</li>
+<li><strong>Token 黑名单</strong>：对需要紧急撤销的 Token（如用户登出、账号异常），可将其加入黑名单（存储在 Redis 中，设置与 Token 过期时间一致的 TTL）。服务器验证时，先查黑名单（仅这一步依赖外部存储，但核心验证仍无状态），再做签名和过期校验。</li>
+</ul>
+<h3 id="五、总结"><a class="header-anchor" href="#五、总结">¶</a>五、总结</h3>
+<p>Token 的无状态是其核心优势，本质是 <strong>将 “服务器需记忆的会话状态” 转移到 Token 本身，通过签名确保状态不可篡改，服务器仅靠 Token 和密钥就能独立完成验证</strong>。这种特性让 Token 在分布式系统、微服务架构中极具优势，也大幅降低了服务器的存储和同步压力。</p>
+<p>简单来说：<strong>Session 是 “服务器记着你是谁”，Token 是 “你带着证明自己是谁的卡片，服务器看卡片就知道”</strong>—— 这张 “卡片” 里的信息，就是 Token 无状态的核心。</p>
+<h2 id="前后端使用token的生成，传递以及验证的代码"><a class="header-anchor" href="#前后端使用token的生成，传递以及验证的代码">¶</a>前后端使用token的生成，传递以及验证的代码</h2>
+<h3 id="后端实现（Node-js-Express）"><a class="header-anchor" href="#后端实现（Node-js-Express）">¶</a>后端实现（Node.js + Express）</h3>
+<p>后端将提供登录接口（生成 token）和一个受保护的接口（验证 token）。</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> jwt = <span class="built_in">require</span>(<span class="string">&#x27;jsonwebtoken&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> cors = <span class="built_in">require</span>(<span class="string">&#x27;cors&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 中间件</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">cors</span>());</span><br><span class="line">app.<span class="title function_">use</span>(express.<span class="title function_">json</span>()); <span class="comment">// 解析JSON请求体</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 密钥（实际生产环境中应存储在环境变量中）</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">SECRET_KEY</span> = <span class="string">&#x27;your-secret-key-keep-it-safe&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模拟用户数据库</span></span><br><span class="line"><span class="keyword">const</span> users = [</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">username</span>: <span class="string">&#x27;user1&#x27;</span>, <span class="attr">password</span>: <span class="string">&#x27;password1&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">username</span>: <span class="string">&#x27;user2&#x27;</span>, <span class="attr">password</span>: <span class="string">&#x27;password2&#x27;</span> &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 登录接口 - 生成token</span></span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">&#x27;/login&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; username, password &#125; = req.<span class="property">body</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 查找用户</span></span><br><span class="line">  <span class="keyword">const</span> user = users.<span class="title function_">find</span>(<span class="function"><span class="params">u</span> =&gt;</span> u.<span class="property">username</span> === username &amp;&amp; u.<span class="property">password</span> === password);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (!user) &#123;</span><br><span class="line">    <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">401</span>).<span class="title function_">json</span>(&#123; <span class="attr">message</span>: <span class="string">&#x27;用户名或密码错误&#x27;</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 生成JWT令牌</span></span><br><span class="line">  <span class="keyword">const</span> token = jwt.<span class="title function_">sign</span>(</span><br><span class="line">    &#123; <span class="attr">userId</span>: user.<span class="property">id</span>, <span class="attr">username</span>: user.<span class="property">username</span> &#125;, <span class="comment">//  payload</span></span><br><span class="line">    <span class="variable constant_">SECRET_KEY</span>,                                   <span class="comment">//  密钥</span></span><br><span class="line">    &#123; <span class="attr">expiresIn</span>: <span class="string">&#x27;1h&#x27;</span> &#125;                            <span class="comment">//  过期时间</span></span><br><span class="line">  );</span><br><span class="line">  </span><br><span class="line">  res.<span class="title function_">json</span>(&#123; </span><br><span class="line">    <span class="attr">message</span>: <span class="string">&#x27;登录成功&#x27;</span>,</span><br><span class="line">    <span class="attr">token</span>: token,</span><br><span class="line">    <span class="attr">user</span>: &#123; <span class="attr">id</span>: user.<span class="property">id</span>, <span class="attr">username</span>: user.<span class="property">username</span> &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 验证token的中间件</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">authenticateToken</span> = (<span class="params">req, res, next</span>) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 从请求头获取token</span></span><br><span class="line">  <span class="keyword">const</span> authHeader = req.<span class="property">headers</span>[<span class="string">&#x27;authorization&#x27;</span>];</span><br><span class="line">  <span class="keyword">const</span> token = authHeader &amp;&amp; authHeader.<span class="title function_">split</span>(<span class="string">&#x27; &#x27;</span>)[<span class="number">1</span>]; <span class="comment">// Bearer TOKEN</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (!token) &#123;</span><br><span class="line">    <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">401</span>).<span class="title function_">json</span>(&#123; <span class="attr">message</span>: <span class="string">&#x27;未提供token&#x27;</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 验证token</span></span><br><span class="line">  jwt.<span class="title function_">verify</span>(token, <span class="variable constant_">SECRET_KEY</span>, <span class="function">(<span class="params">err, user</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (err) &#123;</span><br><span class="line">      <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">403</span>).<span class="title function_">json</span>(&#123; <span class="attr">message</span>: <span class="string">&#x27;token无效或已过期&#x27;</span> &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    req.<span class="property">user</span> = user;</span><br><span class="line">    <span class="title function_">next</span>();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 受保护的接口 - 需要验证token</span></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/protected&#x27;</span>, authenticateToken, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  res.<span class="title function_">json</span>(&#123;</span><br><span class="line">    <span class="attr">message</span>: <span class="string">&#x27;这是受保护的数据&#x27;</span>,</span><br><span class="line">    <span class="attr">user</span>: req.<span class="property">user</span>,</span><br><span class="line">    <span class="attr">data</span>: [</span><br><span class="line">      &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">name</span>: <span class="string">&#x27;敏感数据1&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">name</span>: <span class="string">&#x27;敏感数据2&#x27;</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动服务器</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">PORT</span> = <span class="number">3000</span>;</span><br><span class="line">app.<span class="title function_">listen</span>(<span class="variable constant_">PORT</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`服务器运行在 http://localhost:<span class="subst">$&#123;PORT&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="前端实现（HTML-JavaScript）"><a class="header-anchor" href="#前端实现（HTML-JavaScript）">¶</a>前端实现（HTML + JavaScript）</h3>
+<p>前端页面将包含登录表单和获取受保护数据的功能。</p>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh-CN&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Token认证示例<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.tailwindcss.com&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">&quot;https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">&quot;text/tailwindcss&quot;</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">        <span class="keyword">@layer</span> utilities &#123;</span></span><br><span class="line"><span class="language-css">            <span class="selector-class">.content-auto</span> &#123;</span></span><br><span class="line"><span class="language-css">                <span class="attribute">content-visibility</span>: auto;</span></span><br><span class="line"><span class="language-css">            &#125;</span></span><br><span class="line"><span class="language-css">            <span class="selector-class">.card-shadow</span> &#123;</span></span><br><span class="line"><span class="language-css">                <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">10px</span> <span class="number">15px</span> -<span class="number">3px</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.1</span>), <span class="number">0</span> <span class="number">4px</span> <span class="number">6px</span> -<span class="number">2px</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.05</span>);</span></span><br><span class="line"><span class="language-css">            &#125;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">class</span>=<span class="string">&quot;bg-gray-100 min-h-screen&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container mx-auto px-4 py-12 max-w-4xl&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h1</span> <span class="attr">class</span>=<span class="string">&quot;text-3xl font-bold text-center mb-10 text-gray-800&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-key mr-2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>Token认证示例</span><br><span class="line">        <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;grid md:grid-cols-2 gap-8&quot;</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 登录表单 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;bg-white rounded-lg p-6 card-shadow&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span> <span class="attr">class</span>=<span class="string">&quot;text-xl font-semibold mb-4 text-gray-700&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-sign-in mr-2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>登录</span><br><span class="line">                <span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">&quot;loginForm&quot;</span> <span class="attr">class</span>=<span class="string">&quot;space-y-4&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;username&quot;</span> <span class="attr">class</span>=<span class="string">&quot;block text-sm font-medium text-gray-700&quot;</span>&gt;</span>用户名<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">id</span>=<span class="string">&quot;username&quot;</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> </span></span><br><span class="line"><span class="tag">                               <span class="attr">class</span>=<span class="string">&quot;mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500&quot;</span></span></span><br><span class="line"><span class="tag">                               <span class="attr">required</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;password&quot;</span> <span class="attr">class</span>=<span class="string">&quot;block text-sm font-medium text-gray-700&quot;</span>&gt;</span>密码<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">id</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> </span></span><br><span class="line"><span class="tag">                               <span class="attr">class</span>=<span class="string">&quot;mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500&quot;</span></span></span><br><span class="line"><span class="tag">                               <span class="attr">required</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> </span></span><br><span class="line"><span class="tag">                            <span class="attr">class</span>=<span class="string">&quot;w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500&quot;</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-paper-plane mr-1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>登录</span><br><span class="line">                    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;loginMessage&quot;</span> <span class="attr">class</span>=<span class="string">&quot;mt-4 text-sm hidden&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;tokenDisplay&quot;</span> <span class="attr">class</span>=<span class="string">&quot;mt-4 text-xs bg-gray-100 p-3 rounded break-all hidden&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">strong</span>&gt;</span>Token:<span class="tag">&lt;/<span class="name">strong</span>&gt;</span> <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">&quot;tokenValue&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">&lt;!-- 受保护数据区域 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;bg-white rounded-lg p-6 card-shadow&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span> <span class="attr">class</span>=<span class="string">&quot;text-xl font-semibold mb-4 text-gray-700&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-lock mr-2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>受保护数据</span><br><span class="line">                <span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;fetchDataBtn&quot;</span> </span></span><br><span class="line"><span class="tag">                        <span class="attr">class</span>=<span class="string">&quot;w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 mb-4&quot;</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">disabled</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-download mr-1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>获取受保护数据</span><br><span class="line">                <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;dataMessage&quot;</span> <span class="attr">class</span>=<span class="string">&quot;mt-4 text-sm hidden&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;dataDisplay&quot;</span> <span class="attr">class</span>=<span class="string">&quot;mt-4 text-sm overflow-auto max-h-60 hidden&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">pre</span> <span class="attr">id</span>=<span class="string">&quot;dataContent&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">&lt;!-- 状态信息 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;mt-8 bg-white rounded-lg p-6 card-shadow&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">h2</span> <span class="attr">class</span>=<span class="string">&quot;text-xl font-semibold mb-4 text-gray-700&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-info-circle mr-2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>状态信息</span><br><span class="line">            <span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;status&quot;</span> <span class="attr">class</span>=<span class="string">&quot;text-gray-600&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>请先登录获取token，然后才能访问受保护的数据。<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// DOM元素</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> loginForm = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;loginForm&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> loginMessage = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;loginMessage&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> tokenDisplay = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;tokenDisplay&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> tokenValue = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;tokenValue&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> fetchDataBtn = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;fetchDataBtn&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> dataMessage = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;dataMessage&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> dataDisplay = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;dataDisplay&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> dataContent = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;dataContent&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> statusElement = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;status&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 后端API地址</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> <span class="variable constant_">API_URL</span> = <span class="string">&#x27;http://localhost:3000&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 检查本地存储中是否有token</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> storedToken = <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&#x27;authToken&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (storedToken) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">updateUIWithToken</span>(storedToken);</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 登录表单提交</span></span></span><br><span class="line"><span class="language-javascript">        loginForm.<span class="title function_">addEventListener</span>(<span class="string">&#x27;submit&#x27;</span>, <span class="title function_">async</span> (e) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">            e.<span class="title function_">preventDefault</span>();</span></span><br><span class="line"><span class="language-javascript">            </span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> username = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;username&#x27;</span>).<span class="property">value</span>;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> password = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;password&#x27;</span>).<span class="property">value</span>;</span></span><br><span class="line"><span class="language-javascript">            </span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">try</span> &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">`<span class="subst">$&#123;API_URL&#125;</span>/login`</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">headers</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                        <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span></span><br><span class="line"><span class="language-javascript">                    &#125;,</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; username, password &#125;)</span></span><br><span class="line"><span class="language-javascript">                &#125;);</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="title function_">json</span>();</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">if</span> (!response.<span class="property">ok</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(data.<span class="property">message</span> || <span class="string">&#x27;登录失败&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                &#125;</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="comment">// 存储token</span></span></span><br><span class="line"><span class="language-javascript">                <span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&#x27;authToken&#x27;</span>, data.<span class="property">token</span>);</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">updateUIWithToken</span>(data.<span class="property">token</span>);</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">showMessage</span>(loginMessage, data.<span class="property">message</span>, <span class="string">&#x27;green&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                statusElement.<span class="property">innerHTML</span> = <span class="string">`&lt;p class=&quot;text-green-600&quot;&gt;已登录为: <span class="subst">$&#123;data.user.username&#125;</span>&lt;/p&gt;`</span>;</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">            &#125; <span class="keyword">catch</span> (error) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">showMessage</span>(loginMessage, error.<span class="property">message</span>, <span class="string">&#x27;red&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                statusElement.<span class="property">innerHTML</span> = <span class="string">`&lt;p class=&quot;text-red-600&quot;&gt;登录失败: <span class="subst">$&#123;error.message&#125;</span>&lt;/p&gt;`</span>;</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;);</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 获取受保护数据</span></span></span><br><span class="line"><span class="language-javascript">        fetchDataBtn.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="title function_">async</span> () =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> token = <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&#x27;authToken&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            </span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">if</span> (!token) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">showMessage</span>(dataMessage, <span class="string">&#x27;未找到token，请先登录&#x27;</span>, <span class="string">&#x27;red&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">return</span>;</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">            </span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">try</span> &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">`<span class="subst">$&#123;API_URL&#125;</span>/protected`</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">method</span>: <span class="string">&#x27;GET&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">headers</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                        <span class="string">&#x27;Authorization&#x27;</span>: <span class="string">`Bearer <span class="subst">$&#123;token&#125;</span>`</span></span></span><br><span class="line"><span class="language-javascript">                    &#125;</span></span><br><span class="line"><span class="language-javascript">                &#125;);</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="title function_">json</span>();</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">if</span> (!response.<span class="property">ok</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(data.<span class="property">message</span> || <span class="string">&#x27;获取数据失败&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                &#125;</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">showMessage</span>(dataMessage, <span class="string">&#x27;成功获取受保护数据&#x27;</span>, <span class="string">&#x27;green&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                dataContent.<span class="property">textContent</span> = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data, <span class="literal">null</span>, <span class="number">2</span>);</span></span><br><span class="line"><span class="language-javascript">                dataDisplay.<span class="property">classList</span>.<span class="title function_">remove</span>(<span class="string">&#x27;hidden&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                statusElement.<span class="property">innerHTML</span> = <span class="string">`&lt;p class=&quot;text-green-600&quot;&gt;已成功使用token访问受保护资源&lt;/p&gt;`</span>;</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">            &#125; <span class="keyword">catch</span> (error) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">showMessage</span>(dataMessage, error.<span class="property">message</span>, <span class="string">&#x27;red&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                dataDisplay.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;hidden&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="comment">// 如果token无效，清除存储</span></span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">if</span> (error.<span class="property">message</span>.<span class="title function_">includes</span>(<span class="string">&#x27;token无效&#x27;</span>) || error.<span class="property">message</span>.<span class="title function_">includes</span>(<span class="string">&#x27;过期&#x27;</span>)) &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="variable language_">localStorage</span>.<span class="title function_">removeItem</span>(<span class="string">&#x27;authToken&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                    <span class="title function_">updateUIWithoutToken</span>();</span></span><br><span class="line"><span class="language-javascript">                    statusElement.<span class="property">innerHTML</span> = <span class="string">`&lt;p class=&quot;text-red-600&quot;&gt;<span class="subst">$&#123;error.message&#125;</span>，请重新登录&lt;/p&gt;`</span>;</span></span><br><span class="line"><span class="language-javascript">                &#125;</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;);</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 辅助函数：显示消息</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> <span class="title function_">showMessage</span>(<span class="params">element, text, color</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            element.<span class="property">textContent</span> = text;</span></span><br><span class="line"><span class="language-javascript">            element.<span class="property">classList</span>.<span class="title function_">remove</span>(<span class="string">&#x27;hidden&#x27;</span>, <span class="string">&#x27;text-green-600&#x27;</span>, <span class="string">&#x27;text-red-600&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            element.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">`text-<span class="subst">$&#123;color&#125;</span>-600`</span>);</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 辅助函数：使用token更新UI</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> <span class="title function_">updateUIWithToken</span>(<span class="params">token</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            tokenValue.<span class="property">textContent</span> = token;</span></span><br><span class="line"><span class="language-javascript">            tokenDisplay.<span class="property">classList</span>.<span class="title function_">remove</span>(<span class="string">&#x27;hidden&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            fetchDataBtn.<span class="property">disabled</span> = <span class="literal">false</span>;</span></span><br><span class="line"><span class="language-javascript">            loginForm.<span class="title function_">reset</span>();</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 辅助函数：没有token时更新UI</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> <span class="title function_">updateUIWithoutToken</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            tokenDisplay.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;hidden&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            fetchDataBtn.<span class="property">disabled</span> = <span class="literal">true</span>;</span></span><br><span class="line"><span class="language-javascript">            dataDisplay.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;hidden&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="代码说明"><a class="header-anchor" href="#代码说明">¶</a>代码说明</h3>
+<ul>
+<li><strong>后端</strong>:
+<ul>
+<li>使用 Express 框架创建简单的 API 服务</li>
+<li><code>/login</code>接口验证用户凭据并生成 JWT 令牌</li>
+<li><code>authenticateToken</code>中间件用于验证请求中的 token</li>
+<li><code>/protected</code>接口是受保护的资源，只有携带有效 token 的请求才能访问</li>
+</ul>
+</li>
+<li><strong>前端</strong>:
+<ul>
+<li>提供登录表单用于获取 token</li>
+<li>将获取到的 token 存储在 localStorage 中</li>
+<li>请求受保护资源时在 Authorization 头中携带 token</li>
+<li>处理各种响应和错误情况，更新 UI 显示状态</li>
+</ul>
 </li>
 </ul>
-<h3 id="逻辑实现层的具体实现"><a class="header-anchor" href="#逻辑实现层的具体实现">¶</a>逻辑实现层的具体实现</h3>
-<h4 id="接口实现的注册"><a class="header-anchor" href="#接口实现的注册">¶</a>接口实现的注册</h4>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> sDatasync <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="comment">// sDatasyncNew 函数用于创建并返回一个 *sDatasync 类型的实例。</span></span><br><span class="line"><span class="comment">// 从代码中的 init 函数可以看出，该函数创建的实例会被传递给 service.RegisterDatasync 方法，</span></span><br><span class="line"><span class="comment">// 这表明 sDatasync 结构体实现了 service.IDatasync 接口，</span></span><br><span class="line"><span class="comment">// 此函数创建的实例会被注册到 service 模块中，供后续使用。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sDatasyncNew</span><span class="params">()</span></span> *sDatasync &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;sDatasync&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 此方法是将 sDatasync 实例注册到 service 模块中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	service.RegisterDatasync(sDatasyncNew())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><mark>注意</mark>由于GO语言是包级作用域，因此如果接口过多，要分成多分文件去写，那么在同一包下的其他文件不用实现上面的注册，直接进行接口实现就行</p>
-<h4 id="接口的实现"><a class="header-anchor" href="#接口的实现">¶</a>接口的实现</h4>
-<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在 Go 语言里，`func` 后面的 `(s *sDatasync)` 被称作方法接收器（Method Receiver），</span></span><br><span class="line"><span class="comment">// 它表明这个函数是 `sDatasync` 结构体的一个方法。</span></span><br><span class="line"><span class="comment">// `*sDatasync` 表示使用指针接收器，意味着该方法可以修改 `sDatasync` 结构体实例的内容，</span></span><br><span class="line"><span class="comment">// 同时避免在调用方法时复制结构体实例，提高性能。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *sDatasync)</span></span> Func1(ctx context.Context) (err <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="comment">//获取所有用户信息</span></span><br><span class="line">	userInfoOut, err := proxy.GetUserAll(ctx)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> userProfileInfos []*model.UserProfileInfo</span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> userInfoOut &#123;</span><br><span class="line">		<span class="comment">//数据格式的转换</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 使用 json.Marshal 将 userProfiles 转换为 JSON 字符串</span></span><br><span class="line">	jsonData, err := json.Marshal(model.CustDataRequest&#123;</span><br><span class="line">		CustDataVo: userProfileInfos,</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;Error converting to JSON:&quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//对参数进行ASE进行加密</span></span><br><span class="line">    aesCrypto, err := utils.数据加密()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Log().Errorf(context.Background(), <span class="string">&quot;创建默认AES加解密工具失败: %v&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	encryptedText, err := aesCrypto.Encrypt(<span class="type">string</span>(jsonData))</span><br><span class="line">	outData, err := utils.发送数据(ctx, aesCrypto, consts.UploadUserList, encryptedText)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;<span class="comment">//这里传入的aesCrypto作为解密工具，负责将目标服务器发送的响应解密</span></span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 发送到目标地址，使用明文数据</span></span><br><span class="line">	<span class="comment">// outData, err := utils.DoPost(ctx, nil, consts.UploadUserList, encryptedText)</span></span><br><span class="line">	<span class="comment">// if err != nil &#123;</span></span><br><span class="line">	<span class="comment">// 	return err</span></span><br><span class="line">	<span class="comment">// &#125;</span></span><br><span class="line">	g.Log().Debugf(ctx, <span class="string">&quot;返回结果:%v&quot;</span>, outData)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>代码中提到的utils包主要作用是实现一些非获取数据的其他功能，如加解密数据，数据发送等</p>
-<h4 id="目标服务器地址以及请求api的定义"><a class="header-anchor" href="#目标服务器地址以及请求api的定义">¶</a>目标服务器地址以及请求api的定义</h4>
-<p>通过const定义相关常量</p>
-<h6 id=""><a class="header-anchor" href="#">¶</a></h6>
+<p>这个示例展示了 token 认证的基本流程，在实际生产环境中，还需要考虑更多安全措施，如使用 HTTPS、更安全的 token 存储方式、更复杂的密钥管理等。</p>
 ]]></content>
       <categories>
-        <category>go</category>
-        <category>接口设计</category>
+        <category>网络安全</category>
       </categories>
       <tags>
-        <tag>go</tag>
-        <tag>接口设计</tag>
+        <tag>Token</tag>
+        <tag>网络安全</tag>
+        <tag>sagooiot</tag>
+        <tag>博客搭建</tag>
       </tags>
   </entry>
   <entry>
@@ -320,6 +407,89 @@ Java 8+ 的 <code>CompletableFuture</code> 支持超时机制（<code>orTimeout(
       </categories>
       <tags>
         <tag>go</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>git快速上手</title>
+    <url>/2025/08/26/git%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/</url>
+    <content><![CDATA[<p>要在本地创建Git仓库仓库并连接到远程仓库 <code>git@github.com:xxxx/xxxxxxxx.git</code>，可以按照以下步骤操作：</p>
+<span id="more"></span>
+<h5 id="1-首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录："><a class="header-anchor" href="#1-首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：">¶</a>1.首先在本地选择一个目录作为仓库存放位置，打开终端并进入该目录：</h5>
+<p><code>cd /path/to/your/local/directory</code></p>
+<h5 id="2-初始化本地Git仓库："><a class="header-anchor" href="#2-初始化本地Git仓库：">¶</a>2.初始化本地Git仓库：</h5>
+<p><code>  git init</code></p>
+<h5 id="3-将本地仓库与远程仓库关联："><a class="header-anchor" href="#3-将本地仓库与远程仓库关联：">¶</a>3.将本地仓库与远程仓库关联：</h5>
+<p><code> git remote add origin git@github.com:xxxxx/xxxxxx.git</code></p>
+<p>验证远程仓库连接是否成功：</p>
+<p><code> git remote -v</code></p>
+<p>如果成功，会显示类似以下内容：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (fetch) </span><br><span class="line">origin git@github.com:xxxxx/xxxxxxx.git (push)</span><br></pre></td></tr></table></figure>
+<p>从远程仓库拉取代码（如果远程已有内容）：</p>
+<p><code>git pull origin main</code></p>
+<p>(如果默认分支不是main，可以替换为实际的分支名，如master）</p>
+<h5 id="4-添加到本地工作区："><a class="header-anchor" href="#4-添加到本地工作区：">¶</a>4.添加到本地工作区：</h5>
+<p><code> git add</code> .</p>
+<h5 id="5-提交给本地仓库："><a class="header-anchor" href="#5-提交给本地仓库：">¶</a>5.提交给本地仓库：</h5>
+<p><code>git commit -m &quot;这是提交的描述内容&quot;</code></p>
+<h5 id="6-提交到远程仓库："><a class="header-anchor" href="#6-提交到远程仓库：">¶</a>6.提交到远程仓库：</h5>
+<p><code>git push origin master (master对应提交的远程仓库分支）</code></p>
+<p>创建并切换本地仓库分支：<br>
+<code>git checkout -b dev</code></p>
+<p>提交当前分支：</p>
+<p><code>git push -u origin dev</code></p>
+<h5 id="7-切换本地分支："><a class="header-anchor" href="#7-切换本地分支：">¶</a>7.切换本地分支：</h5>
+<p><code>git checkout master </code></p>
+<h5 id="8-合并分支："><a class="header-anchor" href="#8-合并分支：">¶</a>8.合并分支：</h5>
+<p>在master分支合并dev分支，合并之后dev分支仍然存在<br>
+<code>git merge dev</code></p>
+<p>然后<code>git push</code>提交</p>
+]]></content>
+      <categories>
+        <category>git</category>
+      </categories>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>go项目发送接口设计流程</title>
+    <url>/2025/08/29/go%E9%A1%B9%E7%9B%AE%E7%9A%84%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1%E6%B5%81%E7%A8%8B/</url>
+    <content><![CDATA[<h3 id="Go发送接口设计的整体结构"><a class="header-anchor" href="#Go发送接口设计的整体结构">¶</a>Go发送接口设计的整体结构</h3>
+<img src="/img/屏幕截图 2025-08-29 104725.png" alt="678" />
+<h3 id="service层实现"><a class="header-anchor" href="#service层实现">¶</a>service层实现</h3>
+<p>分为以下三个部分</p>
+<ul>
+<li>
+<p>接口的定义</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> (</span><br><span class="line">	IDatasync <span class="keyword">interface</span> &#123;<span class="comment">//定义一个interface（接口类型）的IDatasync</span></span><br><span class="line">		Func1(ctx context.Context) (err <span class="type">error</span>)<span class="comment">//前面的括号是入参，后面的括号是出参</span></span><br><span class="line">		Func2(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">		Func3(ctx context.Context) (err <span class="type">error</span>)</span><br><span class="line">	&#125;</span><br><span class="line">)</span><br><span class="line"><span class="comment">//只定义抽象的接口名称，接口入参出参类型</span></span><br><span class="line"><span class="comment">//数据实现层的接口的数量，名称，入参出参都要和这一致</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>全局变量以及单例模式的定义实现</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	localDatasync IDatasync<span class="comment">//定义全局变量</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Datasync</span><span class="params">()</span></span> IDatasync &#123;<span class="comment">//全局访问点，当系统其他地方需要调用接口方法是通过这个方法.Func1(ctx 		     context.Context)</span></span><br><span class="line">	<span class="keyword">if</span> localDatasync == <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="built_in">panic</span>(<span class="string">&quot;implement not found for interface IDatasync, forgot register?&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> localDatasync</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p>注册具体方法实现</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">RegisterDatasync</span><span class="params">(i IDatasync)</span></span> &#123;</span><br><span class="line">	localDatasync = i</span><br><span class="line">&#125;<span class="comment">//将逻辑实现层中的方法具体实现注册进来</span></span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="逻辑实现层的具体实现"><a class="header-anchor" href="#逻辑实现层的具体实现">¶</a>逻辑实现层的具体实现</h3>
+<h4 id="接口实现的注册"><a class="header-anchor" href="#接口实现的注册">¶</a>接口实现的注册</h4>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> sDatasync <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="comment">// sDatasyncNew 函数用于创建并返回一个 *sDatasync 类型的实例。</span></span><br><span class="line"><span class="comment">// 从代码中的 init 函数可以看出，该函数创建的实例会被传递给 service.RegisterDatasync 方法，</span></span><br><span class="line"><span class="comment">// 这表明 sDatasync 结构体实现了 service.IDatasync 接口，</span></span><br><span class="line"><span class="comment">// 此函数创建的实例会被注册到 service 模块中，供后续使用。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">sDatasyncNew</span><span class="params">()</span></span> *sDatasync &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;sDatasync&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 此方法是将 sDatasync 实例注册到 service 模块中</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	service.RegisterDatasync(sDatasyncNew())</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><mark>注意</mark>由于GO语言是包级作用域，因此如果接口过多，要分成多分文件去写，那么在同一包下的其他文件不用实现上面的注册，直接进行接口实现就行</p>
+<h4 id="接口的实现"><a class="header-anchor" href="#接口的实现">¶</a>接口的实现</h4>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在 Go 语言里，`func` 后面的 `(s *sDatasync)` 被称作方法接收器（Method Receiver），</span></span><br><span class="line"><span class="comment">// 它表明这个函数是 `sDatasync` 结构体的一个方法。</span></span><br><span class="line"><span class="comment">// `*sDatasync` 表示使用指针接收器，意味着该方法可以修改 `sDatasync` 结构体实例的内容，</span></span><br><span class="line"><span class="comment">// 同时避免在调用方法时复制结构体实例，提高性能。</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(s *sDatasync)</span></span> Func1(ctx context.Context) (err <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="comment">//获取所有用户信息</span></span><br><span class="line">	userInfoOut, err := proxy.GetUserAll(ctx)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">var</span> userProfileInfos []*model.UserProfileInfo</span><br><span class="line">	<span class="keyword">for</span> _, v := <span class="keyword">range</span> userInfoOut &#123;</span><br><span class="line">		<span class="comment">//数据格式的转换</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 使用 json.Marshal 将 userProfiles 转换为 JSON 字符串</span></span><br><span class="line">	jsonData, err := json.Marshal(model.CustDataRequest&#123;</span><br><span class="line">		CustDataVo: userProfileInfos,</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;Error converting to JSON:&quot;</span>, err)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//对参数进行ASE进行加密</span></span><br><span class="line">    aesCrypto, err := utils.数据加密()</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Log().Errorf(context.Background(), <span class="string">&quot;创建默认AES加解密工具失败: %v&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	encryptedText, err := aesCrypto.Encrypt(<span class="type">string</span>(jsonData))</span><br><span class="line">	outData, err := utils.发送数据(ctx, aesCrypto, consts.UploadUserList, encryptedText)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;<span class="comment">//这里传入的aesCrypto作为解密工具，负责将目标服务器发送的响应解密</span></span><br><span class="line">		<span class="keyword">return</span> err</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 发送到目标地址，使用明文数据</span></span><br><span class="line">	<span class="comment">// outData, err := utils.DoPost(ctx, nil, consts.UploadUserList, encryptedText)</span></span><br><span class="line">	<span class="comment">// if err != nil &#123;</span></span><br><span class="line">	<span class="comment">// 	return err</span></span><br><span class="line">	<span class="comment">// &#125;</span></span><br><span class="line">	g.Log().Debugf(ctx, <span class="string">&quot;返回结果:%v&quot;</span>, outData)</span><br><span class="line">	<span class="keyword">return</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>代码中提到的utils包主要作用是实现一些非获取数据的其他功能，如加解密数据，数据发送等</p>
+<h4 id="目标服务器地址以及请求api的定义"><a class="header-anchor" href="#目标服务器地址以及请求api的定义">¶</a>目标服务器地址以及请求api的定义</h4>
+<p>通过const定义相关常量</p>
+<h6 id=""><a class="header-anchor" href="#">¶</a></h6>
+]]></content>
+      <categories>
+        <category>go</category>
+        <category>接口设计</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+        <tag>接口设计</tag>
       </tags>
   </entry>
   <entry>
@@ -435,6 +605,201 @@ Java 8+ 的 <code>CompletableFuture</code> 支持超时机制（<code>orTimeout(
       </categories>
       <tags>
         <tag>博客搭建</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>goframe框架介绍</title>
+    <url>/2025/08/31/goframe%E6%A1%86%E6%9E%B6%E4%BB%8B%E7%BB%8D/</url>
+    <content><![CDATA[<p>Go（又称 Golang）是 Google 开发的静态强类型编程语言，而 GoFrame（简称 gf）是基于 Go 语言的一款现代化、企业级开发框架。二者的关系类似于 “JavaScript 与 Vue.js”“Java 与 Spring”——<strong>Go 是基础语言，GoFrame 是基于 Go 语言的上层框架</strong>，用于简化 Go 语言的工程化开发。</p>
+<h3 id="一、区别与联系"><a class="header-anchor" href="#一、区别与联系">¶</a>一、区别与联系</h3>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Go（语言）</th>
+<th>GoFrame（框架）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>定位</strong></td>
+<td>编程语言，提供语法、 runtime、标准库等基础能力</td>
+<td>基于 Go 的开发框架，封装了 Web、ORM、缓存等上层组件</td>
+</tr>
+<tr>
+<td><strong>依赖关系</strong></td>
+<td>独立存在，是 GoFrame 的基础</td>
+<td>完全依赖 Go 语言，无法脱离 Go 运行</td>
+</tr>
+<tr>
+<td><strong>核心目标</strong></td>
+<td>提供简洁、高效、并发安全的语言特性</td>
+<td>提供工程化开发规范和工具链，简化复杂业务开发</td>
+</tr>
+<tr>
+<td><strong>使用场景</strong></td>
+<td>所有 Go 语言能覆盖的领域（后端、云原生等）</td>
+<td>主要用于快速开发企业级应用（Web API、微服务等）</td>
+</tr>
+</tbody>
+</table>
+<h3 id="二、语法区别"><a class="header-anchor" href="#二、语法区别">¶</a>二、语法区别</h3>
+<p>GoFrame<strong>不改变 Go 语言本身的语法</strong>（它是框架而非语言扩展），但在<strong>代码规范、开发模式</strong>上有自己的约定，与原生 Go 开发相比有以下差异：</p>
+<ol>
+<li>
+<p><strong>代码组织规范</strong><br>
+原生 Go 没有强制的项目结构，而 GoFrame 通过<code>gf cli</code>工具生成标准化项目结构（如<code>api</code>、<code>model</code>、<code>service</code>分层），强制约束代码组织方式，便于团队协作。</p>
+</li>
+<li>
+<p><strong>结构体标签（Tag）扩展</strong><br>
+GoFrame 定义了专属的结构体标签（如<code>v:&quot;required&quot;</code>用于参数验证、<code>orm:&quot;name&quot;</code>用于数据库映射），这些标签是框架层面的约定，而非 Go 语言原生语法：</p>
+<p>go</p>
+<p>运行</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// GoFrame中用于参数验证和ORM映射的结构体</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">    Id    <span class="type">int</span>    <span class="string">`v:&quot;required&quot; orm:&quot;id,pk&quot;`</span>  <span class="comment">// gf的验证和ORM标签</span></span><br><span class="line">    Name  <span class="type">string</span> <span class="string">`v:&quot;required|length:2,10&quot;`</span>   <span class="comment">// gf的参数验证规则</span></span><br><span class="line">    Age   <span class="type">int</span>    <span class="string">`v:&quot;min:0|max:150&quot;`</span>          <span class="comment">// 原生Go不识别这些标签，由gf框架解析</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>函数命名与接口设计</strong><br>
+GoFrame 遵循 “<code>CamelCase</code>+ 前缀约定”（如<code>ghttp.Get</code>、<code>gorm.Insert</code>），且大量使用接口抽象（如<code>gdb.ORM</code>接口），而原生 Go 标准库的函数命名更简洁（如<code>http.Get</code>、<code>sql.Query</code>）。</p>
+</li>
+</ol>
+<h3 id="三、实现-API-接口时的区别"><a class="header-anchor" href="#三、实现-API-接口时的区别">¶</a>三、实现 API 接口时的区别</h3>
+<p>以实现一个 “用户注册” API（POST <code>/user/register</code>）为例，对比原生 Go 与 GoFrame 的开发差异：</p>
+<h4 id="1-原生-Go-实现（依赖标准库net-http）"><a class="header-anchor" href="#1-原生-Go-实现（依赖标准库net-http）">¶</a>1. 原生 Go 实现（依赖标准库<code>net/http</code>）</h4>
+<p>需要手动处理路由、参数解析、验证、错误处理等，代码繁琐：</p>
+<p>go</p>
+<p>运行</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;encoding/json&quot;</span></span><br><span class="line">    <span class="string">&quot;net/http&quot;</span></span><br><span class="line">    <span class="string">&quot;strconv&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义请求结构体</span></span><br><span class="line"><span class="keyword">type</span> RegisterRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">    Name  <span class="type">string</span> <span class="string">`json:&quot;name&quot;`</span></span><br><span class="line">    Age   <span class="type">int</span>    <span class="string">`json:&quot;age&quot;`</span></span><br><span class="line">    Email <span class="type">string</span> <span class="string">`json:&quot;email&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 注册路由</span></span><br><span class="line">    http.HandleFunc(<span class="string">&quot;/user/register&quot;</span>, registerHandler)</span><br><span class="line">    http.ListenAndServe(<span class="string">&quot;:8080&quot;</span>, <span class="literal">nil</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">registerHandler</span><span class="params">(w http.ResponseWriter, r *http.Request)</span></span> &#123;</span><br><span class="line">    <span class="comment">// 1. 校验请求方法</span></span><br><span class="line">    <span class="keyword">if</span> r.Method != http.MethodPost &#123;</span><br><span class="line">        w.WriteHeader(http.StatusMethodNotAllowed)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;method not allowed&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 解析请求体</span></span><br><span class="line">    <span class="keyword">var</span> req RegisterRequest</span><br><span class="line">    <span class="keyword">if</span> err := json.NewDecoder(r.Body).Decode(&amp;req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;invalid request: &quot;</span> + err.Error()))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 手动验证参数</span></span><br><span class="line">    <span class="keyword">if</span> req.Name == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">        w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;name is required&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> req.Age &lt;= <span class="number">0</span> || req.Age &gt; <span class="number">150</span> &#123;</span><br><span class="line">        w.WriteHeader(http.StatusBadRequest)</span><br><span class="line">        w.Write([]<span class="type">byte</span>(<span class="string">&quot;age must be 1-150&quot;</span>))</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4. 模拟数据库操作（需手动写SQL或集成第三方ORM）</span></span><br><span class="line">    <span class="comment">// ...</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 5. 返回响应</span></span><br><span class="line">    w.Header().Set(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/json&quot;</span>)</span><br><span class="line">    json.NewEncoder(w).Encode(<span class="keyword">map</span>[<span class="type">string</span>]<span class="type">string</span>&#123;</span><br><span class="line">        <span class="string">&quot;code&quot;</span>:    <span class="string">&quot;0&quot;</span>,</span><br><span class="line">        <span class="string">&quot;message&quot;</span>: <span class="string">&quot;register success&quot;</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-GoFrame-实现"><a class="header-anchor" href="#2-GoFrame-实现">¶</a>2. GoFrame 实现</h4>
+<p>框架封装了路由、参数绑定、验证、ORM 等功能，代码更简洁：</p>
+<p>go</p>
+<p>运行</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;github.com/gogf/gf/v2/frame/g&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/gogf/gf/v2/net/ghttp&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义请求结构体（通过gf标签实现自动验证）</span></span><br><span class="line"><span class="keyword">type</span> RegisterRequest <span class="keyword">struct</span> &#123;</span><br><span class="line">    g.Meta <span class="string">`path:&quot;/user/register&quot; method:&quot;post&quot;`</span> <span class="comment">// 路由和方法定义</span></span><br><span class="line">    Name   <span class="type">string</span> <span class="string">`json:&quot;name&quot; v:&quot;required#姓名不能为空&quot;`</span>   <span class="comment">// 自动验证规则</span></span><br><span class="line">    Age    <span class="type">int</span>    <span class="string">`json:&quot;age&quot; v:&quot;min:1|max:150#年龄必须在1-150之间&quot;`</span> <span class="comment">// 自动验证</span></span><br><span class="line">    Email  <span class="type">string</span> <span class="string">`json:&quot;email&quot; v:&quot;email#邮箱格式错误&quot;`</span>       <span class="comment">// 内置邮箱验证</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 定义响应结构体</span></span><br><span class="line"><span class="keyword">type</span> RegisterResponse <span class="keyword">struct</span> &#123;</span><br><span class="line">    Code    <span class="type">int</span>    <span class="string">`json:&quot;code&quot;`</span></span><br><span class="line">    Message <span class="type">string</span> <span class="string">`json:&quot;message&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    s := g.Server()</span><br><span class="line">    <span class="comment">// 绑定API处理函数（自动关联路由和验证）</span></span><br><span class="line">    s.BindHandler(<span class="built_in">new</span>(RegisterRequest), registerHandler)</span><br><span class="line">    s.Run(<span class="string">&quot;:8080&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 处理函数（参数自动绑定和验证）</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">registerHandler</span><span class="params">(r *ghttp.Request)</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> req RegisterRequest</span><br><span class="line">    <span class="comment">// 自动解析请求并验证参数（失败会自动返回错误）</span></span><br><span class="line">    <span class="keyword">if</span> err := r.Parse(&amp;req); err != <span class="literal">nil</span> &#123;</span><br><span class="line">        r.Response.WriteJson(RegisterResponse&#123;</span><br><span class="line">            Code:    <span class="number">1</span>,</span><br><span class="line">            Message: err.Error(),</span><br><span class="line">        &#125;)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 数据库操作（通过gf的ORM快速实现，无需手写SQL）</span></span><br><span class="line">    <span class="comment">// g.DB().Model(&quot;user&quot;).Insert(req)</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. 返回响应</span></span><br><span class="line">    r.Response.WriteJson(RegisterResponse&#123;</span><br><span class="line">        Code:    <span class="number">0</span>,</span><br><span class="line">        Message: <span class="string">&quot;register success&quot;</span>,</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="四、GoFrame-主要提升的能力"><a class="header-anchor" href="#四、GoFrame-主要提升的能力">¶</a>四、GoFrame 主要提升的能力</h3>
+<p>GoFrame 的核心价值是<strong>降低 Go 语言开发的 “工程化成本”</strong>，主要提升点包括：</p>
+<ol>
+<li><strong>简化重复工作</strong><br>
+封装了 Web 开发中的通用需求（路由、参数验证、中间件、ORM、缓存等），避免开发者重复造轮子。例如：
+<ul>
+<li>内置参数验证器（支持正则、范围、自定义规则），无需手动写 if-else 校验；</li>
+<li>ORM 支持自动生成 SQL、事务、关联查询，简化数据库操作。</li>
+</ul>
+</li>
+<li><strong>标准化开发流程</strong><br>
+通过<code>gf cli</code>工具生成标准化项目结构（API 层、业务层、数据层分离），并提供统一的错误处理、日志、配置管理机制，解决团队协作中的 “代码风格混乱” 问题。</li>
+<li><strong>增强企业级特性</strong><br>
+提供微服务、分布式事务、分布式缓存、API 文档自动生成（OpenAPI）等企业级功能，原生 Go 需集成多个第三方库才能实现，而 GoFrame 一站式支持。</li>
+<li><strong>提升开发效率</strong><br>
+支持热重载（<code>gf run</code>）、代码生成（<code>gf gen</code>）、接口自动化测试等工具，大幅缩短开发周期。例如：通过结构体标签自动生成 Swagger 文档，无需手动编写。</li>
+<li><strong>优化性能与稳定性</strong><br>
+框架内部对并发、内存管理做了针对性优化（如对象池、连接池），且经过大量生产环境验证，稳定性优于 “原生 + 零散第三方库” 的组合。</li>
+</ol>
+<h3 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h3>
+<ul>
+<li><strong>联系</strong>：GoFrame 是 Go 语言的 “增强工具”，完全基于 Go 语法开发，依赖 Go 的 runtime。</li>
+<li><strong>区别</strong>：Go 是语言基础，GoFrame 是框架；前者提供语法和标准库，后者提供工程化解决方案。</li>
+<li><strong>核心价值</strong>：GoFrame 通过封装通用能力、标准化开发流程，让开发者更专注于业务逻辑，而非重复的技术细节，特别适合快速开发企业级应用。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>go</category>
+        <category>goframe</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+        <tag>goframe</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>go中的context</title>
+    <url>/2025/08/31/go%E4%B8%AD%E7%9A%84context/</url>
+    <content><![CDATA[<p>在 Go 语言中，<code>context.Context</code> 主要用于 <strong>传递跨 goroutine 的取消信号、超时控制和元数据</strong>，是 Go 并发模型中协调多个 goroutine 生命周期的核心机制。其设计与 Go 语言的 <strong>轻量并发（goroutine）</strong> 和 <strong>函数式编程风格</strong> 密切相关。</p>
+<h3 id="一、Go-中大量使用-context-的原因"><a class="header-anchor" href="#一、Go-中大量使用-context-的原因">¶</a>一、Go 中大量使用 <code>context</code> 的原因</h3>
+<ol>
+<li><strong>goroutine 生命周期管理</strong><br>
+Go 中创建 goroutine 非常轻量（几 KB 栈空间），实际开发中常同时启动成百上千个 goroutine 处理任务（如 HTTP 服务的每个请求对应一个 goroutine）。<code>context</code> 用于在这些 goroutine 之间传递 <strong>取消信号</strong>（如客户端断开连接、超时），避免资源泄漏。<br>
+例如：HTTP 服务器处理请求时，若客户端提前关闭连接，<code>context</code> 会收到取消信号，后续的数据库查询、RPC 调用等可立即终止。</li>
+<li><strong>超时与截止时间控制</strong><br>
+网络请求、数据库操作等需要设置超时时间，<code>context.WithTimeout</code> 或 <code>context.WithDeadline</code> 可生成带超时的上下文，传递给下游函数，确保操作不会无限阻塞。</li>
+<li><strong>元数据传递</strong><br>
+<code>context</code> 可携带少量跨函数的共享数据（如请求 ID、用户身份信息），避免在函数参数中显式传递这些 “附加信息”，简化接口设计。</li>
+</ol>
+<h3 id="二、其他语言中的同类机制"><a class="header-anchor" href="#二、其他语言中的同类机制">¶</a>二、其他语言中的同类机制</h3>
+<p><code>context</code> 并非 Go 独有，其他语言也有类似功能的机制，只是实现方式和命名不同：</p>
+<h4 id="1-Java-中的同类机制"><a class="header-anchor" href="#1-Java-中的同类机制">¶</a>1. Java 中的同类机制</h4>
+<ul>
+<li>
+<p><strong><code>ThreadLocal</code> + 线程池</strong><br>
+Java 中常用 <code>ThreadLocal</code> 传递线程级别的上下文（如用户信息、日志 ID），配合线程池的 <code>shutdown()</code> 或 <code>shutdownNow()</code> 控制线程生命周期。但 <code>ThreadLocal</code> 不直接支持取消信号，需手动实现。</p>
+</li>
+<li>
+<p><strong><code>CompletableFuture</code> + 超时控制</strong><br>
+Java 8+ 的 <code>CompletableFuture</code> 支持超时机制（<code>orTimeout()</code>），可实现类似 <code>context.WithTimeout</code> 的功能：</p>
+<p>java</p>
+<p>运行</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">CompletableFuture&lt;String&gt; future = CompletableFuture.supplyAsync(() -&gt; &#123;</span><br><span class="line">    <span class="comment">// 耗时操作</span></span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;result&quot;</span>;</span><br><span class="line">&#125;);</span><br><span class="line"><span class="comment">// 超时控制（5秒）</span></span><br><span class="line">future.orTimeout(<span class="number">5</span>, TimeUnit.SECONDS)</span><br><span class="line">      .exceptionally(ex -&gt; <span class="string">&quot;超时处理&quot;</span>);</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong><code>Spring</code> 框架的 <code>RequestContextHolder</code></strong><br>
+在 Spring Web 中，<code>RequestContextHolder</code> 存储 HTTP 请求上下文，类似 <code>context</code> 传递请求级别的元数据，但其生命周期与请求绑定，不支持主动取消。</p>
+</li>
+</ul>
+<h4 id="2-C-语言中的同类机制"><a class="header-anchor" href="#2-C-语言中的同类机制">¶</a>2. C 语言中的同类机制</h4>
+<p>C 语言没有内置的 “上下文” 机制，需手动实现类似功能：</p>
+<ul>
+<li>
+<p><strong>自定义结构体传递取消信号</strong><br>
+通过指针传递包含 “取消标志” 的结构体，函数定期检查标志以决定是否终止：</p>
+<p>c</p>
+<p>运行</p>
+<figure class="highlight c"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 自定义上下文结构体</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> &#123;</span></span><br><span class="line">    <span class="type">int</span> is_canceled;  <span class="comment">// 取消标志</span></span><br><span class="line">    <span class="type">int</span> timeout;      <span class="comment">// 超时时间（毫秒）</span></span><br><span class="line">&#125; Context;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 函数接收上下文，定期检查是否取消</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">do_task</span><span class="params">(Context* ctx)</span> &#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (ctx-&gt;is_canceled) &#123;</span><br><span class="line">            <span class="keyword">return</span>;  <span class="comment">// 收到取消信号，退出</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 执行任务...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>信号量（<code>signal</code>）与定时器</strong><br>
+利用系统信号（如 <code>SIGINT</code>）或定时器（<code>setitimer</code>）实现超时和取消，但跨线程 / 进程传递信号较复杂，缺乏 Go 中 <code>context</code> 的简洁性。</p>
+</li>
+</ul>
+<h3 id="三、核心差异总结"><a class="header-anchor" href="#三、核心差异总结">¶</a>三、核心差异总结</h3>
+<table>
+<thead>
+<tr>
+<th>语言</th>
+<th>同类机制</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Go</td>
+<td><code>context.Context</code></td>
+<td>原生支持，轻量，与 goroutine 绑定，统一传递取消信号、超时和元数据</td>
+</tr>
+<tr>
+<td>Java</td>
+<td><code>ThreadLocal</code> + 超时 API</td>
+<td>依赖线程模型，需结合框架（如 Spring）实现上下文传递，取消机制较分散</td>
+</tr>
+<tr>
+<td>C</td>
+<td>自定义结构体 + 信号量</td>
+<td>无原生支持，需手动实现，功能简陋，缺乏语言层面的统一标准</td>
+</tr>
+</tbody>
+</table>
+<h3 id="为什么-Go-中-context-更-“显性”？"><a class="header-anchor" href="#为什么-Go-中-context-更-“显性”？">¶</a>为什么 Go 中 <code>context</code> 更 “显性”？</h3>
+<p>Go 语言将 <code>context</code> 作为函数参数显式传递，是因为：</p>
+<ol>
+<li><strong>并发模型的需要</strong>：goroutine 比线程更轻量，数量更多，必须有统一的生命周期管理机制；</li>
+<li><strong>接口设计哲学</strong>：Go 强调 “显式优于隐式”，<code>context</code> 作为参数传递，让函数的依赖和行为更清晰；</li>
+<li><strong>标准化</strong>：<code>context</code> 是 Go 标准库的一部分，所有库（如 <code>net/http</code>、<code>database/sql</code>）都遵循同一套上下文协议，避免了生态碎片化。</li>
+</ol>
+<p>其他语言因历史原因（如 Java 基于线程模型）或设计理念不同，没有采用这种 “显式上下文参数” 的模式，但核心解决的问题（生命周期管理、元数据传递）是相通的。</p>
+]]></content>
+      <categories>
+        <category>go</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+        <tag>context</tag>
       </tags>
   </entry>
   <entry>
