@@ -1443,4 +1443,16 @@ Java 8+ 的 <code>CompletableFuture</code> 支持超时机制（<code>orTimeout(
         <tag>123</tag>
       </tags>
   </entry>
+  <entry>
+    <title>345</title>
+    <url>/2025/09/01/345/</url>
+    <content><![CDATA[<p>123</p>
+]]></content>
+      <categories>
+        <category>345</category>
+      </categories>
+      <tags>
+        <tag>123</tag>
+      </tags>
+  </entry>
 </search>
