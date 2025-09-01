@@ -24,32 +24,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"bytedoge.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="Token 全面解析：概念、安全设计、存储方案与当前适用性 ¶Token的数据传输流程  Token（令牌）是计算机系统中用于身份验证、授权或信息交换的一串字符序列，本质是 “临时凭证”—— 替代传统密码或 Session ID，在客户端与服务端之间传递 “信任信息”。它广泛应用于前后端分离、微服务、跨域系统及移动端应用中，是现代身份认证体系的核心组件之一。 ¶一、Token 基础详解 要理解 T">
+    <meta name="description" content="¶登录页面表单 - 详细标签和变量解释 ¶1. 登录页面容器 (Login Page Container) 1&lt;div id&#x3D;&quot;login-page&quot; style&#x3D;&quot;display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 10">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Token全面解析">
+<meta property="og:title" content="博客系统的登录页面详解">
 <meta property="og:url" content="https://bytedoge.github.io/2025/09/01/Token%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/">
 <meta property="og:site_name" content="zhyBlogs">
-<meta property="og:description" content="Token 全面解析：概念、安全设计、存储方案与当前适用性 ¶Token的数据传输流程  Token（令牌）是计算机系统中用于身份验证、授权或信息交换的一串字符序列，本质是 “临时凭证”—— 替代传统密码或 Session ID，在客户端与服务端之间传递 “信任信息”。它广泛应用于前后端分离、微服务、跨域系统及移动端应用中，是现代身份认证体系的核心组件之一。 ¶一、Token 基础详解 要理解 T">
+<meta property="og:description" content="¶登录页面表单 - 详细标签和变量解释 ¶1. 登录页面容器 (Login Page Container) 1&lt;div id&#x3D;&quot;login-page&quot; style&#x3D;&quot;display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 10">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://bytedoge.github.io/img/token.png">
-<meta property="article:published_time" content="2025-09-01T01:40:34.000Z">
-<meta property="article:modified_time" content="2025-09-01T02:17:38.177Z">
+<meta property="article:published_time" content="2025-09-01T02:56:35.000Z">
+<meta property="article:modified_time" content="2025-09-01T02:57:05.263Z">
 <meta property="article:author" content="Zheng HanYang">
-<meta property="article:tag" content="Token">
-<meta property="article:tag" content="网络安全">
-<meta property="article:tag" content="sagooiot">
-<meta property="article:tag" content="博客搭建">
+<meta property="article:tag" content="博客系统">
+<meta property="article:tag" content="前端">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://bytedoge.github.io/img/token.png">
 
 
 <link rel="canonical" href="https://bytedoge.github.io/2025/09/01/Token%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bytedoge.github.io/2025/09/01/Token%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/","path":"2025/09/01/Token全面解析/","title":"Token全面解析"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bytedoge.github.io/2025/09/01/Token%E5%85%A8%E9%9D%A2%E8%A7%A3%E6%9E%90/","path":"2025/09/01/Token全面解析/","title":"博客系统的登录页面详解"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>Token全面解析 | zhyBlogs</title>
+<title>博客系统的登录页面详解 | zhyBlogs</title>
   
 
 
@@ -341,7 +337,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">Token 全面解析：概念、安全设计、存储方案与当前适用性</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#Token%E7%9A%84%E6%95%B0%E6%8D%AE%E4%BC%A0%E8%BE%93%E6%B5%81%E7%A8%8B"><span class="nav-number">1.0.0.0.1.</span> <span class="nav-text">Token的数据传输流程</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81Token-%E5%9F%BA%E7%A1%80%E8%AF%A6%E8%A7%A3"><span class="nav-number">1.1.</span> <span class="nav-text">一、Token 基础详解</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Token-%E7%9A%84%E6%A0%B8%E5%BF%83%E5%AE%9A%E4%B9%89%E4%B8%8E%E4%BD%9C%E7%94%A8"><span class="nav-number">1.1.1.</span> <span class="nav-text">1. Token 的核心定义与作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Token-%E4%B8%8E%E4%BC%A0%E7%BB%9F-Session-%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8C%BA%E5%88%AB"><span class="nav-number">1.1.2.</span> <span class="nav-text">2. Token 与传统 Session 的核心区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%B8%B8%E8%A7%81-Token-%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.3.</span> <span class="nav-text">3. 常见 Token 类型</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89JWT%EF%BC%88JSON-Web-Token%EF%BC%89"><span class="nav-number">1.1.3.1.</span> <span class="nav-text">（1）JWT（JSON Web Token）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89Access-Token-Refresh-Token%EF%BC%88%E5%8F%8C%E4%BB%A4%E7%89%8C%EF%BC%89"><span class="nav-number">1.1.3.2.</span> <span class="nav-text">（2）Access Token + Refresh Token（双令牌）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89Session-Token%EF%BC%88%E4%BC%9A%E8%AF%9D%E4%BB%A4%E7%89%8C%EF%BC%89"><span class="nav-number">1.1.3.3.</span> <span class="nav-text">（3）Session Token（会话令牌）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Token-%E5%AE%89%E5%85%A8%E8%AE%BE%E8%AE%A1%E7%9A%84%E5%85%B3%E9%94%AE%E7%AD%96%E7%95%A5"><span class="nav-number">1.2.</span> <span class="nav-text">二、Token 安全设计的关键策略</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%A1%AE%E4%BF%9D-Token-%E6%9C%AC%E8%BA%AB%E7%9A%84-%E2%80%9C%E4%B8%8D%E5%8F%AF%E4%BC%AA%E9%80%A0%E6%80%A7%E2%80%9D"><span class="nav-number">1.2.1.</span> <span class="nav-text">1. 确保 Token 本身的 “不可伪造性”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%B8%A5%E6%A0%BC%E6%8E%A7%E5%88%B6-Token-%E6%9C%89%E6%95%88%E6%9C%9F%EF%BC%88%E9%98%B2%E9%95%BF%E6%9C%9F%E6%B3%84%E9%9C%B2%EF%BC%89"><span class="nav-number">1.2.2.</span> <span class="nav-text">2. 严格控制 Token 有效期（防长期泄露）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E4%BC%A0%E8%BE%93%E8%BF%87%E7%A8%8B%EF%BC%9A%E6%9D%9C%E7%BB%9D-%E2%80%9C%E4%B8%AD%E9%97%B4%E4%BA%BA%E7%AA%83%E5%8F%96%E2%80%9D"><span class="nav-number">1.2.3.</span> <span class="nav-text">3. 传输过程：杜绝 “中间人窃取”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%86%85%E5%AE%B9%E8%AE%BE%E8%AE%A1%EF%BC%9A%E6%9C%80%E5%B0%8F%E6%9D%83%E9%99%90%E4%B8%8E%E6%97%A0%E6%95%8F%E6%84%9F%E4%BF%A1%E6%81%AF"><span class="nav-number">1.2.4.</span> <span class="nav-text">4. 内容设计：最小权限与无敏感信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%98%B2%E9%87%8D%E6%94%BE%E6%94%BB%E5%87%BB%EF%BC%88Replay-Attack%EF%BC%89"><span class="nav-number">1.2.5.</span> <span class="nav-text">5. 防重放攻击（Replay Attack）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Refresh-Token-%E7%9A%84%E9%A2%9D%E5%A4%96%E5%AE%89%E5%85%A8%E6%8E%AA%E6%96%BD"><span class="nav-number">1.2.6.</span> <span class="nav-text">6. Refresh Token 的额外安全措施</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Token-%E7%9A%84%E6%9C%80%E4%BD%B3%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE"><span class="nav-number">1.3.</span> <span class="nav-text">三、Token 的最佳存储位置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%BB%E6%B5%81%E5%AD%98%E5%82%A8%E4%BD%8D%E7%BD%AE%E5%AF%B9%E6%AF%94"><span class="nav-number">1.3.1.</span> <span class="nav-text">1. 主流存储位置对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%B8%8D%E5%90%8C%E5%9C%BA%E6%99%AF%E7%9A%84%E5%AD%98%E5%82%A8%E6%8E%A8%E8%8D%90"><span class="nav-number">1.3.2.</span> <span class="nav-text">2. 不同场景的存储推荐</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E5%89%8D%E5%90%8E%E7%AB%AF%E5%88%86%E7%A6%BB%EF%BC%88SPA%EF%BC%8C%E5%A6%82-Vue-React%EF%BC%89"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">（1）前后端分离（SPA，如 Vue&#x2F;React）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E7%A7%BB%E5%8A%A8%E7%AB%AF-App%EF%BC%88iOS-Android%EF%BC%89"><span class="nav-number">1.3.2.2.</span> <span class="nav-text">（2）移动端 App（iOS&#x2F;Android）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E4%BC%A0%E7%BB%9F%E5%90%8E%E7%AB%AF%E6%B8%B2%E6%9F%93%EF%BC%88SSR%EF%BC%8C%E5%A6%82-JSP-PHP%EF%BC%89"><span class="nav-number">1.3.2.3.</span> <span class="nav-text">（3）传统后端渲染（SSR，如 JSP&#x2F;PHP）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%EF%BC%884%EF%BC%89%E7%AC%AC%E4%B8%89%E6%96%B9%E7%99%BB%E5%BD%95%EF%BC%88OAuth2-0%EF%BC%89"><span class="nav-number">1.3.2.4.</span> <span class="nav-text">（4）第三方登录（OAuth2.0）</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%BD%93%E4%B8%8B%E4%BD%BF%E7%94%A8-Token-%E6%98%AF%E5%90%A6%E4%BB%8D%E4%B8%BA%E5%A5%BD%E9%80%89%E6%8B%A9%EF%BC%9F"><span class="nav-number">1.4.</span> <span class="nav-text">四、当下使用 Token 是否仍为好选择？</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Token-%E7%9A%84%E6%A0%B8%E5%BF%83%E4%BC%98%E5%8A%BF%EF%BC%88%E4%B8%BA%E4%BD%95%E4%BB%8D%E8%A2%AB%E5%B9%BF%E6%B3%9B%E4%BD%BF%E7%94%A8%EF%BC%89"><span class="nav-number">1.4.1.</span> <span class="nav-text">1. Token 的核心优势（为何仍被广泛使用）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Token-%E7%9A%84%E5%B1%80%E9%99%90%E6%80%A7%EF%BC%88%E9%9C%80%E8%A7%84%E9%81%BF%E7%9A%84%E9%97%AE%E9%A2%98%EF%BC%89"><span class="nav-number">1.4.2.</span> <span class="nav-text">2. Token 的局限性（需规避的问题）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%BD%93%E4%B8%8B%E7%BB%93%E8%AE%BA%EF%BC%9AToken-%E4%BB%8D%E6%98%AF-%E2%80%9C%E4%BC%98%E9%80%89%E6%96%B9%E6%A1%88%E2%80%9D%EF%BC%8C%E4%BD%86%E9%9C%80-%E2%80%9C%E6%AD%A3%E7%A1%AE%E4%BD%BF%E7%94%A8%E2%80%9D"><span class="nav-number">1.4.3.</span> <span class="nav-text">3. 当下结论：Token 仍是 “优选方案”，但需 “正确使用”</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFToken%E7%9A%84%E6%97%A0%E7%8A%B6%E6%80%81"><span class="nav-number">1.6.</span> <span class="nav-text">什么是Token的无状态</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%85%88%E6%98%8E%E7%A1%AE%EF%BC%9A%E4%BB%80%E4%B9%88%E6%98%AF-%E2%80%9C%E7%8A%B6%E6%80%81%E2%80%9D%EF%BC%9F"><span class="nav-number">1.6.1.</span> <span class="nav-text">一、先明确：什么是 “状态”？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Token-%E7%9A%84%E6%97%A0%E7%8A%B6%E6%80%81%EF%BC%9A%E6%A0%B8%E5%BF%83%E6%98%AF-%E2%80%9C%E7%8A%B6%E6%80%81%E8%97%8F%E5%9C%A8-Token-%E9%87%8C%EF%BC%8C%E8%80%8C%E9%9D%9E%E6%9C%8D%E5%8A%A1%E5%99%A8%E2%80%9D"><span class="nav-number">1.6.2.</span> <span class="nav-text">二、Token 的无状态：核心是 “状态藏在 Token 里，而非服务器”</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Token-%E6%97%A0%E7%8A%B6%E6%80%81%E9%AA%8C%E8%AF%81%E7%9A%84%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B%EF%BC%88%E4%BB%A5-JWT-%E4%B8%BA%E4%BE%8B%EF%BC%89%EF%BC%9A"><span class="nav-number">1.6.2.1.</span> <span class="nav-text">Token 无状态验证的完整流程（以 JWT 为例）：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81Token-%E6%97%A0%E7%8A%B6%E6%80%81%E7%9A%84%E5%85%B3%E9%94%AE%E7%89%B9%E6%80%A7%EF%BC%88%E4%B8%8E%E6%9C%89%E7%8A%B6%E6%80%81%E5%AF%B9%E6%AF%94%EF%BC%89"><span class="nav-number">1.6.3.</span> <span class="nav-text">三、Token 无状态的关键特性（与有状态对比）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%B8%B8%E8%A7%81%E8%AF%AF%E5%8C%BA%EF%BC%9A%E2%80%9C%E6%97%A0%E7%8A%B6%E6%80%81%E2%80%9D%E2%89%A0%E2%80%9C%E4%B8%8D%E5%8F%AF%E6%8E%A7%E2%80%9D"><span class="nav-number">1.6.4.</span> <span class="nav-text">四、常见误区：“无状态”≠“不可控”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E6%80%BB%E7%BB%93"><span class="nav-number">1.6.5.</span> <span class="nav-text">五、总结</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%89%8D%E5%90%8E%E7%AB%AF%E4%BD%BF%E7%94%A8token%E7%9A%84%E7%94%9F%E6%88%90%EF%BC%8C%E4%BC%A0%E9%80%92%E4%BB%A5%E5%8F%8A%E9%AA%8C%E8%AF%81%E7%9A%84%E4%BB%A3%E7%A0%81"><span class="nav-number">1.7.</span> <span class="nav-text">前后端使用token的生成，传递以及验证的代码</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF%E5%AE%9E%E7%8E%B0%EF%BC%88Node-js-Express%EF%BC%89"><span class="nav-number">1.7.1.</span> <span class="nav-text">后端实现（Node.js + Express）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E5%AE%9E%E7%8E%B0%EF%BC%88HTML-JavaScript%EF%BC%89"><span class="nav-number">1.7.2.</span> <span class="nav-text">前端实现（HTML + JavaScript）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E8%AF%B4%E6%98%8E"><span class="nav-number">1.7.3.</span> <span class="nav-text">代码说明</span></a></li></ol></li></ol></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2%E8%A1%A8%E5%8D%95-%E8%AF%A6%E7%BB%86%E6%A0%87%E7%AD%BE%E5%92%8C%E5%8F%98%E9%87%8F%E8%A7%A3%E9%87%8A"><span class="nav-number">1.</span> <span class="nav-text">登录页面表单 - 详细标签和变量解释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2%E5%AE%B9%E5%99%A8-Login-Page-Container"><span class="nav-number">1.1.</span> <span class="nav-text">1. 登录页面容器 (Login Page Container)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%A3%A8%E7%A0%82%E7%8E%BB%E7%92%83%E8%83%8C%E6%99%AF%E5%B1%82-Frosted-Glass-Background"><span class="nav-number">1.2.</span> <span class="nav-text">2. 磨砂玻璃背景层 (Frosted Glass Background)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%BC%82%E6%B5%AE%E5%B0%8F%E7%90%83%E5%AE%B9%E5%99%A8-Bubbles-Container"><span class="nav-number">1.3.</span> <span class="nav-text">3. 漂浮小球容器 (Bubbles Container)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%99%BB%E5%BD%95%E8%A1%A8%E5%8D%95%E4%B8%BB%E4%BD%93-Login-Form-Main"><span class="nav-number">1.4.</span> <span class="nav-text">4. 登录表单主体 (Login Form Main)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E9%94%81%E5%BD%A2%E5%9B%BE%E6%A0%87-Lock-Icon"><span class="nav-number">1.5.</span> <span class="nav-text">5. 锁形图标 (Lock Icon)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E6%A0%87%E9%A2%98-Title"><span class="nav-number">1.6.</span> <span class="nav-text">6. 标题 (Title)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E5%AF%86%E7%A0%81%E8%BE%93%E5%85%A5%E5%8C%BA%E5%9F%9F-Password-Input-Area"><span class="nav-number">1.7.</span> <span class="nav-text">7. 密码输入区域 (Password Input Area)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E9%AA%8C%E8%AF%81%E7%A0%81%E8%BE%93%E5%85%A5%E5%8C%BA%E5%9F%9F-Captcha-Input-Area"><span class="nav-number">1.8.</span> <span class="nav-text">8. 验证码输入区域 (Captcha Input Area)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E7%99%BB%E5%BD%95%E6%8C%89%E9%92%AE-Login-Button"><span class="nav-number">1.9.</span> <span class="nav-text">9. 登录按钮 (Login Button)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-%E9%94%99%E8%AF%AF%E6%B6%88%E6%81%AF-Error-Message"><span class="nav-number">1.10.</span> <span class="nav-text">10. 错误消息 (Error Message)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%83%8C%E6%99%AF%E6%BC%82%E6%B5%AE%E5%B0%8F%E7%90%83-%E8%AF%A6%E7%BB%86%E5%8F%98%E9%87%8F%E5%92%8C%E5%87%BD%E6%95%B0%E8%A7%A3%E9%87%8A"><span class="nav-number">2.</span> <span class="nav-text">背景漂浮小球 - 详细变量和函数解释</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%B0%8F%E7%90%83%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0-createBubbles"><span class="nav-number">2.1.</span> <span class="nav-text">1. 小球生成函数 (createBubbles)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E5%B0%8F%E7%90%83%E5%8A%A8%E7%94%BB%E5%87%BD%E6%95%B0-animateBubbles"><span class="nav-number">2.2.</span> <span class="nav-text">2. 小球动画函数 (animateBubbles)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E9%A2%9C%E8%89%B2%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0-generateBubbleColors"><span class="nav-number">2.3.</span> <span class="nav-text">3. 颜色生成函数 (generateBubbleColors)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E9%BC%A0%E6%A0%87%E4%BA%A4%E4%BA%92%E5%87%BD%E6%95%B0-addMouseInteraction"><span class="nav-number">2.4.</span> <span class="nav-text">4. 鼠标交互函数 (addMouseInteraction)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%B0%8F%E7%90%83%E7%A0%B4%E8%A3%82%E5%8A%A8%E7%94%BB%E5%87%BD%E6%95%B0-animateBubblesBurst"><span class="nav-number">2.5.</span> <span class="nav-text">5. 小球破裂动画函数 (animateBubblesBurst)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E7%A3%A8%E7%A0%82%E8%83%8C%E6%99%AF%E6%B6%88%E5%A4%B1%E5%8A%A8%E7%94%BB%E5%87%BD%E6%95%B0-animateFrostedBgFadeOut"><span class="nav-number">2.6.</span> <span class="nav-text">6. 磨砂背景消失动画函数 (animateFrostedBgFadeOut)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -354,7 +350,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -413,13 +409,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="Token全面解析 | zhyBlogs">
+      <meta itemprop="name" content="博客系统的登录页面详解 | zhyBlogs">
       <meta itemprop="description" content="">
     </span>
         
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">
-            Token全面解析
+            博客系统的登录页面详解
           </h1>
 
           <div class="post-meta-container">
@@ -431,7 +427,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2025-09-01 09:40:34 / 修改时间：10:17:38" itemprop="dateCreated datePublished" datetime="2025-09-01T09:40:34+08:00">2025-09-01</time>
+      <time title="创建时间：2025-09-01 10:56:35 / 修改时间：10:57:05" itemprop="dateCreated datePublished" datetime="2025-09-01T10:56:35+08:00">2025-09-01</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -439,7 +435,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+          <a href="/categories/%E5%89%8D%E7%AB%AF/" itemprop="url" rel="index"><span itemprop="name">前端</span></a>
         </span>
     </span>
 
@@ -457,14 +453,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>19k</span>
+      <span>17k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>16 分钟</span>
+      <span>14 分钟</span>
     </span>
 </div>
 
@@ -474,356 +470,413 @@
     
     
     
-      <div class="post-body" itemprop="articleBody"><h1>Token 全面解析：概念、安全设计、存储方案与当前适用性</h1>
-<h5 id="Token的数据传输流程"><a class="header-anchor" href="#Token的数据传输流程">¶</a>Token的数据传输流程</h5>
-<img src="/img/token.png">
-<p>Token（令牌）是计算机系统中用于<strong>身份验证、授权或信息交换</strong>的一串字符序列，本质是 “临时凭证”—— 替代传统密码或 Session ID，在客户端与服务端之间传递 “信任信息”。它广泛应用于前后端分离、微服务、跨域系统及移动端应用中，是现代身份认证体系的核心组件之一。</p>
-<h2 id="一、Token-基础详解"><a class="header-anchor" href="#一、Token-基础详解">¶</a>一、Token 基础详解</h2>
-<p>要理解 Token，需先明确其核心定位、与传统方案的差异及常见类型，避免概念混淆。</p>
-<h3 id="1-Token-的核心定义与作用"><a class="header-anchor" href="#1-Token-的核心定义与作用">¶</a>1. Token 的核心定义与作用</h3>
-<p>Token 的核心是 <strong>“无状态信任凭证”</strong>：服务端通过加密 / 签名生成 Token 后，无需在本地存储用户状态（如 Session 的服务器内存存储），只需通过 Token 本身的校验（签名、有效期等）即可确认用户身份或权限。</p>
-<p>其核心作用包括：</p>
+      <div class="post-body" itemprop="articleBody"><h2 id="登录页面表单-详细标签和变量解释"><a class="header-anchor" href="#登录页面表单-详细标签和变量解释">¶</a>登录页面表单 - 详细标签和变量解释</h2>
+<h3 id="1-登录页面容器-Login-Page-Container"><a class="header-anchor" href="#1-登录页面容器-Login-Page-Container">¶</a>1. <strong>登录页面容器 (Login Page Container)</strong></h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;login-page&quot;</span> <span class="attr">style</span>=<span class="string">&quot;display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; background: transparent; position: fixed; width: 100%; z-index: 9999;&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>标签解释</strong>：</p>
 <ul>
-<li><strong>身份认证</strong>：验证 “你是谁”（如登录后生成 Token，后续请求携带 Token 证明身份）；</li>
-<li><strong>权限授权</strong>：验证 “你能做什么”（如 Token 中包含 “只读”“管理员” 等权限标识）；</li>
-<li><strong>信息传递</strong>：安全携带非敏感业务信息（如用户 ID、角色），减少数据库查询。</li>
+<li><code>&lt;div&gt;</code> - HTML分区元素，用于创建登录页面的容器</li>
 </ul>
-<h3 id="2-Token-与传统-Session-的核心区别"><a class="header-anchor" href="#2-Token-与传统-Session-的核心区别">¶</a>2. Token 与传统 Session 的核心区别</h3>
-<p>传统 Session（会话）与 Token 是两种主流认证方案，差异主要体现在 “状态存储” 和 “扩展性” 上，具体对比如下：</p>
-<table>
-<thead>
-<tr>
-<th>对比维度</th>
-<th>Session（会话）</th>
-<th>Token（令牌）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>状态存储位置</td>
-<td>服务端（内存 / 数据库 / 缓存）</td>
-<td>客户端（Cookie/LocalStorage 等）</td>
-</tr>
-<tr>
-<td>服务端依赖</td>
-<td>需维护 Session 状态，分布式需共享 Session（如 Redis）</td>
-<td>无状态，仅需校验 Token 合法性</td>
-</tr>
-<tr>
-<td>跨域支持</td>
-<td>弱（依赖 Cookie，跨域需特殊配置）</td>
-<td>强（可在 Header/Body 中携带，无跨域限制）</td>
-</tr>
-<tr>
-<td>移动端适配</td>
-<td>差（移动端无 Cookie 默认存储，需手动处理）</td>
-<td>优（可存储在 App 本地，灵活携带）</td>
-</tr>
-<tr>
-<td>扩展性</td>
-<td>低（服务端状态存储限制集群扩容）</td>
-<td>高（微服务 / 多服务可直接复用 Token）</td>
-</tr>
-</tbody>
-</table>
-<h3 id="3-常见-Token-类型"><a class="header-anchor" href="#3-常见-Token-类型">¶</a>3. 常见 Token 类型</h3>
-<p>不同场景下的 Token 设计差异较大，主流类型分为三类：</p>
-<h4 id="（1）JWT（JSON-Web-Token）"><a class="header-anchor" href="#（1）JWT（JSON-Web-Token）">¶</a>（1）JWT（JSON Web Token）</h4>
-<p>最常用的 Token 格式，本质是 <strong>“带签名的 JSON 数据”</strong>，结构为<code>Header.Payload.Signature</code>（三点分隔的 Base64 编码字符串）：</p>
+<p><strong>属性解释</strong>：</p>
 <ul>
-<li><strong>Header</strong>：指定 Token 类型（JWT）和签名算法（如 HS256、RS256）；</li>
-<li><strong>Payload</strong>：存储 “声明”（非敏感信息，如用户 ID、过期时间<code>exp</code>、角色<code>role</code>），Base64 编码可解码（<strong>不可存密码、手机号等敏感数据</strong>）；</li>
-<li><strong>Signature</strong>：用 Header 指定的算法，结合 “密钥” 对 Header+Payload 签名，确保 Token 未被篡改。</li>
+<li><code>id=&quot;login-page&quot;</code> - 唯一标识符，用于JavaScript获取和操作此元素</li>
+<li><code>style=&quot;...&quot;</code> - 内联CSS样式</li>
 </ul>
-<p><strong>适用场景</strong>：前后端分离、API 接口认证、短期权限校验（如 15 分钟有效期）。</p>
-<h4 id="（2）Access-Token-Refresh-Token（双令牌）"><a class="header-anchor" href="#（2）Access-Token-Refresh-Token（双令牌）">¶</a>（2）Access Token + Refresh Token（双令牌）</h4>
-<p>OAuth2.0/OpenID Connect 协议的核心设计，分 “短期访问令牌” 和 “长期刷新令牌”：</p>
+<p><strong>样式属性详解</strong>：</p>
 <ul>
-<li><strong>Access Token</strong>：短期有效（如 5-30 分钟），用于接口授权，泄露风险低；</li>
-<li><strong>Refresh Token</strong>：长期有效（如 7 天 - 30 天），仅用于获取新的 Access Token，不直接参与业务接口调用。</li>
+<li><code>display: none</code> - 初始状态隐藏，只有JavaScript控制显示时才可见</li>
+<li><code>flex-direction: column</code> - Flexbox布局，垂直排列子元素</li>
+<li><code>align-items: center</code> - 水平居中对齐子元素</li>
+<li><code>justify-content: center</code> - 垂直居中对齐子元素</li>
+<li><code>min-height: 100vh</code> - 最小高度为视口高度的100%，确保全屏显示</li>
+<li><code>text-align: center</code> - 文本居中对齐</li>
+<li><code>background: transparent</code> - 背景透明</li>
+<li><code>position: fixed</code> - 固定定位，相对于浏览器窗口</li>
+<li><code>width: 100%</code> - 宽度占满整个窗口</li>
+<li><code>z-index: 9999</code> - 层级很高，确保在最上层显示</li>
 </ul>
-<p><strong>核心逻辑</strong>：Access Token 过期后，客户端用 Refresh Token 向 “令牌端点” 申请新的 Access Token，避免用户频繁登录。<br>
-<strong>适用场景</strong>：第三方登录（如微信、GitHub 登录）、移动端 App、长期登录态维持。</p>
-<h4 id="（3）Session-Token（会话令牌）"><a class="header-anchor" href="#（3）Session-Token（会话令牌）">¶</a>（3）Session Token（会话令牌）</h4>
-<p>传统 Session 的 “改良版”：服务端不存储完整 Session 数据，仅存储 Token 的 “校验信息”（如 Token 对应的用户 ID、过期时间），客户端携带 Token 后，服务端通过数据库 / Redis 查询校验。</p>
-<p><strong>特点</strong>：兼具 Session 的 “可吊销性”（服务端删除 Token 记录即可失效）和 Token 的 “弱状态性”，适合需强制登出的场景（如账号异常冻结）。</p>
-<h2 id="二、Token-安全设计的关键策略"><a class="header-anchor" href="#二、Token-安全设计的关键策略">¶</a>二、Token 安全设计的关键策略</h2>
-<p>Token 的安全性直接决定系统的身份认证防线强度，需从 “生成、传输、校验、销毁” 全生命周期设计，核心策略如下：</p>
-<h3 id="1-确保-Token-本身的-“不可伪造性”"><a class="header-anchor" href="#1-确保-Token-本身的-“不可伪造性”">¶</a>1. 确保 Token 本身的 “不可伪造性”</h3>
-<p>Token 被伪造是最致命的风险，需通过<strong>加密签名、复杂度设计</strong>规避：</p>
+<h3 id="2-磨砂玻璃背景层-Frosted-Glass-Background"><a class="header-anchor" href="#2-磨砂玻璃背景层-Frosted-Glass-Background">¶</a>2. <strong>磨砂玻璃背景层 (Frosted Glass Background)</strong></h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;frosted-bg&quot;</span> <span class="attr">style</span>=<span class="string">&quot;position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: -1;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>标签解释</strong>：</p>
 <ul>
-<li>
-<p>使用非对称加密算法签名</p>
-<p>：优先选择</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">RS256</span><br></pre></td></tr></table></figure>
-<p>（RSA 非对称加密）而非</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">HS256</span><br></pre></td></tr></table></figure>
-<p>（HMAC 对称加密）。</p>
+<li><code>&lt;div&gt;</code> - 创建磨砂玻璃效果的背景层</li>
+</ul>
+<p><strong>属性解释</strong>：</p>
 <ul>
-<li>原理：私钥（仅服务端持有）用于生成 Token 签名，公钥（可公开）用于校验签名；即使公钥泄露，攻击者也无法伪造 Token（需私钥）。</li>
+<li><code>id=&quot;frosted-bg&quot;</code> - 磨砂背景的唯一标识符</li>
 </ul>
-</li>
-<li>
-<p><strong>足够长的字符长度</strong>：Token 长度至少 32 位（如 JWT 建议总长度≥128 字符），避免被暴力破解；</p>
-</li>
-<li>
-<p><strong>避免 “可预测性”</strong>：Token 需包含随机因子（如<code>nonce</code>随机数、用户设备信息哈希），禁止用 “用户 ID + 时间戳” 直接生成（易被猜测）。</p>
-</li>
-</ul>
-<h3 id="2-严格控制-Token-有效期（防长期泄露）"><a class="header-anchor" href="#2-严格控制-Token-有效期（防长期泄露）">¶</a>2. 严格控制 Token 有效期（防长期泄露）</h3>
-<p>Token 一旦泄露，有效期越长，风险越高，需按 “类型差异化设置”：</p>
+<p><strong>样式属性详解</strong>：</p>
 <ul>
-<li><strong>Access Token</strong>：短期有效（5-30 分钟），业务接口仅接受此 Token，即使泄露，攻击者可用时间窗口极短；</li>
-<li><strong>Refresh Token</strong>：长期有效但需 “可吊销”（服务端存储 Refresh Token 的黑名单 / 有效期，异常时立即失效）；</li>
-<li><strong>强制过期机制</strong>：即使 Token 未泄露，超过最大有效期（如 Refresh Token 最长 30 天）也需重新登录，避免 “永久凭证”。</li>
+<li><code>position: absolute</code> - 绝对定位，相对于最近的定位祖先元素</li>
+<li><code>top: 0; left: 0; right: 0; bottom: 0</code> - 四个方向都设为0，铺满整个父容器</li>
+<li><code>background: rgba(255, 255, 255, 0.7)</code> - 半透明白色背景，透明度为0.7</li>
+<li><code>backdrop-filter: blur(15px)</code> - 背景模糊效果，15px的模糊半径</li>
+<li><code>-webkit-backdrop-filter: blur(15px)</code> - Webkit浏览器的前缀版本</li>
+<li><code>z-index: -1</code> - 负层级，确保在内容层之下</li>
 </ul>
-<h3 id="3-传输过程：杜绝-“中间人窃取”"><a class="header-anchor" href="#3-传输过程：杜绝-“中间人窃取”">¶</a>3. 传输过程：杜绝 “中间人窃取”</h3>
-<p>Token 在客户端→服务端的传输中，易被中间人拦截（如 HTTP 明文传输），需通过以下方式防护：</p>
+<h3 id="3-漂浮小球容器-Bubbles-Container"><a class="header-anchor" href="#3-漂浮小球容器-Bubbles-Container">¶</a>3. <strong>漂浮小球容器 (Bubbles Container)</strong></h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;bubbles-container&quot;</span> <span class="attr">style</span>=<span class="string">&quot;position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; z-index: -2;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>标签解释</strong>：</p>
 <ul>
-<li><strong>强制使用 HTTPS</strong>：所有携带 Token 的请求必须走 HTTPS（TLS 1.2+），加密传输内容，防止抓包窃取；</li>
-<li><strong>避免 URL 携带 Token</strong>：URL 中的 Token 会被浏览器历史记录、服务器日志记录，应放在<code>Authorization</code>请求头（如<code>Bearer &lt;token&gt;</code>）或请求体中；</li>
-<li><strong>禁用 HTTP 缓存</strong>：在响应头添加<code>Cache-Control: no-store</code>和<code>Pragma: no-cache</code>，禁止浏览器缓存 Token。</li>
+<li><code>&lt;div&gt;</code> - 创建漂浮小球的容器</li>
 </ul>
-<h3 id="4-内容设计：最小权限与无敏感信息"><a class="header-anchor" href="#4-内容设计：最小权限与无敏感信息">¶</a>4. 内容设计：最小权限与无敏感信息</h3>
-<p>Token 的 Payload（如 JWT）应遵循 “最小权限原则”，避免冗余信息泄露：</p>
+<p><strong>属性解释</strong>：</p>
 <ul>
-<li><strong>不存敏感数据</strong>：Payload 用 Base64 编码（可解码），禁止存储密码、手机号、身份证号等；仅存用户 ID、角色、过期时间等非敏感标识；</li>
-<li><strong>最小权限标识</strong>：Token 中仅包含当前场景必需的权限（如 “订单查询” 权限，不包含 “订单修改”），避免权限滥用；</li>
-<li><strong>添加 “环境绑定” 信息</strong>：在 Token 中嵌入客户端唯一标识（如设备 ID<code>deviceId</code>、IP 哈希、浏览器 UA 哈希），校验时对比当前请求环境，不一致则拒绝（防 Token 在其他设备复用）。</li>
+<li><code>id=&quot;bubbles-container&quot;</code> - 小球容器的唯一标识符</li>
 </ul>
-<h3 id="5-防重放攻击（Replay-Attack）"><a class="header-anchor" href="#5-防重放攻击（Replay-Attack）">¶</a>5. 防重放攻击（Replay Attack）</h3>
-<p>攻击者窃取 Token 后，重复发送请求伪造操作（如重复支付），需通过以下机制防护：</p>
+<p><strong>样式属性详解</strong>：</p>
 <ul>
-<li><strong>添加时间戳（timestamp）</strong>：Token 中包含生成时间，服务端校验时判断 “当前时间 - Token 时间戳” 是否超过阈值（如 5 分钟），超过则拒绝；</li>
-<li><strong>添加随机数（nonce）</strong>：Token 中包含唯一随机数，服务端存储已使用的 nonce（如 Redis，有效期与时间戳阈值一致），重复 nonce 直接拒绝；</li>
-<li><strong>业务层幂等设计</strong>：即使 Token 被重放，业务接口需通过 “订单号唯一”“操作 ID 唯一” 等机制，避免重复执行（如支付接口仅允许同一订单支付一次）。</li>
+<li><code>position: absolute</code> - 绝对定位</li>
+<li><code>top: 0; left: 0; right: 0; bottom: 0</code> - 铺满整个父容器</li>
+<li><code>overflow: hidden</code> - 隐藏超出容器的内容</li>
+<li><code>z-index: -2</code> - 比磨砂背景更低的层级</li>
 </ul>
-<h3 id="6-Refresh-Token-的额外安全措施"><a class="header-anchor" href="#6-Refresh-Token-的额外安全措施">¶</a>6. Refresh Token 的额外安全措施</h3>
-<p>Refresh Token 是 “长期凭证”，泄露风险更高，需额外防护：</p>
+<h3 id="4-登录表单主体-Login-Form-Main"><a class="header-anchor" href="#4-登录表单主体-Login-Form-Main">¶</a>4. <strong>登录表单主体 (Login Form Main)</strong></h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;max-width: 400px; padding: 2.5rem; background: rgba(255, 255, 255, 0.97); border-radius: 16px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25); backdrop-filter: blur(15px); transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);&quot;</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>标签解释</strong>：</p>
 <ul>
-<li><strong>独立存储与访问控制</strong>：Refresh Token 不与 Access Token 存同一位置（如 Access Token 存内存，Refresh Token 存加密的本地数据库）；</li>
-<li><strong>定期轮换（Rotation）</strong>：每次用 Refresh Token 获取新 Access Token 时，同时返回新的 Refresh Token，旧的立即失效（避免 Refresh Token 长期不变）；</li>
-<li><strong>吊销机制（Revocation）</strong>：服务端维护 Refresh Token 黑名单（如 Redis），用户登出、账号冻结、密码修改时，立即将对应的 Refresh Token 加入黑名单，拒绝后续使用。</li>
+<li><code>&lt;div&gt;</code> - 登录表单的主要容器</li>
 </ul>
-<h2 id="三、Token-的最佳存储位置"><a class="header-anchor" href="#三、Token-的最佳存储位置">¶</a>三、Token 的最佳存储位置</h2>
-<p>Token 的存储位置直接影响其安全性，不同存储方案的风险（如 XSS、CSRF）差异极大，需结合 “应用类型” 选择。</p>
-<h3 id="1-主流存储位置对比"><a class="header-anchor" href="#1-主流存储位置对比">¶</a>1. 主流存储位置对比</h3>
-<p>不同存储位置的安全性、可用性及适用场景如下表：</p>
-<table>
-<thead>
-<tr>
-<th>存储位置</th>
-<th>安全性（防 XSS/CSRF）</th>
-<th>可用性（持久化 / 跨页面）</th>
-<th>适用场景</th>
-<th>核心风险点</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>HttpOnly Cookie</strong></td>
-<td>高（防 XSS：JS 无法访问；需配置 SameSite 防 CSRF）</td>
-<td>中（自动携带，关闭浏览器后失效或持久化）</td>
-<td>传统后端渲染（SSR）、需防 XSS 的场景</td>
-<td>未配置 SameSite 易受 CSRF 攻击</td>
-</tr>
-<tr>
-<td><strong>LocalStorage</strong></td>
-<td>低（JS 可访问，易受 XSS 攻击窃取）</td>
-<td>高（永久存储，跨页面共享）</td>
-<td>无敏感操作的静态页面（如博客）</td>
-<td>XSS 攻击导致 Token 泄露</td>
-</tr>
-<tr>
-<td><strong>SessionStorage</strong></td>
-<td>低（JS 可访问，易受 XSS 攻击）</td>
-<td>低（仅当前标签页，关闭即失）</td>
-<td>临时会话（如一次性操作）</td>
-<td>标签页关闭后需重新获取</td>
-</tr>
-<tr>
-<td><strong>内存存储（如 SPA 的 Vue/React 状态）</strong></td>
-<td>高（JS 可访问但页面刷新 / 关闭后失，XSS 需实时注入）</td>
-<td>低（页面刷新 / 关闭即失）</td>
-<td>前后端分离（SPA）、移动端 App</td>
-<td>页面刷新需重新获取 Token</td>
-</tr>
-<tr>
-<td><strong>加密的本地数据库（如 App 的 SQLCipher）</strong></td>
-<td>高（需解密密钥，JS / 普通应用无法访问）</td>
-<td>高（持久化存储）</td>
-<td>移动端 App（iOS/Android）、桌面应用</td>
-<td>设备 root / 越狱后可能泄露</td>
-</tr>
-</tbody>
-</table>
-<h3 id="2-不同场景的存储推荐"><a class="header-anchor" href="#2-不同场景的存储推荐">¶</a>2. 不同场景的存储推荐</h3>
-<h4 id="（1）前后端分离（SPA，如-Vue-React）"><a class="header-anchor" href="#（1）前后端分离（SPA，如-Vue-React）">¶</a>（1）前后端分离（SPA，如 Vue/React）</h4>
+<p><strong>样式属性详解</strong>：</p>
 <ul>
-<li><strong>Access Token</strong>：存储在<strong>内存</strong>（如 Vuex/Redux 状态），页面刷新后通过 Refresh Token 重新获取；<br>
-理由：内存存储无持久化，XSS 攻击需 “实时注入 JS”（难度高），且避免 LocalStorage 的 XSS 泄露风险。</li>
-<li><strong>Refresh Token</strong>：存储在<strong>HttpOnly + Secure + SameSite=Strict/Lax 的 Cookie</strong>；<br>
-理由：HttpOnly 防止 JS 访问（防 XSS），SameSite=Strict 禁止跨域请求携带（防 CSRF），Secure 仅 HTTPS 传输。</li>
+<li><code>max-width: 400px</code> - 最大宽度400px，确保在移动设备上的可用性</li>
+<li><code>padding: 2.5rem</code> - 内边距2.5rem，提供舒适的内部空间</li>
+<li><code>background: rgba(255, 255, 255, 0.97)</code> - 几乎不透明的白色背景</li>
+<li><code>border-radius: 16px</code> - 圆角边框，16px的圆角半径</li>
+<li><code>box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25)</code> - 阴影效果，向下偏移15px，模糊40px，25%透明度</li>
+<li><code>backdrop-filter: blur(15px)</code> - 背景模糊效果</li>
+<li><code>transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1)</code> - 所有属性的过渡动画，0.8秒，使用贝塞尔曲线缓动函数</li>
 </ul>
-<h4 id="（2）移动端-App（iOS-Android）"><a class="header-anchor" href="#（2）移动端-App（iOS-Android）">¶</a>（2）移动端 App（iOS/Android）</h4>
+<h3 id="5-锁形图标-Lock-Icon"><a class="header-anchor" href="#5-锁形图标-Lock-Icon">¶</a>5. <strong>锁形图标 (Lock Icon)</strong></h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">&quot;64&quot;</span> <span class="attr">height</span>=<span class="string">&quot;64&quot;</span> <span class="attr">viewBox</span>=<span class="string">&quot;0 0 24 24&quot;</span> <span class="attr">fill</span>=<span class="string">&quot;none&quot;</span> <span class="attr">stroke</span>=<span class="string">&quot;var(--current-theme-color, #8CC8FF)&quot;</span> <span class="attr">stroke-width</span>=<span class="string">&quot;2&quot;</span> <span class="attr">stroke-linecap</span>=<span class="string">&quot;round&quot;</span> <span class="attr">stroke-linejoin</span>=<span class="string">&quot;round&quot;</span> <span class="attr">style</span>=<span class="string">&quot;display: block; margin: 0 auto;&quot;</span> <span class="attr">id</span>=<span class="string">&quot;main-lock-icon&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">&quot;3&quot;</span> <span class="attr">y</span>=<span class="string">&quot;11&quot;</span> <span class="attr">width</span>=<span class="string">&quot;18&quot;</span> <span class="attr">height</span>=<span class="string">&quot;11&quot;</span> <span class="attr">rx</span>=<span class="string">&quot;2&quot;</span> <span class="attr">ry</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">rect</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">&quot;M7 11V7a5 5 0 0 1 10 0v4&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>标签解释</strong>：</p>
 <ul>
-<li><strong>Access Token</strong>：存储在<strong>内存</strong>（如 App 的全局变量），退出 App 后失效；</li>
-<li><strong>Refresh Token</strong>：存储在<strong>加密的本地数据库</strong>（如 iOS 的 Keychain、Android 的 EncryptedSharedPreferences）；<br>
-理由：移动端无浏览器 Cookie 的 CSRF 风险，加密存储可防设备被 root / 越狱后的数据窃取。</li>
+<li><code>&lt;svg&gt;</code> - 可缩放矢量图形元素</li>
+<li><code>&lt;rect&gt;</code> - 矩形元素，表示锁的主体</li>
+<li><code>&lt;path&gt;</code> - 路径元素，表示锁的顶部弧形</li>
 </ul>
-<h4 id="（3）传统后端渲染（SSR，如-JSP-PHP）"><a class="header-anchor" href="#（3）传统后端渲染（SSR，如-JSP-PHP）">¶</a>（3）传统后端渲染（SSR，如 JSP/PHP）</h4>
+<p><strong>属性解释</strong>：</p>
 <ul>
-<li><strong>Token（或 Session Token）</strong>：存储在<strong>HttpOnly + Secure + SameSite=Strict 的 Cookie</strong>；<br>
-理由：后端渲染场景下，Cookie 会自动携带到请求中，无需手动处理；HttpOnly 防 XSS，SameSite 防 CSRF，契合传统应用的使用习惯。</li>
+<li><code>width=&quot;64&quot; height=&quot;64&quot;</code> - SVG画布尺寸64x64像素</li>
+<li><code>viewBox=&quot;0 0 24 24&quot;</code> - 视口框，定义SVG的坐标系统</li>
+<li><code>fill=&quot;none&quot;</code> - 不填充颜色</li>
+<li><code>stroke=&quot;var(--current-theme-color, #8CC8FF)&quot;</code> - 描边颜色，使用CSS变量，默认值为#8CC8FF</li>
+<li><code>stroke-width=&quot;2&quot;</code> - 描边宽度2像素</li>
+<li><code>stroke-linecap=&quot;round&quot;</code> - 线条末端为圆形</li>
+<li><code>stroke-linejoin=&quot;round&quot;</code> - 线条连接处为圆形</li>
+<li><code>id=&quot;main-lock-icon&quot;</code> - 主锁图标的唯一标识符</li>
 </ul>
-<h4 id="（4）第三方登录（OAuth2-0）"><a class="header-anchor" href="#（4）第三方登录（OAuth2-0）">¶</a>（4）第三方登录（OAuth2.0）</h4>
+<p><strong>子元素详解</strong>：</p>
 <ul>
-<li><strong>Access Token</strong>：存储在<strong>内存</strong>（短期有效，用完即弃）；</li>
-<li><strong>Refresh Token</strong>：存储在<strong>服务端数据库</strong>（仅客户端持有 “Refresh Token ID”，服务端通过 ID 查询真实 Token）；<br>
-理由：第三方登录需严格控制 Refresh Token 泄露风险，服务端存储可直接吊销，避免客户端存储的安全隐患。</li>
+<li><code>&lt;rect x=&quot;3&quot; y=&quot;11&quot; width=&quot;18&quot; height=&quot;11&quot; rx=&quot;2&quot; ry=&quot;2&quot;&gt;</code> - 锁的主体矩形，位置(3,11)，尺寸18x11，圆角2x2</li>
+<li><code>&lt;path d=&quot;M7 11V7a5 5 0 0 1 10 0v4&quot;&gt;</code> - 锁的顶部弧形路径，从(7,11)开始，向上到(7,7)，然后画一个5x5的椭圆，最后向下到(7,4)</li>
 </ul>
-<h2 id="四、当下使用-Token-是否仍为好选择？"><a class="header-anchor" href="#四、当下使用-Token-是否仍为好选择？">¶</a>四、当下使用 Token 是否仍为好选择？</h2>
-<p>截至 2024 年，Token 仍是主流身份认证方案，但需客观看待其优势与局限性，结合场景判断是否适用。</p>
-<h3 id="1-Token-的核心优势（为何仍被广泛使用）"><a class="header-anchor" href="#1-Token-的核心优势（为何仍被广泛使用）">¶</a>1. Token 的核心优势（为何仍被广泛使用）</h3>
+<h3 id="6-标题-Title"><a class="header-anchor" href="#6-标题-Title">¶</a>6. <strong>标题 (Title)</strong></h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">h2</span> <span class="attr">style</span>=<span class="string">&quot;margin-bottom: 2rem; color: var(--current-theme-color, #8CC8FF); font-size: 1.75rem; font-weight: 600;&quot;</span> <span class="attr">id</span>=<span class="string">&quot;main-title&quot;</span>&gt;</span>zhyBlogs<span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>标签解释</strong>：</p>
 <ul>
-<li><strong>无状态，适配分布式 / 微服务</strong>：服务端无需存储用户状态，微服务集群可直接通过 Token 校验身份，无需共享 Session（如 Redis），降低架构复杂度；</li>
-<li><strong>跨域与多端兼容</strong>：Token 可在 Header/Body 中携带，完美支持跨域（如前端部署在 CDN，后端在另一域名），且适配移动端、桌面端、小程序等多终端；</li>
-<li><strong>轻量高效</strong>：Token（如 JWT）可直接携带用户权限信息，减少服务端查询数据库的次数，提升接口响应速度；</li>
-<li><strong>成熟生态</strong>：OAuth2.0、OpenID Connect 等基于 Token 的协议已成为行业标准，第三方登录（微信、支付宝、GitHub）均支持，开发成本低。</li>
+<li><code>&lt;h2&gt;</code> - 二级标题元素</li>
 </ul>
-<h3 id="2-Token-的局限性（需规避的问题）"><a class="header-anchor" href="#2-Token-的局限性（需规避的问题）">¶</a>2. Token 的局限性（需规避的问题）</h3>
+<p><strong>属性解释</strong>：</p>
 <ul>
-<li><strong>JWT 无法实时吊销</strong>：JWT 的有效性仅依赖签名和有效期，一旦生成，服务端无法主动 “废除”（除非维护黑名单），不适合需 “立即登出” 的场景（如账号被盗）；</li>
-<li><strong>存储风险不可完全规避</strong>：客户端存储（如 Cookie、LocalStorage）仍面临 XSS/CSRF 风险，需额外配置防护（如 HttpOnly、SameSite）；</li>
-<li><strong>Refresh Token 管理复杂</strong>：双令牌方案需维护 Refresh Token 的生命周期（轮换、吊销、黑名单），增加服务端开发成本；</li>
-<li><strong>不适合高安全场景</strong>：对于金融、医疗等超高安全需求，Token 需结合多因素认证（MFA，如短信验证码、U 盾），单纯 Token 不足以满足安全要求。</li>
+<li><code>id=&quot;main-title&quot;</code> - 主标题的唯一标识符</li>
 </ul>
-<h3 id="3-当下结论：Token-仍是-“优选方案”，但需-“正确使用”"><a class="header-anchor" href="#3-当下结论：Token-仍是-“优选方案”，但需-“正确使用”">¶</a>3. 当下结论：Token 仍是 “优选方案”，但需 “正确使用”</h3>
-<p>在当前的技术生态中，Token 仍是<strong>前后端分离、微服务、多端适配场景下的最优解之一</strong>，但需满足两个前提：</p>
-<ol>
-<li><strong>严格遵循安全设计原则</strong>：如短期 Access Token + 可吊销 Refresh Token、HTTPS 传输、HttpOnly 存储、非对称签名等；</li>
-<li><strong>结合场景选择类型</strong>：高安全场景用 “双令牌 + 服务端黑名单”，轻量场景用 JWT，传统后端用 Session Token。</li>
-</ol>
-<p><strong>替代方案对比</strong>：目前 Passkey（基于 WebAuthn 的无密码认证）是新兴方向，通过设备指纹（如指纹识别、Face ID）替代 Token，安全性更高，但兼容性仍不足（部分旧浏览器 / 设备不支持），短期内无法完全替代 Token。</p>
+<p><strong>样式属性详解</strong>：</p>
+<ul>
+<li><code>margin-bottom: 2rem</code> - 下边距2rem</li>
+<li><code>color: var(--current-theme-color, #8CC8FF)</code> - 文字颜色，使用CSS变量</li>
+<li><code>font-size: 1.75rem</code> - 字体大小1.75rem</li>
+<li><code>font-weight: 600</code> - 字体粗细600（半粗体）</li>
+</ul>
+<p><strong>内容</strong>：</p>
+<ul>
+<li><code>zhyBlogs</code> - 博客名称</li>
+</ul>
+<h3 id="7-密码输入区域-Password-Input-Area"><a class="header-anchor" href="#7-密码输入区域-Password-Input-Area">¶</a>7. <strong>密码输入区域 (Password Input Area)</strong></h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;margin-bottom: 1.5rem; position: relative; width: 100%;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--current-theme-color, #8CC8FF);&quot;</span> <span class="attr">id</span>=<span class="string">&quot;password-icon&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">&quot;18&quot;</span> <span class="attr">height</span>=<span class="string">&quot;18&quot;</span> <span class="attr">viewBox</span>=<span class="string">&quot;0 0 24 24&quot;</span> <span class="attr">fill</span>=<span class="string">&quot;none&quot;</span> <span class="attr">stroke</span>=<span class="string">&quot;currentColor&quot;</span> <span class="attr">stroke-width</span>=<span class="string">&quot;2&quot;</span> <span class="attr">stroke-linecap</span>=<span class="string">&quot;round&quot;</span> <span class="attr">stroke-linejoin</span>=<span class="string">&quot;round&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">&quot;3&quot;</span> <span class="attr">y</span>=<span class="string">&quot;11&quot;</span> <span class="attr">width</span>=<span class="string">&quot;18&quot;</span> <span class="attr">height</span>=<span class="string">&quot;11&quot;</span> <span class="attr">rx</span>=<span class="string">&quot;2&quot;</span> <span class="attr">ry</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">rect</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">path</span> <span class="attr">d</span>=<span class="string">&quot;M7 11V7a5 5 0 0 1 10 0v4&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">path</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">id</span>=<span class="string">&quot;pass-input&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入密码&quot;</span> <span class="attr">class</span>=<span class="string">&quot;login-input&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width: 100%; padding: 0.85rem 2.5rem; margin-bottom: 0; border: 2px solid transparent; border-radius: 8px; font-size: 16px; transition: all 0.3s ease; background: #f8f9fa; box-sizing: border-box;&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>外层容器</strong>：</p>
+<ul>
+<li><code>&lt;div&gt;</code> - 密码输入区域的容器</li>
+<li><code>margin-bottom: 1.5rem</code> - 下边距1.5rem</li>
+<li><code>position: relative</code> - 相对定位，为绝对定位的子元素提供参考</li>
+<li><code>width: 100%</code> - 宽度占满父容器</li>
+</ul>
+<p><strong>密码图标容器</strong>：</p>
+<ul>
+<li><code>&lt;div&gt;</code> - 密码图标的容器</li>
+<li><code>id=&quot;password-icon&quot;</code> - 密码图标的唯一标识符</li>
+<li><code>position: absolute</code> - 绝对定位</li>
+<li><code>left: 12px</code> - 距离左边12px</li>
+<li><code>top: 50%</code> - 距离顶部50%</li>
+<li><code>transform: translateY(-50%)</code> - 向上偏移自身高度的50%，实现垂直居中</li>
+<li><code>color: var(--current-theme-color, #8CC8FF)</code> - 图标颜色</li>
+</ul>
+<p><strong>密码图标SVG</strong>：</p>
+<ul>
+<li><code>&lt;svg width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;</code> - 18x18像素的锁图标</li>
+<li><code>&lt;rect x=&quot;3&quot; y=&quot;11&quot; width=&quot;18&quot; height=&quot;11&quot; rx=&quot;2&quot; ry=&quot;2&quot;&gt;</code> - 锁的主体</li>
+<li><code>&lt;path d=&quot;M7 11V7a5 5 0 0 1 10 0v4&quot;&gt;</code> - 锁的顶部弧形</li>
+</ul>
+<p><strong>密码输入框</strong>：</p>
+<ul>
+<li><code>&lt;input&gt;</code> - 输入框元素</li>
+<li><code>type=&quot;password&quot;</code> - 密码类型，输入时显示为点</li>
+<li><code>id=&quot;pass-input&quot;</code> - 密码输入框的唯一标识符</li>
+<li><code>placeholder=&quot;请输入密码&quot;</code> - 占位符文本</li>
+<li><code>class=&quot;login-input&quot;</code> - CSS类名</li>
+<li><code>style=&quot;...&quot;</code> - 内联样式</li>
+</ul>
+<p><strong>输入框样式详解</strong>：</p>
+<ul>
+<li><code>width: 100%</code> - 宽度占满父容器</li>
+<li><code>padding: 0.85rem 2.5rem</code> - 内边距，上下0.85rem，左右2.5rem</li>
+<li><code>margin-bottom: 0</code> - 下边距为0</li>
+<li><code>border: 2px solid transparent</code> - 2px透明边框</li>
+<li><code>border-radius: 8px</code> - 8px圆角</li>
+<li><code>font-size: 16px</code> - 字体大小16px</li>
+<li><code>transition: all 0.3s ease</code> - 所有属性0.3秒缓动过渡</li>
+<li><code>background: #f8f9fa</code> - 浅灰色背景</li>
+<li><code>box-sizing: border-box</code> - 盒模型，边框和内边距包含在宽度内</li>
+</ul>
+<h3 id="8-验证码输入区域-Captcha-Input-Area"><a class="header-anchor" href="#8-验证码输入区域-Captcha-Input-Area">¶</a>8. <strong>验证码输入区域 (Captcha Input Area)</strong></h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;margin-bottom: 1.5rem; position: relative; width: 100%;&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;display: flex; gap: 12px; align-items: center;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;flex: 1; position: relative;&quot;</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">div</span> <span class="attr">style</span>=<span class="string">&quot;position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--current-theme-color, #8CC8FF);&quot;</span> <span class="attr">id</span>=<span class="string">&quot;captcha-icon&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">svg</span> <span class="attr">width</span>=<span class="string">&quot;18&quot;</span> <span class="attr">height</span>=<span class="string">&quot;18&quot;</span> <span class="attr">viewBox</span>=<span class="string">&quot;0 0 24 24&quot;</span> <span class="attr">fill</span>=<span class="string">&quot;none&quot;</span> <span class="attr">stroke</span>=<span class="string">&quot;currentColor&quot;</span> <span class="attr">stroke-width</span>=<span class="string">&quot;2&quot;</span> <span class="attr">stroke-linecap</span>=<span class="string">&quot;round&quot;</span> <span class="attr">stroke-linejoin</span>=<span class="string">&quot;round&quot;</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">rect</span> <span class="attr">x</span>=<span class="string">&quot;3&quot;</span> <span class="attr">y</span>=<span class="string">&quot;3&quot;</span> <span class="attr">width</span>=<span class="string">&quot;18&quot;</span> <span class="attr">height</span>=<span class="string">&quot;18&quot;</span> <span class="attr">rx</span>=<span class="string">&quot;2&quot;</span> <span class="attr">ry</span>=<span class="string">&quot;2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">rect</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">circle</span> <span class="attr">cx</span>=<span class="string">&quot;8.5&quot;</span> <span class="attr">cy</span>=<span class="string">&quot;8.5&quot;</span> <span class="attr">r</span>=<span class="string">&quot;1.5&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">circle</span>&gt;</span></span><br><span class="line">          <span class="tag">&lt;<span class="name">polyline</span> <span class="attr">points</span>=<span class="string">&quot;21 15 16 10 5 21&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">polyline</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">svg</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">id</span>=<span class="string">&quot;captcha-input&quot;</span> <span class="attr">placeholder</span>=<span class="string">&quot;请输入验证码&quot;</span> <span class="attr">class</span>=<span class="string">&quot;login-input&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width: 100%; padding: 0.85rem 2.5rem; margin-bottom: 0; border: 2px solid transparent; border-radius: 8px; font-size: 16px; transition: all 0.3s ease; background: #f8f9fa; box-sizing: border-box;&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">id</span>=<span class="string">&quot;captcha-canvas&quot;</span> <span class="attr">width</span>=<span class="string">&quot;120&quot;</span> <span class="attr">height</span>=<span class="string">&quot;40&quot;</span> <span class="attr">style</span>=<span class="string">&quot;border: 2px solid transparent; border-radius: 8px; cursor: pointer; background: white;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">canvas</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>外层容器</strong>：</p>
+<ul>
+<li><code>&lt;div&gt;</code> - 验证码区域的容器</li>
+<li><code>margin-bottom: 1.5rem</code> - 下边距1.5rem</li>
+<li><code>position: relative</code> - 相对定位</li>
+<li><code>width: 100%</code> - 宽度占满父容器</li>
+</ul>
+<p><strong>Flexbox容器</strong>：</p>
+<ul>
+<li><code>&lt;div style=&quot;display: flex; gap: 12px; align-items: center;&quot;&gt;</code> - Flexbox布局，子元素间距12px，垂直居中对齐</li>
+</ul>
+<p><strong>验证码输入区域</strong>：</p>
+<ul>
+<li><code>&lt;div style=&quot;flex: 1; position: relative;&quot;&gt;</code> - 弹性增长1，相对定位</li>
+</ul>
+<p><strong>验证码图标容器</strong>：</p>
+<ul>
+<li><code>&lt;div&gt;</code> - 验证码图标的容器</li>
+<li><code>id=&quot;captcha-icon&quot;</code> - 验证码图标的唯一标识符</li>
+<li><code>position: absolute</code> - 绝对定位</li>
+<li><code>left: 12px</code> - 距离左边12px</li>
+<li><code>top: 50%</code> - 距离顶部50%</li>
+<li><code>transform: translateY(-50%)</code> - 垂直居中</li>
+<li><code>color: var(--current-theme-color, #8CC8FF)</code> - 图标颜色</li>
+</ul>
+<p><strong>验证码图标SVG</strong>：</p>
+<ul>
+<li><code>&lt;svg width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;&gt;</code> - 18x18像素的验证码图标</li>
+<li><code>&lt;rect x=&quot;3&quot; y=&quot;3&quot; width=&quot;18&quot; height=&quot;18&quot; rx=&quot;2&quot; ry=&quot;2&quot;&gt;</code> - 矩形框</li>
+<li><code>&lt;circle cx=&quot;8.5&quot; cy=&quot;8.5&quot; r=&quot;1.5&quot;&gt;</code> - 圆形，中心(8.5,8.5)，半径1.5</li>
+<li><code>&lt;polyline points=&quot;21 15 16 10 5 21&quot;&gt;</code> - 折线，连接点(21,15)、(16,10)、(5,21)</li>
+</ul>
+<p><strong>验证码输入框</strong>：</p>
+<ul>
+<li><code>&lt;input type=&quot;text&quot; id=&quot;captcha-input&quot; placeholder=&quot;请输入验证码&quot; class=&quot;login-input&quot; style=&quot;...&quot;&gt;</code> - 文本输入框，样式与密码框相同</li>
+</ul>
+<p><strong>验证码画布</strong>：</p>
+<ul>
+<li><code>&lt;canvas id=&quot;captcha-canvas&quot; width=&quot;120&quot; height=&quot;40&quot; style=&quot;border: 2px solid transparent; border-radius: 8px; cursor: pointer; background: white;&quot;&gt;</code> - 120x40像素的画布</li>
+<li><code>id=&quot;captcha-canvas&quot;</code> - 验证码画布的唯一标识符</li>
+<li><code>width=&quot;120&quot; height=&quot;40&quot;</code> - 画布尺寸</li>
+<li><code>border: 2px solid transparent</code> - 透明边框</li>
+<li><code>border-radius: 8px</code> - 圆角</li>
+<li><code>cursor: pointer</code> - 鼠标指针样式</li>
+<li><code>background: white</code> - 白色背景</li>
+</ul>
+<h3 id="9-登录按钮-Login-Button"><a class="header-anchor" href="#9-登录按钮-Login-Button">¶</a>9. <strong>登录按钮 (Login Button)</strong></h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">button</span> <span class="attr">onclick</span>=<span class="string">&quot;enhancedCheckPassword()&quot;</span> <span class="attr">style</span>=<span class="string">&quot;width: 100%; padding: 0.85rem; background: var(--current-theme-color, #8CC8FF); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.5px; box-sizing: border-box;&quot;</span> <span class="attr">id</span>=<span class="string">&quot;login-button&quot;</span>&gt;</span>登录<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>标签解释</strong>：</p>
+<ul>
+<li><code>&lt;button&gt;</code> - 按钮元素</li>
+</ul>
+<p><strong>属性解释</strong>：</p>
+<ul>
+<li><code>onclick=&quot;enhancedCheckPassword()&quot;</code> - 点击时执行JavaScript函数</li>
+<li><code>id=&quot;login-button&quot;</code> - 登录按钮的唯一标识符</li>
+</ul>
+<p><strong>样式属性详解</strong>：</p>
+<ul>
+<li><code>width: 100%</code> - 宽度占满父容器</li>
+<li><code>padding: 0.85rem</code> - 内边距0.85rem</li>
+<li><code>background: var(--current-theme-color, #8CC8FF)</code> - 背景色，使用CSS变量</li>
+<li><code>color: white</code> - 文字颜色白色</li>
+<li><code>border: none</code> - 无边框</li>
+<li><code>border-radius: 8px</code> - 8px圆角</li>
+<li><code>font-size: 16px</code> - 字体大小16px</li>
+<li><code>font-weight: 500</code> - 字体粗细500（中等）</li>
+<li><code>cursor: pointer</code> - 鼠标指针样式</li>
+<li><code>transition: all 0.3s ease</code> - 所有属性0.3秒缓动过渡</li>
+<li><code>text-transform: uppercase</code> - 文字转换为大写</li>
+<li><code>letter-spacing: 0.5px</code> - 字母间距0.5px</li>
+<li><code>box-sizing: border-box</code> - 盒模型</li>
+</ul>
+<p><strong>内容</strong>：</p>
+<ul>
+<li><code>登录</code> - 按钮文字</li>
+</ul>
+<h3 id="10-错误消息-Error-Message"><a class="header-anchor" href="#10-错误消息-Error-Message">¶</a>10. <strong>错误消息 (Error Message)</strong></h3>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">p</span> <span class="attr">id</span>=<span class="string">&quot;error-msg&quot;</span> <span class="attr">style</span>=<span class="string">&quot;color: #EA4335; margin-top: 1rem; font-size: 0.9rem;&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>标签解释</strong>：</p>
+<ul>
+<li><code>&lt;p&gt;</code> - 段落元素，用于显示错误信息</li>
+</ul>
+<p><strong>属性解释</strong>：</p>
+<ul>
+<li><code>id=&quot;error-msg&quot;</code> - 错误消息的唯一标识符</li>
+</ul>
+<p><strong>样式属性详解</strong>：</p>
+<ul>
+<li><code>color: #EA4335</code> - 红色文字颜色</li>
+<li><code>margin-top: 1rem</code> - 上边距1rem</li>
+<li><code>font-size: 0.9rem</code> - 字体大小0.9rem</li>
+</ul>
+<h2 id="背景漂浮小球-详细变量和函数解释"><a class="header-anchor" href="#背景漂浮小球-详细变量和函数解释">¶</a>背景漂浮小球 - 详细变量和函数解释</h2>
+<h3 id="1-小球生成函数-createBubbles"><a class="header-anchor" href="#1-小球生成函数-createBubbles">¶</a>1. <strong>小球生成函数 (createBubbles)</strong></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">createBubbles</span>(<span class="params">themeColor = <span class="literal">null</span></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> container = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;bubbles-container&#x27;</span>);</span><br><span class="line">  <span class="keyword">if</span> (!container) <span class="keyword">return</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 清除现有的圆形</span></span><br><span class="line">  container.<span class="property">innerHTML</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 获取当前主题色</span></span><br><span class="line">  <span class="keyword">let</span> currentTheme = themeColor;</span><br><span class="line">  <span class="keyword">if</span> (!currentTheme) &#123;</span><br><span class="line">    <span class="comment">// 根据当前时间计算主题色</span></span><br><span class="line">    <span class="keyword">const</span> currentHour = <span class="keyword">new</span> <span class="title class_">Date</span>().<span class="title function_">getHours</span>();</span><br><span class="line">    <span class="comment">// ... 时间主题色逻辑</span></span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 基于当前主题色生成颜色变体</span></span><br><span class="line">  <span class="keyword">const</span> themeColors = <span class="title function_">generateBubbleColors</span>(currentTheme);</span><br><span class="line">  <span class="keyword">const</span> bubbleCount = <span class="number">15</span>; <span class="comment">// 圆形数量</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">0</span>; i &lt; bubbleCount; i++) &#123;</span><br><span class="line">    <span class="keyword">const</span> bubble = <span class="variable language_">document</span>.<span class="title function_">createElement</span>(<span class="string">&#x27;div&#x27;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 随机大小、位置和透明度</span></span><br><span class="line">    <span class="keyword">const</span> size = <span class="title class_">Math</span>.<span class="title function_">random</span>() * <span class="number">150</span> + <span class="number">50</span>; <span class="comment">// 50-200px</span></span><br><span class="line">    <span class="keyword">const</span> x = <span class="title class_">Math</span>.<span class="title function_">random</span>() * <span class="number">100</span>; <span class="comment">// 0-100%</span></span><br><span class="line">    <span class="keyword">const</span> y = <span class="title class_">Math</span>.<span class="title function_">random</span>() * <span class="number">100</span>; <span class="comment">// 0-100%</span></span><br><span class="line">    <span class="keyword">const</span> opacity = <span class="title class_">Math</span>.<span class="title function_">random</span>() * <span class="number">0.4</span> + <span class="number">0.1</span>; <span class="comment">// 0.1-0.5</span></span><br><span class="line">    <span class="keyword">const</span> color = themeColors[<span class="title class_">Math</span>.<span class="title function_">floor</span>(<span class="title class_">Math</span>.<span class="title function_">random</span>() * themeColors.<span class="property">length</span>)];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 设置圆形样式</span></span><br><span class="line">    bubble.<span class="property">style</span>.<span class="property">cssText</span> = <span class="string">`...`</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 存储圆形的原始位置和移动速度</span></span><br><span class="line">    bubble.<span class="property">dataset</span>.<span class="property">originalX</span> = x;</span><br><span class="line">    bubble.<span class="property">dataset</span>.<span class="property">originalY</span> = y;</span><br><span class="line">    bubble.<span class="property">dataset</span>.<span class="property">speedX</span> = (<span class="title class_">Math</span>.<span class="title function_">random</span>() - <span class="number">0.5</span>) * <span class="number">0.5</span>; <span class="comment">// -0.25 到 0.25</span></span><br><span class="line">    bubble.<span class="property">dataset</span>.<span class="property">speedY</span> = (<span class="title class_">Math</span>.<span class="title function_">random</span>() - <span class="number">0.5</span>) * <span class="number">0.5</span>; <span class="comment">// -0.25 到 0.25</span></span><br><span class="line">    </span><br><span class="line">    container.<span class="title function_">appendChild</span>(bubble);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>函数参数</strong>：</p>
+<ul>
+<li><code>themeColor = null</code> - 主题色参数，默认为null</li>
+</ul>
+<p><strong>局部变量详解</strong>：</p>
+<ul>
+<li><code>container</code> - 获取小球容器的DOM元素</li>
+<li><code>currentTheme</code> - 当前主题色</li>
+<li><code>currentHour</code> - 当前小时数</li>
+<li><code>themeColors</code> - 基于主题色生成的颜色数组</li>
+<li><code>bubbleCount</code> - 小球数量，固定为15个</li>
+</ul>
+<p><strong>循环变量</strong>：</p>
+<ul>
+<li><code>i</code> - 循环计数器</li>
+<li><code>bubble</code> - 新创建的小球DOM元素</li>
+</ul>
+<p><strong>随机属性变量</strong>：</p>
+<ul>
+<li><code>size</code> - 小球尺寸，范围50-200px</li>
+<li><code>x</code> - 水平位置，范围0-100%</li>
+<li><code>y</code> - 垂直位置，范围0-100%</li>
+<li><code>opacity</code> - 透明度，范围0.1-0.5</li>
+<li><code>color</code> - 随机选择的颜色</li>
+</ul>
+<p><strong>数据属性</strong>：</p>
+<ul>
+<li><code>bubble.dataset.originalX</code> - 存储原始X坐标</li>
+<li><code>bubble.dataset.originalY</code> - 存储原始Y坐标</li>
+<li><code>bubble.dataset.speedX</code> - 存储X方向速度，范围-0.25到0.25</li>
+<li><code>bubble.dataset.speedY</code> - 存储Y方向速度，范围-0.25到0.25</li>
+</ul>
+<h3 id="2-小球动画函数-animateBubbles"><a class="header-anchor" href="#2-小球动画函数-animateBubbles">¶</a>2. <strong>小球动画函数 (animateBubbles)</strong></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">animateBubbles</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> bubbles = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;#bubbles-container &gt; div&#x27;</span>);</span><br><span class="line">  <span class="keyword">if</span> (!bubbles.<span class="property">length</span>) <span class="keyword">return</span>;</span><br><span class="line">  </span><br><span class="line">  bubbles.<span class="title function_">forEach</span>(<span class="function"><span class="params">bubble</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 获取当前位置和速度</span></span><br><span class="line">    <span class="keyword">let</span> x = <span class="built_in">parseFloat</span>(bubble.<span class="property">dataset</span>.<span class="property">originalX</span>);</span><br><span class="line">    <span class="keyword">let</span> y = <span class="built_in">parseFloat</span>(bubble.<span class="property">dataset</span>.<span class="property">originalY</span>);</span><br><span class="line">    <span class="keyword">const</span> speedX = <span class="built_in">parseFloat</span>(bubble.<span class="property">dataset</span>.<span class="property">speedX</span>);</span><br><span class="line">    <span class="keyword">const</span> speedY = <span class="built_in">parseFloat</span>(bubble.<span class="property">dataset</span>.<span class="property">speedY</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 更新位置</span></span><br><span class="line">    x = (x + speedX + <span class="number">100</span>) % <span class="number">100</span>;</span><br><span class="line">    y = (y + speedY + <span class="number">100</span>) % <span class="number">100</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 应用变换</span></span><br><span class="line">    bubble.<span class="property">style</span>.<span class="property">left</span> = <span class="string">`<span class="subst">$&#123;x&#125;</span>%`</span>;</span><br><span class="line">    bubble.<span class="property">style</span>.<span class="property">top</span> = <span class="string">`<span class="subst">$&#123;y&#125;</span>%`</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 保存更新后的位置</span></span><br><span class="line">    bubble.<span class="property">dataset</span>.<span class="property">originalX</span> = x;</span><br><span class="line">    bubble.<span class="property">dataset</span>.<span class="property">originalY</span> = y;</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  <span class="title function_">requestAnimationFrame</span>(animateBubbles);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>局部变量详解</strong>：</p>
+<ul>
+<li><code>bubbles</code> - 所有小球元素的NodeList</li>
+<li><code>bubble</code> - 单个小球元素（forEach循环参数）</li>
+</ul>
+<p><strong>位置和速度变量</strong>：</p>
+<ul>
+<li><code>x</code> - 当前X坐标（可修改）</li>
+<li><code>y</code> - 当前Y坐标（可修改）</li>
+<li><code>speedX</code> - X方向速度（常量）</li>
+<li><code>speedY</code> - Y方向速度（常量）</li>
+</ul>
+<p><strong>位置更新逻辑</strong>：</p>
+<ul>
+<li><code>(x + speedX + 100) % 100</code> - 添加100是为了处理负数，然后取模确保在0-100范围内</li>
+<li><code>(y + speedY + 100) % 100</code> - 同样的逻辑应用于Y坐标</li>
+</ul>
+<h3 id="3-颜色生成函数-generateBubbleColors"><a class="header-anchor" href="#3-颜色生成函数-generateBubbleColors">¶</a>3. <strong>颜色生成函数 (generateBubbleColors)</strong></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">generateBubbleColors</span>(<span class="params">baseColor</span>) &#123;</span><br><span class="line">  <span class="keyword">if</span> (!baseColor.<span class="title function_">startsWith</span>(<span class="string">&#x27;#&#x27;</span>)) &#123;</span><br><span class="line">    <span class="keyword">return</span> [<span class="string">&#x27;#333333&#x27;</span>, <span class="string">&#x27;#666666&#x27;</span>, <span class="string">&#x27;#999999&#x27;</span>, <span class="string">&#x27;#555555&#x27;</span>, <span class="string">&#x27;#777777&#x27;</span>, <span class="string">&#x27;#444444&#x27;</span>, <span class="string">&#x27;#888888&#x27;</span>];</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">const</span> r = <span class="built_in">parseInt</span>(baseColor.<span class="title function_">slice</span>(<span class="number">1</span>, <span class="number">3</span>), <span class="number">16</span>);</span><br><span class="line">  <span class="keyword">const</span> g = <span class="built_in">parseInt</span>(baseColor.<span class="title function_">slice</span>(<span class="number">3</span>, <span class="number">5</span>), <span class="number">16</span>);</span><br><span class="line">  <span class="keyword">const</span> b = <span class="built_in">parseInt</span>(baseColor.<span class="title function_">slice</span>(<span class="number">5</span>, <span class="number">7</span>), <span class="number">16</span>);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">return</span> [</span><br><span class="line">    baseColor, <span class="comment">// 原始颜色</span></span><br><span class="line">    <span class="comment">// 变亮20%</span></span><br><span class="line">    <span class="string">`#<span class="subst">$&#123;<span class="built_in">Math</span>.min(<span class="number">255</span>, <span class="built_in">Math</span>.floor(r * <span class="number">1.2</span>)).toString(<span class="number">16</span>).padStart(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)&#125;</span><span class="subst">$&#123;<span class="built_in">Math</span>.min(<span class="number">255</span>, <span class="built_in">Math</span>.floor(g * <span class="number">1.2</span>)).toString(<span class="number">16</span>).padStart(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)&#125;</span><span class="subst">$&#123;<span class="built_in">Math</span>.min(<span class="number">255</span>, <span class="built_in">Math</span>.floor(b * <span class="number">1.2</span>)).toString(<span class="number">16</span>).padStart(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)&#125;</span>`</span>,</span><br><span class="line">    <span class="comment">// 变暗20%</span></span><br><span class="line">    <span class="string">`#<span class="subst">$&#123;<span class="built_in">Math</span>.max(<span class="number">0</span>, <span class="built_in">Math</span>.floor(r * <span class="number">0.8</span>)).toString(<span class="number">16</span>).padStart(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)&#125;</span><span class="subst">$&#123;<span class="built_in">Math</span>.max(<span class="number">0</span>, <span class="built_in">Math</span>.floor(g * <span class="number">0.8</span>)).toString(<span class="number">16</span>).padStart(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)&#125;</span><span class="subst">$&#123;<span class="built_in">Math</span>.max(<span class="number">0</span>, <span class="built_in">Math</span>.floor(b * <span class="number">0.8</span>)).toString(<span class="number">16</span>).padStart(<span class="number">2</span>, <span class="string">&#x27;0&#x27;</span>)&#125;</span>`</span>,</span><br><span class="line">    <span class="comment">// 其他颜色变体...</span></span><br><span class="line">  ];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>函数参数</strong>：</p>
+<ul>
+<li><code>baseColor</code> - 基础颜色，十六进制格式</li>
+</ul>
+<p><strong>局部变量详解</strong>：</p>
+<ul>
+<li><code>r</code> - 红色分量，从十六进制字符串中提取并转换为十进制</li>
+<li><code>g</code> - 绿色分量</li>
+<li><code>b</code> - 蓝色分量</li>
+</ul>
+<p><strong>颜色处理逻辑</strong>：</p>
+<ul>
+<li><code>baseColor.slice(1, 3)</code> - 提取红色分量（跳过#符号）</li>
+<li><code>parseInt(..., 16)</code> - 将十六进制字符串转换为十进制整数</li>
+<li><code>Math.min(255, ...)</code> - 确保不超过255的最大值</li>
+<li><code>Math.max(0, ...)</code> - 确保不低于0的最小值</li>
+<li><code>.toString(16)</code> - 转换回十六进制字符串</li>
+<li><code>.padStart(2, '0')</code> - 确保至少2位，不足用0填充</li>
+</ul>
+<h3 id="4-鼠标交互函数-addMouseInteraction"><a class="header-anchor" href="#4-鼠标交互函数-addMouseInteraction">¶</a>4. <strong>鼠标交互函数 (addMouseInteraction)</strong></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">addMouseInteraction</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> bubbles = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;#bubbles-container &gt; div&#x27;</span>);</span><br><span class="line">  <span class="keyword">if</span> (!bubbles.<span class="property">length</span>) <span class="keyword">return</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="variable language_">document</span>.<span class="title function_">addEventListener</span>(<span class="string">&#x27;mousemove&#x27;</span>, <span class="function">(<span class="params">e</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">const</span> mouseX = e.<span class="property">clientX</span>;</span><br><span class="line">    <span class="keyword">const</span> mouseY = e.<span class="property">clientY</span>;</span><br><span class="line">    <span class="keyword">const</span> threshold = <span class="number">200</span>; <span class="comment">// 鼠标影响范围</span></span><br><span class="line">    </span><br><span class="line">    bubbles.<span class="title function_">forEach</span>(<span class="function"><span class="params">bubble</span> =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> bubbleRect = bubble.<span class="title function_">getBoundingClientRect</span>();</span><br><span class="line">      <span class="keyword">const</span> bubbleX = bubbleRect.<span class="property">left</span> + bubbleRect.<span class="property">width</span> / <span class="number">2</span>;</span><br><span class="line">      <span class="keyword">const</span> bubbleY = bubbleRect.<span class="property">top</span> + bubbleRect.<span class="property">height</span> / <span class="number">2</span>;</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 计算鼠标和圆形之间的距离</span></span><br><span class="line">      <span class="keyword">const</span> dx = mouseX - bubbleX;</span><br><span class="line">      <span class="keyword">const</span> dy = mouseY - bubbleY;</span><br><span class="line">      <span class="keyword">const</span> distance = <span class="title class_">Math</span>.<span class="title function_">sqrt</span>(dx * dx + dy * dy);</span><br><span class="line">      </span><br><span class="line">      <span class="comment">// 如果圆形在鼠标影响范围内，则移动它</span></span><br><span class="line">      <span class="keyword">if</span> (distance &lt; threshold) &#123;</span><br><span class="line">        <span class="keyword">const</span> force = (threshold - distance) / threshold; <span class="comment">// 力量与距离成反比</span></span><br><span class="line">        <span class="keyword">const</span> angle = <span class="title class_">Math</span>.<span class="title function_">atan2</span>(dy, dx);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">// 计算移动方向（远离鼠标）</span></span><br><span class="line">        <span class="keyword">const</span> moveX = <span class="title class_">Math</span>.<span class="title function_">cos</span>(angle + <span class="title class_">Math</span>.<span class="property">PI</span>) * force * <span class="number">30</span>; <span class="comment">// 远离鼠标的方向</span></span><br><span class="line">        <span class="keyword">const</span> moveY = <span class="title class_">Math</span>.<span class="title function_">sin</span>(angle + <span class="title class_">Math</span>.<span class="property">PI</span>) * force * <span class="number">30</span>;</span><br><span class="line">        </span><br><span class="line">        bubble.<span class="property">style</span>.<span class="property">transform</span> = <span class="string">`translate(-50%, -50%) translate(<span class="subst">$&#123;moveX&#125;</span>px, <span class="subst">$&#123;moveY&#125;</span>px)`</span>;</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// 如果远离鼠标，恢复原始位置</span></span><br><span class="line">        bubble.<span class="property">style</span>.<span class="property">transform</span> = <span class="string">&#x27;translate(-50%, -50%)&#x27;</span>;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;);</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>局部变量详解</strong>：</p>
+<ul>
+<li><code>bubbles</code> - 所有小球元素</li>
+<li><code>e</code> - 鼠标移动事件对象</li>
+</ul>
+<p><strong>鼠标位置变量</strong>：</p>
+<ul>
+<li><code>mouseX</code> - 鼠标X坐标</li>
+<li><code>mouseY</code> - 鼠标Y坐标</li>
+<li><code>threshold</code> - 鼠标影响范围，200像素</li>
+</ul>
+<p><strong>小球位置变量</strong>：</p>
+<ul>
+<li><code>bubbleRect</code> - 小球的位置和尺寸信息</li>
+<li><code>bubbleX</code> - 小球中心X坐标</li>
+<li><code>bubbleY</code> - 小球中心Y坐标</li>
+</ul>
+<p><strong>距离计算变量</strong>：</p>
+<ul>
+<li><code>dx</code> - X方向距离差</li>
+<li><code>dy</code> - Y方向距离差</li>
+<li><code>distance</code> - 欧几里得距离</li>
+</ul>
+<p><strong>移动计算变量</strong>：</p>
+<ul>
+<li><code>force</code> - 移动力量，与距离成反比</li>
+<li><code>angle</code> - 角度，使用Math.atan2计算</li>
+<li><code>moveX</code> - X方向移动距离</li>
+<li><code>moveY</code> - Y方向移动距离</li>
+</ul>
+<h3 id="5-小球破裂动画函数-animateBubblesBurst"><a class="header-anchor" href="#5-小球破裂动画函数-animateBubblesBurst">¶</a>5. <strong>小球破裂动画函数 (animateBubblesBurst)</strong></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">animateBubblesBurst</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> bubbles = <span class="variable language_">document</span>.<span class="title function_">querySelectorAll</span>(<span class="string">&#x27;#bubbles-container &gt; div&#x27;</span>);</span><br><span class="line">  <span class="keyword">if</span> (!bubbles.<span class="property">length</span>) <span class="keyword">return</span>;</span><br><span class="line">  </span><br><span class="line">  bubbles.<span class="title function_">forEach</span>(<span class="function">(<span class="params">bubble, index</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">// 延迟动画，使破裂有层次感</span></span><br><span class="line">    <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      bubble.<span class="property">style</span>.<span class="property">transition</span> = <span class="string">&#x27;all 0.6s ease-out&#x27;</span>;</span><br><span class="line">      bubble.<span class="property">style</span>.<span class="property">transform</span> = <span class="string">`translate(-50%, -50%) scale(1.5)`</span>;</span><br><span class="line">      bubble.<span class="property">style</span>.<span class="property">opacity</span> = <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">      bubble.<span class="property">style</span>.<span class="property">filter</span> = <span class="string">&#x27;blur(10px)&#x27;</span>;</span><br><span class="line">    &#125;, index * <span class="number">50</span>);</span><br><span class="line">  &#125;);</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 动画结束后移除圆形</span></span><br><span class="line">  <span class="built_in">setTimeout</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">    <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;bubbles-container&#x27;</span>).<span class="property">innerHTML</span> = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line">  &#125;, <span class="number">1000</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>局部变量详解</strong>：</p>
+<ul>
+<li><code>bubbles</code> - 所有小球元素</li>
+<li><code>bubble</code> - 单个小球元素</li>
+<li><code>index</code> - 小球在数组中的索引</li>
+</ul>
+<p><strong>动画延迟</strong>：</p>
+<ul>
+<li><code>index * 50</code> - 每个小球延迟50毫秒，创造层次感</li>
+</ul>
+<p><strong>动画属性</strong>：</p>
+<ul>
+<li><code>transition: 'all 0.6s ease-out'</code> - 所有属性0.6秒缓出过渡</li>
+<li><code>transform: 'translate(-50%, -50%) scale(1.5)'</code> - 保持居中并放大1.5倍</li>
+<li><code>opacity: '0'</code> - 透明度变为0</li>
+<li><code>filter: 'blur(10px)'</code> - 模糊效果10像素</li>
+</ul>
+<p><strong>清理延迟</strong>：</p>
+<ul>
+<li><code>1000</code> - 1秒后清理所有小球</li>
+</ul>
+<h3 id="6-磨砂背景消失动画函数-animateFrostedBgFadeOut"><a class="header-anchor" href="#6-磨砂背景消失动画函数-animateFrostedBgFadeOut">¶</a>6. <strong>磨砂背景消失动画函数 (animateFrostedBgFadeOut)</strong></h3>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">animateFrostedBgFadeOut</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">const</span> frostedBg = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;frosted-bg&#x27;</span>);</span><br><span class="line">  <span class="keyword">if</span> (!frostedBg) <span class="keyword">return</span>;</span><br><span class="line">  </span><br><span class="line">  frostedBg.<span class="property">style</span>.<span class="property">transition</span> = <span class="string">&#x27;all 1.5s ease-out&#x27;</span>;</span><br><span class="line">  frostedBg.<span class="property">style</span>.<span class="property">opacity</span> = <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">  frostedBg.<span class="property">style</span>.<span class="property">backdropFilter</span> = <span class="string">&#x27;blur(0px)&#x27;</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>局部变量详解</strong>：</p>
+<ul>
+<li><code>frostedBg</code> - 磨砂背景元素</li>
+</ul>
+<p><strong>动画属性</strong>：</p>
+<ul>
+<li><code>transition: 'all 1.5s ease-out'</code> - 所有属性1.5秒缓出过渡</li>
+<li><code>opacity: '0'</code> - 透明度变为0</li>
+<li><code>backdropFilter: 'blur(0px)'</code> - 背景模糊效果消失</li>
+</ul>
 <h2 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h2>
-<p>Token 是现代身份认证体系的核心，其价值在于 “无状态、跨域、多端适配”，但安全性依赖 “设计 + 存储” 的双重保障：</p>
-<ul>
-<li><strong>安全设计</strong>：非对称签名、短期有效期、HTTPS 传输、防重放机制、Refresh Token 轮换与吊销；</li>
-<li><strong>存储选择</strong>：SPA 优先 “内存 + HttpOnly Cookie”，移动端优先 “内存 + 加密本地库”，传统后端优先 “HttpOnly Cookie”；</li>
-<li><strong>当下适用性</strong>：Token 仍是主流方案，需结合安全措施使用，未来会与 Passkey 等新兴方案互补，而非被完全替代。</li>
-</ul>
-<h2 id="什么是Token的无状态"><a class="header-anchor" href="#什么是Token的无状态">¶</a>什么是Token的无状态</h2>
-<p>要理解 <strong>Token 的无状态</strong>，首先需要结合 Web 开发中 “状态” 的定义，以及 Token 与传统认证方式（如 Session）的核心差异。简单来说，Token 的无状态是指：<strong>服务器无需存储与 Token 关联的用户状态信息，仅通过 Token 本身携带的内容和预设规则，就能完成身份验证和权限判断</strong>。</p>
-<h3 id="一、先明确：什么是-“状态”？"><a class="header-anchor" href="#一、先明确：什么是-“状态”？">¶</a>一、先明确：什么是 “状态”？</h3>
-<p>在 Web 交互中，“状态” 指的是 <strong>服务器需要记忆的、与用户会话相关的信息</strong>。比如：</p>
-<ul>
-<li>用户是否已登录？</li>
-<li>用户的 ID、角色、权限范围是什么？</li>
-<li>会话的有效期到什么时候？</li>
-</ul>
-<p>传统的 <strong>Session 认证</strong> 是 “有状态” 的典型代表：</p>
-<ol>
-<li>用户登录成功后，服务器会创建一个 Session（包含用户 ID、权限等信息），并生成一个 Session ID；</li>
-<li>服务器需要将 Session 存储在内存、数据库或缓存中（比如 Redis）；</li>
-<li>后续用户请求时，需携带 Session ID，服务器要先通过 Session ID 查询存储的 Session，才能确认用户身份和权限。</li>
-</ol>
-<p>这种模式下，服务器必须 “记住” Session 的存在 —— 这就是 “有状态” 的核心问题：分布式部署时需同步 Session（否则用户换服务器就会重新登录），且服务器存储压力随用户量增长而增加。</p>
-<h3 id="二、Token-的无状态：核心是-“状态藏在-Token-里，而非服务器”"><a class="header-anchor" href="#二、Token-的无状态：核心是-“状态藏在-Token-里，而非服务器”">¶</a>二、Token 的无状态：核心是 “状态藏在 Token 里，而非服务器”</h3>
-<p>Token 的无状态本质是 <strong>将原本需要服务器存储的 “用户会话状态”，直接编码到 Token 本身</strong>。服务器验证时，无需查询任何外部存储（数据库、缓存等），仅通过 Token 自带的信息和预设的验证规则（如签名校验），就能独立完成身份确认。</p>
-<p>以最常用的 <strong>JWT（JSON Web Token）</strong> 为例，其结构完美体现了无状态特性：<br>
-JWT 由三部分组成（用<code>.</code>分隔）：<code>Header.Payload.Signature</code>，每部分都与 “无状态验证” 直接相关：</p>
-<table>
-<thead>
-<tr>
-<th>部分</th>
-<th>作用（核心是 “携带状态 + 确保不可篡改”）</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><strong>Header</strong></td>
-<td>声明 Token 的类型（如 JWT）和签名算法（如 HS256、RS256），告诉服务器 “用什么规则验证我”。</td>
-</tr>
-<tr>
-<td><strong>Payload</strong></td>
-<td>存储 “用户会话状态” 的核心数据（称为 “Claim”），比如： - <code>sub</code>：用户 ID（Subject） - <code>role</code>：用户角色 - <code>exp</code>：Token 过期时间（Expiration Time） 这些数据是明文编码（Base64URL），服务器可直接解析，无需查库。</td>
-</tr>
-<tr>
-<td><strong>Signature</strong></td>
-<td>用 Header 指定的算法，结合服务器的 “密钥”（对称密钥 HS256）或 “私钥”（非对称密钥 RS256），对 Header 和 Payload 的拼接字符串进行签名。 作用：确保 Token 未被篡改（一旦 Payload 被改，签名会失效）。</td>
-</tr>
-</tbody>
-</table>
-<h4 id="Token-无状态验证的完整流程（以-JWT-为例）："><a class="header-anchor" href="#Token-无状态验证的完整流程（以-JWT-为例）：">¶</a>Token 无状态验证的完整流程（以 JWT 为例）：</h4>
-<ol>
-<li>
-<p><strong>用户登录</strong>：用户提交账号密码，服务器验证通过后，生成 JWT（将用户 ID、角色、过期时间等状态编码到 Payload，用密钥签名），并返回给客户端；</p>
-</li>
-<li>
-<p><strong>客户端存储</strong>：客户端将 JWT 存到 LocalStorage、SessionStorage 或 Cookie 中；</p>
-</li>
-<li>
-<p><strong>后续请求</strong>：客户端每次请求时，在 Header（如<code>Authorization: Bearer &lt;JWT&gt;</code>）中携带 Token；</p>
-</li>
-<li>
-<p>服务器验证（无状态关键步骤）</p>
-<p>：</p>
-<ul>
-<li>服务器接收到 Token 后，先拆分出 Header、Payload、Signature；</li>
-<li>用 Header 指定的算法和自己的密钥，重新计算 Header+Payload 的签名，并与 Token 中的 Signature 对比（校验是否被篡改）；</li>
-<li>解析 Payload，检查<code>exp</code>字段（判断 Token 是否过期）；</li>
-<li>从 Payload 中直接读取用户 ID、角色等信息，完成身份和权限判断。</li>
-</ul>
-</li>
-</ol>
-<p>整个过程中，服务器 <strong>没有存储任何与该 Token 相关的信息</strong>—— 所有必要的 “状态” 都在 Token 里，验证仅依赖 Token 本身和服务器预设的密钥。这就是 Token 无状态的核心。</p>
-<h3 id="三、Token-无状态的关键特性（与有状态对比）"><a class="header-anchor" href="#三、Token-无状态的关键特性（与有状态对比）">¶</a>三、Token 无状态的关键特性（与有状态对比）</h3>
-<ol>
-<li><strong>服务器无需存储会话信息</strong><br>
-无需像 Session 那样维护 Session 池，减轻服务器存储压力（尤其适合高并发、大用户量场景）。</li>
-<li><strong>天然支持分布式 / 微服务</strong><br>
-由于服务器无需共享会话状态，多台服务器（或微服务节点）只要持有相同的密钥，就能独立验证 Token。用户请求无论路由到哪台服务器，都能正常通过验证，无需同步 Session（解决了 Session 的分布式痛点）。</li>
-<li><strong>验证过程 “自包含”</strong><br>
-验证不依赖外部存储（数据库、缓存），仅需本地计算（签名校验、过期判断），响应速度更快。</li>
-<li><strong>状态信息的 “只读性”（依赖签名）</strong><br>
-虽然 Payload 是 Base64URL 编码（可解码），但由于 Signature 的存在，客户端无法篡改 Payload 中的状态信息（一旦篡改，服务器校验签名会失败），确保了状态的可信度。</li>
-</ol>
-<h3 id="四、常见误区：“无状态”≠“不可控”"><a class="header-anchor" href="#四、常见误区：“无状态”≠“不可控”">¶</a>四、常见误区：“无状态”≠“不可控”</h3>
-<p>很多人误以为 Token 的无状态意味着 “一旦签发就无法撤销”（比如用户登出后，Token 仍在有效期内），但这并非 “无状态” 本身的问题，而是原生 JWT 的局限性。实际上，我们可以通过 “补充机制” 在保持核心无状态的同时，实现可控性：</p>
-<ul>
-<li><strong>短期 Token + 刷新 Token</strong>：将访问 Token 设为短期（如 15 分钟），过期后用长期的 “刷新 Token” 重新获取，即使访问 Token 泄露，风险窗口也很小；</li>
-<li><strong>Token 黑名单</strong>：对需要紧急撤销的 Token（如用户登出、账号异常），可将其加入黑名单（存储在 Redis 中，设置与 Token 过期时间一致的 TTL）。服务器验证时，先查黑名单（仅这一步依赖外部存储，但核心验证仍无状态），再做签名和过期校验。</li>
-</ul>
-<h3 id="五、总结"><a class="header-anchor" href="#五、总结">¶</a>五、总结</h3>
-<p>Token 的无状态是其核心优势，本质是 <strong>将 “服务器需记忆的会话状态” 转移到 Token 本身，通过签名确保状态不可篡改，服务器仅靠 Token 和密钥就能独立完成验证</strong>。这种特性让 Token 在分布式系统、微服务架构中极具优势，也大幅降低了服务器的存储和同步压力。</p>
-<p>简单来说：<strong>Session 是 “服务器记着你是谁”，Token 是 “你带着证明自己是谁的卡片，服务器看卡片就知道”</strong>—— 这张 “卡片” 里的信息，就是 Token 无状态的核心。</p>
-<h2 id="前后端使用token的生成，传递以及验证的代码"><a class="header-anchor" href="#前后端使用token的生成，传递以及验证的代码">¶</a>前后端使用token的生成，传递以及验证的代码</h2>
-<h3 id="后端实现（Node-js-Express）"><a class="header-anchor" href="#后端实现（Node-js-Express）">¶</a>后端实现（Node.js + Express）</h3>
-<p>后端将提供登录接口（生成 token）和一个受保护的接口（验证 token）。</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> jwt = <span class="built_in">require</span>(<span class="string">&#x27;jsonwebtoken&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> cors = <span class="built_in">require</span>(<span class="string">&#x27;cors&#x27;</span>);</span><br><span class="line"><span class="keyword">const</span> app = <span class="title function_">express</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 中间件</span></span><br><span class="line">app.<span class="title function_">use</span>(<span class="title function_">cors</span>());</span><br><span class="line">app.<span class="title function_">use</span>(express.<span class="title function_">json</span>()); <span class="comment">// 解析JSON请求体</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 密钥（实际生产环境中应存储在环境变量中）</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">SECRET_KEY</span> = <span class="string">&#x27;your-secret-key-keep-it-safe&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 模拟用户数据库</span></span><br><span class="line"><span class="keyword">const</span> users = [</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">username</span>: <span class="string">&#x27;user1&#x27;</span>, <span class="attr">password</span>: <span class="string">&#x27;password1&#x27;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">username</span>: <span class="string">&#x27;user2&#x27;</span>, <span class="attr">password</span>: <span class="string">&#x27;password2&#x27;</span> &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="comment">// 登录接口 - 生成token</span></span><br><span class="line">app.<span class="title function_">post</span>(<span class="string">&#x27;/login&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; username, password &#125; = req.<span class="property">body</span>;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 查找用户</span></span><br><span class="line">  <span class="keyword">const</span> user = users.<span class="title function_">find</span>(<span class="function"><span class="params">u</span> =&gt;</span> u.<span class="property">username</span> === username &amp;&amp; u.<span class="property">password</span> === password);</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (!user) &#123;</span><br><span class="line">    <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">401</span>).<span class="title function_">json</span>(&#123; <span class="attr">message</span>: <span class="string">&#x27;用户名或密码错误&#x27;</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 生成JWT令牌</span></span><br><span class="line">  <span class="keyword">const</span> token = jwt.<span class="title function_">sign</span>(</span><br><span class="line">    &#123; <span class="attr">userId</span>: user.<span class="property">id</span>, <span class="attr">username</span>: user.<span class="property">username</span> &#125;, <span class="comment">//  payload</span></span><br><span class="line">    <span class="variable constant_">SECRET_KEY</span>,                                   <span class="comment">//  密钥</span></span><br><span class="line">    &#123; <span class="attr">expiresIn</span>: <span class="string">&#x27;1h&#x27;</span> &#125;                            <span class="comment">//  过期时间</span></span><br><span class="line">  );</span><br><span class="line">  </span><br><span class="line">  res.<span class="title function_">json</span>(&#123; </span><br><span class="line">    <span class="attr">message</span>: <span class="string">&#x27;登录成功&#x27;</span>,</span><br><span class="line">    <span class="attr">token</span>: token,</span><br><span class="line">    <span class="attr">user</span>: &#123; <span class="attr">id</span>: user.<span class="property">id</span>, <span class="attr">username</span>: user.<span class="property">username</span> &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 验证token的中间件</span></span><br><span class="line"><span class="keyword">const</span> <span class="title function_">authenticateToken</span> = (<span class="params">req, res, next</span>) =&gt; &#123;</span><br><span class="line">  <span class="comment">// 从请求头获取token</span></span><br><span class="line">  <span class="keyword">const</span> authHeader = req.<span class="property">headers</span>[<span class="string">&#x27;authorization&#x27;</span>];</span><br><span class="line">  <span class="keyword">const</span> token = authHeader &amp;&amp; authHeader.<span class="title function_">split</span>(<span class="string">&#x27; &#x27;</span>)[<span class="number">1</span>]; <span class="comment">// Bearer TOKEN</span></span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (!token) &#123;</span><br><span class="line">    <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">401</span>).<span class="title function_">json</span>(&#123; <span class="attr">message</span>: <span class="string">&#x27;未提供token&#x27;</span> &#125;);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// 验证token</span></span><br><span class="line">  jwt.<span class="title function_">verify</span>(token, <span class="variable constant_">SECRET_KEY</span>, <span class="function">(<span class="params">err, user</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (err) &#123;</span><br><span class="line">      <span class="keyword">return</span> res.<span class="title function_">status</span>(<span class="number">403</span>).<span class="title function_">json</span>(&#123; <span class="attr">message</span>: <span class="string">&#x27;token无效或已过期&#x27;</span> &#125;);</span><br><span class="line">    &#125;</span><br><span class="line">    req.<span class="property">user</span> = user;</span><br><span class="line">    <span class="title function_">next</span>();</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 受保护的接口 - 需要验证token</span></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/protected&#x27;</span>, authenticateToken, <span class="function">(<span class="params">req, res</span>) =&gt;</span> &#123;</span><br><span class="line">  res.<span class="title function_">json</span>(&#123;</span><br><span class="line">    <span class="attr">message</span>: <span class="string">&#x27;这是受保护的数据&#x27;</span>,</span><br><span class="line">    <span class="attr">user</span>: req.<span class="property">user</span>,</span><br><span class="line">    <span class="attr">data</span>: [</span><br><span class="line">      &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">name</span>: <span class="string">&#x27;敏感数据1&#x27;</span> &#125;,</span><br><span class="line">      &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">name</span>: <span class="string">&#x27;敏感数据2&#x27;</span> &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line"><span class="comment">// 启动服务器</span></span><br><span class="line"><span class="keyword">const</span> <span class="variable constant_">PORT</span> = <span class="number">3000</span>;</span><br><span class="line">app.<span class="title function_">listen</span>(<span class="variable constant_">PORT</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`服务器运行在 http://localhost:<span class="subst">$&#123;PORT&#125;</span>`</span>);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="前端实现（HTML-JavaScript）"><a class="header-anchor" href="#前端实现（HTML-JavaScript）">¶</a>前端实现（HTML + JavaScript）</h3>
-<p>前端页面将包含登录表单和获取受保护数据的功能。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br><span class="line">156</span><br><span class="line">157</span><br><span class="line">158</span><br><span class="line">159</span><br><span class="line">160</span><br><span class="line">161</span><br><span class="line">162</span><br><span class="line">163</span><br><span class="line">164</span><br><span class="line">165</span><br><span class="line">166</span><br><span class="line">167</span><br><span class="line">168</span><br><span class="line">169</span><br><span class="line">170</span><br><span class="line">171</span><br><span class="line">172</span><br><span class="line">173</span><br><span class="line">174</span><br><span class="line">175</span><br><span class="line">176</span><br><span class="line">177</span><br><span class="line">178</span><br><span class="line">179</span><br><span class="line">180</span><br><span class="line">181</span><br><span class="line">182</span><br><span class="line">183</span><br><span class="line">184</span><br><span class="line">185</span><br><span class="line">186</span><br><span class="line">187</span><br><span class="line">188</span><br><span class="line">189</span><br><span class="line">190</span><br><span class="line">191</span><br><span class="line">192</span><br><span class="line">193</span><br><span class="line">194</span><br><span class="line">195</span><br><span class="line">196</span><br><span class="line">197</span><br><span class="line">198</span><br><span class="line">199</span><br><span class="line">200</span><br><span class="line">201</span><br><span class="line">202</span><br><span class="line">203</span><br><span class="line">204</span><br><span class="line">205</span><br><span class="line">206</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;zh-CN&quot;</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Token认证示例<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">src</span>=<span class="string">&quot;https://cdn.tailwindcss.com&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">href</span>=<span class="string">&quot;https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css&quot;</span> <span class="attr">rel</span>=<span class="string">&quot;stylesheet&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">style</span> <span class="attr">type</span>=<span class="string">&quot;text/tailwindcss&quot;</span>&gt;</span><span class="language-css"></span></span><br><span class="line"><span class="language-css">        <span class="keyword">@layer</span> utilities &#123;</span></span><br><span class="line"><span class="language-css">            <span class="selector-class">.content-auto</span> &#123;</span></span><br><span class="line"><span class="language-css">                <span class="attribute">content-visibility</span>: auto;</span></span><br><span class="line"><span class="language-css">            &#125;</span></span><br><span class="line"><span class="language-css">            <span class="selector-class">.card-shadow</span> &#123;</span></span><br><span class="line"><span class="language-css">                <span class="attribute">box-shadow</span>: <span class="number">0</span> <span class="number">10px</span> <span class="number">15px</span> -<span class="number">3px</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.1</span>), <span class="number">0</span> <span class="number">4px</span> <span class="number">6px</span> -<span class="number">2px</span> <span class="built_in">rgba</span>(<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">0.05</span>);</span></span><br><span class="line"><span class="language-css">            &#125;</span></span><br><span class="line"><span class="language-css">        &#125;</span></span><br><span class="line"><span class="language-css">    </span><span class="tag">&lt;/<span class="name">style</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">body</span> <span class="attr">class</span>=<span class="string">&quot;bg-gray-100 min-h-screen&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;container mx-auto px-4 py-12 max-w-4xl&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">h1</span> <span class="attr">class</span>=<span class="string">&quot;text-3xl font-bold text-center mb-10 text-gray-800&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-key mr-2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>Token认证示例</span><br><span class="line">        <span class="tag">&lt;/<span class="name">h1</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;grid md:grid-cols-2 gap-8&quot;</span>&gt;</span></span><br><span class="line">            <span class="comment">&lt;!-- 登录表单 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;bg-white rounded-lg p-6 card-shadow&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span> <span class="attr">class</span>=<span class="string">&quot;text-xl font-semibold mb-4 text-gray-700&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-sign-in mr-2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>登录</span><br><span class="line">                <span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">form</span> <span class="attr">id</span>=<span class="string">&quot;loginForm&quot;</span> <span class="attr">class</span>=<span class="string">&quot;space-y-4&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;username&quot;</span> <span class="attr">class</span>=<span class="string">&quot;block text-sm font-medium text-gray-700&quot;</span>&gt;</span>用户名<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">id</span>=<span class="string">&quot;username&quot;</span> <span class="attr">name</span>=<span class="string">&quot;username&quot;</span> </span></span><br><span class="line"><span class="tag">                               <span class="attr">class</span>=<span class="string">&quot;mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500&quot;</span></span></span><br><span class="line"><span class="tag">                               <span class="attr">required</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">label</span> <span class="attr">for</span>=<span class="string">&quot;password&quot;</span> <span class="attr">class</span>=<span class="string">&quot;block text-sm font-medium text-gray-700&quot;</span>&gt;</span>密码<span class="tag">&lt;/<span class="name">label</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;password&quot;</span> <span class="attr">id</span>=<span class="string">&quot;password&quot;</span> <span class="attr">name</span>=<span class="string">&quot;password&quot;</span> </span></span><br><span class="line"><span class="tag">                               <span class="attr">class</span>=<span class="string">&quot;mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500&quot;</span></span></span><br><span class="line"><span class="tag">                               <span class="attr">required</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">button</span> <span class="attr">type</span>=<span class="string">&quot;submit&quot;</span> </span></span><br><span class="line"><span class="tag">                            <span class="attr">class</span>=<span class="string">&quot;w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500&quot;</span>&gt;</span></span><br><span class="line">                        <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-paper-plane mr-1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>登录</span><br><span class="line">                    <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">form</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;loginMessage&quot;</span> <span class="attr">class</span>=<span class="string">&quot;mt-4 text-sm hidden&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;tokenDisplay&quot;</span> <span class="attr">class</span>=<span class="string">&quot;mt-4 text-xs bg-gray-100 p-3 rounded break-all hidden&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">strong</span>&gt;</span>Token:<span class="tag">&lt;/<span class="name">strong</span>&gt;</span> <span class="tag">&lt;<span class="name">span</span> <span class="attr">id</span>=<span class="string">&quot;tokenValue&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            </span><br><span class="line">            <span class="comment">&lt;!-- 受保护数据区域 --&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;bg-white rounded-lg p-6 card-shadow&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">h2</span> <span class="attr">class</span>=<span class="string">&quot;text-xl font-semibold mb-4 text-gray-700&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-lock mr-2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>受保护数据</span><br><span class="line">                <span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">button</span> <span class="attr">id</span>=<span class="string">&quot;fetchDataBtn&quot;</span> </span></span><br><span class="line"><span class="tag">                        <span class="attr">class</span>=<span class="string">&quot;w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 mb-4&quot;</span></span></span><br><span class="line"><span class="tag">                        <span class="attr">disabled</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-download mr-1&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>获取受保护数据</span><br><span class="line">                <span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;dataMessage&quot;</span> <span class="attr">class</span>=<span class="string">&quot;mt-4 text-sm hidden&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;dataDisplay&quot;</span> <span class="attr">class</span>=<span class="string">&quot;mt-4 text-sm overflow-auto max-h-60 hidden&quot;</span>&gt;</span></span><br><span class="line">                    <span class="tag">&lt;<span class="name">pre</span> <span class="attr">id</span>=<span class="string">&quot;dataContent&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">pre</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        </span><br><span class="line">        <span class="comment">&lt;!-- 状态信息 --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">&quot;mt-8 bg-white rounded-lg p-6 card-shadow&quot;</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">h2</span> <span class="attr">class</span>=<span class="string">&quot;text-xl font-semibold mb-4 text-gray-700&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">i</span> <span class="attr">class</span>=<span class="string">&quot;fa fa-info-circle mr-2&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">i</span>&gt;</span>状态信息</span><br><span class="line">            <span class="tag">&lt;/<span class="name">h2</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;status&quot;</span> <span class="attr">class</span>=<span class="string">&quot;text-gray-600&quot;</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">p</span>&gt;</span>请先登录获取token，然后才能访问受保护的数据。<span class="tag">&lt;/<span class="name">p</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// DOM元素</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> loginForm = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;loginForm&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> loginMessage = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;loginMessage&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> tokenDisplay = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;tokenDisplay&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> tokenValue = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;tokenValue&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> fetchDataBtn = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;fetchDataBtn&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> dataMessage = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;dataMessage&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> dataDisplay = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;dataDisplay&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> dataContent = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;dataContent&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> statusElement = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;status&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 后端API地址</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> <span class="variable constant_">API_URL</span> = <span class="string">&#x27;http://localhost:3000&#x27;</span>;</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 检查本地存储中是否有token</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">const</span> storedToken = <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&#x27;authToken&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">if</span> (storedToken) &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="title function_">updateUIWithToken</span>(storedToken);</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 登录表单提交</span></span></span><br><span class="line"><span class="language-javascript">        loginForm.<span class="title function_">addEventListener</span>(<span class="string">&#x27;submit&#x27;</span>, <span class="title function_">async</span> (e) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">            e.<span class="title function_">preventDefault</span>();</span></span><br><span class="line"><span class="language-javascript">            </span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> username = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;username&#x27;</span>).<span class="property">value</span>;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> password = <span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;password&#x27;</span>).<span class="property">value</span>;</span></span><br><span class="line"><span class="language-javascript">            </span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">try</span> &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">`<span class="subst">$&#123;API_URL&#125;</span>/login`</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">method</span>: <span class="string">&#x27;POST&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">headers</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                        <span class="string">&#x27;Content-Type&#x27;</span>: <span class="string">&#x27;application/json&#x27;</span></span></span><br><span class="line"><span class="language-javascript">                    &#125;,</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">body</span>: <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(&#123; username, password &#125;)</span></span><br><span class="line"><span class="language-javascript">                &#125;);</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="title function_">json</span>();</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">if</span> (!response.<span class="property">ok</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(data.<span class="property">message</span> || <span class="string">&#x27;登录失败&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                &#125;</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="comment">// 存储token</span></span></span><br><span class="line"><span class="language-javascript">                <span class="variable language_">localStorage</span>.<span class="title function_">setItem</span>(<span class="string">&#x27;authToken&#x27;</span>, data.<span class="property">token</span>);</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">updateUIWithToken</span>(data.<span class="property">token</span>);</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">showMessage</span>(loginMessage, data.<span class="property">message</span>, <span class="string">&#x27;green&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                statusElement.<span class="property">innerHTML</span> = <span class="string">`&lt;p class=&quot;text-green-600&quot;&gt;已登录为: <span class="subst">$&#123;data.user.username&#125;</span>&lt;/p&gt;`</span>;</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">            &#125; <span class="keyword">catch</span> (error) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">showMessage</span>(loginMessage, error.<span class="property">message</span>, <span class="string">&#x27;red&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                statusElement.<span class="property">innerHTML</span> = <span class="string">`&lt;p class=&quot;text-red-600&quot;&gt;登录失败: <span class="subst">$&#123;error.message&#125;</span>&lt;/p&gt;`</span>;</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;);</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 获取受保护数据</span></span></span><br><span class="line"><span class="language-javascript">        fetchDataBtn.<span class="title function_">addEventListener</span>(<span class="string">&#x27;click&#x27;</span>, <span class="title function_">async</span> () =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">const</span> token = <span class="variable language_">localStorage</span>.<span class="title function_">getItem</span>(<span class="string">&#x27;authToken&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            </span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">if</span> (!token) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">showMessage</span>(dataMessage, <span class="string">&#x27;未找到token，请先登录&#x27;</span>, <span class="string">&#x27;red&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">return</span>;</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">            </span></span><br><span class="line"><span class="language-javascript">            <span class="keyword">try</span> &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">const</span> response = <span class="keyword">await</span> <span class="title function_">fetch</span>(<span class="string">`<span class="subst">$&#123;API_URL&#125;</span>/protected`</span>, &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">method</span>: <span class="string">&#x27;GET&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">                    <span class="attr">headers</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">                        <span class="string">&#x27;Authorization&#x27;</span>: <span class="string">`Bearer <span class="subst">$&#123;token&#125;</span>`</span></span></span><br><span class="line"><span class="language-javascript">                    &#125;</span></span><br><span class="line"><span class="language-javascript">                &#125;);</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">const</span> data = <span class="keyword">await</span> response.<span class="title function_">json</span>();</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">if</span> (!response.<span class="property">ok</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Error</span>(data.<span class="property">message</span> || <span class="string">&#x27;获取数据失败&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                &#125;</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">showMessage</span>(dataMessage, <span class="string">&#x27;成功获取受保护数据&#x27;</span>, <span class="string">&#x27;green&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                dataContent.<span class="property">textContent</span> = <span class="title class_">JSON</span>.<span class="title function_">stringify</span>(data, <span class="literal">null</span>, <span class="number">2</span>);</span></span><br><span class="line"><span class="language-javascript">                dataDisplay.<span class="property">classList</span>.<span class="title function_">remove</span>(<span class="string">&#x27;hidden&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                statusElement.<span class="property">innerHTML</span> = <span class="string">`&lt;p class=&quot;text-green-600&quot;&gt;已成功使用token访问受保护资源&lt;/p&gt;`</span>;</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">            &#125; <span class="keyword">catch</span> (error) &#123;</span></span><br><span class="line"><span class="language-javascript">                <span class="title function_">showMessage</span>(dataMessage, error.<span class="property">message</span>, <span class="string">&#x27;red&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                dataDisplay.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;hidden&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                </span></span><br><span class="line"><span class="language-javascript">                <span class="comment">// 如果token无效，清除存储</span></span></span><br><span class="line"><span class="language-javascript">                <span class="keyword">if</span> (error.<span class="property">message</span>.<span class="title function_">includes</span>(<span class="string">&#x27;token无效&#x27;</span>) || error.<span class="property">message</span>.<span class="title function_">includes</span>(<span class="string">&#x27;过期&#x27;</span>)) &#123;</span></span><br><span class="line"><span class="language-javascript">                    <span class="variable language_">localStorage</span>.<span class="title function_">removeItem</span>(<span class="string">&#x27;authToken&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">                    <span class="title function_">updateUIWithoutToken</span>();</span></span><br><span class="line"><span class="language-javascript">                    statusElement.<span class="property">innerHTML</span> = <span class="string">`&lt;p class=&quot;text-red-600&quot;&gt;<span class="subst">$&#123;error.message&#125;</span>，请重新登录&lt;/p&gt;`</span>;</span></span><br><span class="line"><span class="language-javascript">                &#125;</span></span><br><span class="line"><span class="language-javascript">            &#125;</span></span><br><span class="line"><span class="language-javascript">        &#125;);</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 辅助函数：显示消息</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> <span class="title function_">showMessage</span>(<span class="params">element, text, color</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            element.<span class="property">textContent</span> = text;</span></span><br><span class="line"><span class="language-javascript">            element.<span class="property">classList</span>.<span class="title function_">remove</span>(<span class="string">&#x27;hidden&#x27;</span>, <span class="string">&#x27;text-green-600&#x27;</span>, <span class="string">&#x27;text-red-600&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            element.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">`text-<span class="subst">$&#123;color&#125;</span>-600`</span>);</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 辅助函数：使用token更新UI</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> <span class="title function_">updateUIWithToken</span>(<span class="params">token</span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            tokenValue.<span class="property">textContent</span> = token;</span></span><br><span class="line"><span class="language-javascript">            tokenDisplay.<span class="property">classList</span>.<span class="title function_">remove</span>(<span class="string">&#x27;hidden&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            fetchDataBtn.<span class="property">disabled</span> = <span class="literal">false</span>;</span></span><br><span class="line"><span class="language-javascript">            loginForm.<span class="title function_">reset</span>();</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">        </span></span><br><span class="line"><span class="language-javascript">        <span class="comment">// 辅助函数：没有token时更新UI</span></span></span><br><span class="line"><span class="language-javascript">        <span class="keyword">function</span> <span class="title function_">updateUIWithoutToken</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">            tokenDisplay.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;hidden&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">            fetchDataBtn.<span class="property">disabled</span> = <span class="literal">true</span>;</span></span><br><span class="line"><span class="language-javascript">            dataDisplay.<span class="property">classList</span>.<span class="title function_">add</span>(<span class="string">&#x27;hidden&#x27;</span>);</span></span><br><span class="line"><span class="language-javascript">        &#125;</span></span><br><span class="line"><span class="language-javascript">    </span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<h3 id="代码说明"><a class="header-anchor" href="#代码说明">¶</a>代码说明</h3>
-<ul>
-<li><strong>后端</strong>:
-<ul>
-<li>使用 Express 框架创建简单的 API 服务</li>
-<li><code>/login</code>接口验证用户凭据并生成 JWT 令牌</li>
-<li><code>authenticateToken</code>中间件用于验证请求中的 token</li>
-<li><code>/protected</code>接口是受保护的资源，只有携带有效 token 的请求才能访问</li>
-</ul>
-</li>
-<li><strong>前端</strong>:
-<ul>
-<li>提供登录表单用于获取 token</li>
-<li>将获取到的 token 存储在 localStorage 中</li>
-<li>请求受保护资源时在 Authorization 头中携带 token</li>
-<li>处理各种响应和错误情况，更新 UI 显示状态</li>
-</ul>
-</li>
-</ul>
-<p>这个示例展示了 token 认证的基本流程，在实际生产环境中，还需要考虑更多安全措施，如使用 HTTPS、更安全的 token 存储方式、更复杂的密钥管理等。</p>
+<p>这个登录系统通过精心设计的HTML结构、CSS样式和JavaScript逻辑，实现了一个功能完整、视觉效果丰富的登录界面。每个标签和变量都有其特定的作用和意义，共同构成了一个现代化的用户体验。</p>
 
       </div>
 
@@ -833,10 +886,8 @@ JWT 由三部分组成（用<code>.</code>分隔）：<code>Header.Payload.Signa
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Token/" rel="tag"># Token</a>
-              <a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag"># 网络安全</a>
-              <a href="/tags/sagooiot/" rel="tag"># sagooiot</a>
-              <a href="/tags/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/" rel="tag"># 博客搭建</a>
+              <a href="/tags/%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F/" rel="tag"># 博客系统</a>
+              <a href="/tags/%E5%89%8D%E7%AB%AF/" rel="tag"># 前端</a>
           </div>
 
         
@@ -845,8 +896,8 @@ JWT 由三部分组成（用<code>.</code>分隔）：<code>Header.Payload.Signa
             <div class="post-nav-item">
             </div>
             <div class="post-nav-item">
-                <a href="/2025/08/31/go%E4%B8%AD%E7%9A%84context/" rel="next" title="go中的context">
-                  go中的context <i class="fa fa-angle-right"></i>
+                <a href="/2025/09/01/%E5%8D%9A%E5%AE%A2%E7%B3%BB%E7%BB%9F%E7%9A%84%E7%99%BB%E5%BD%95%E9%A1%B5%E9%9D%A2%E8%AF%A6%E8%A7%A3/" rel="next" title="博客系统的登录页面详解">
+                  博客系统的登录页面详解 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>
@@ -878,13 +929,13 @@ JWT 由三部分组成（用<code>.</code>分隔）：<code>Header.Payload.Signa
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-line"></i>
     </span>
-    <span title="站点总字数">38k</span>
+    <span title="站点总字数">36k</span>
   </span>
   <span class="post-meta-item">
     <span class="post-meta-item-icon">
       <i class="fa fa-coffee"></i>
     </span>
-    <span title="站点阅读时长">32 分钟</span>
+    <span title="站点阅读时长">30 分钟</span>
   </span>
 </div>
 <div class="busuanzi-count">
