@@ -2168,4 +2168,41 @@ Markdown 文章头部包含 Front-matter 配置：</li>
         <tag>闭包</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Go中结构体和方法的理解</title>
+    <url>/2025/09/02/Go%E4%B8%AD%E7%BB%93%E6%9E%84%E4%BD%93%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<p><strong>Go 中的结构体（struct）可以类比其他语言（如 Java、C++）中的 “类”，结构体的字段对应类的 “成员变量”，而绑定到结构体的方法（通过接收者）对应类的 “成员方法”</strong>。而将接收者设置为指针类型，本质是让方法能够直接操作结构体的原始实例（而非副本），这更接近其他语言中 “类方法默认操作当前实例” 的行为。</p>
+<h3 id="具体分析："><a class="header-anchor" href="#具体分析：">¶</a>具体分析：</h3>
+<h4 id="1-结构体-vs-类：功能相似性"><a class="header-anchor" href="#1-结构体-vs-类：功能相似性">¶</a>1. 结构体 vs 类：功能相似性</h4>
+<p>其他语言的 “类” 是 “数据（成员变量）+ 行为（成员方法）” 的封装体；Go 中没有 “类” 的概念，但通过 “结构体（存储数据）+ 方法（绑定到结构体，定义行为）” 的组合，实现了类似的封装效果。</p>
+<p>例如，Java 的类：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="comment">// 成员变量（数据）</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 成员方法（行为）</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name; <span class="comment">// 操作当前实例的变量</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的 Go 代码：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line">    name <span class="type">string</span> <span class="comment">// 结构体字段（对应成员变量）</span></span><br><span class="line">    age  <span class="type">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法（对应成员方法），接收者为指针类型，可修改原实例</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span></span> SetName(name <span class="type">string</span>) &#123;</span><br><span class="line">    p.name = name <span class="comment">// 操作原始实例的字段</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，两者都实现了 “数据与操作数据的行为绑定”，因此说 “结构体对应类，方法对应类的方法” 是合理的。</p>
+<h4 id="2-指针接收者的意义：更接近-“类方法操作实例”-的特性"><a class="header-anchor" href="#2-指针接收者的意义：更接近-“类方法操作实例”-的特性">¶</a>2. 指针接收者的意义：更接近 “类方法操作实例” 的特性</h4>
+<p>在其他语言中，类的成员方法默认操作的是 “当前实例”（即调用方法的对象本身），修改方法内的成员变量会直接影响实例。</p>
+<p>Go 中：</p>
+<ul>
+<li><strong>值接收者</strong>：方法接收的是结构体的副本，修改不会影响原始实例（类似 “传值调用”）；</li>
+<li><strong>指针接收者</strong>：方法接收的是结构体的指针，修改会直接影响原始实例（类似 “传引用调用”）。</li>
+</ul>
+<p>因此，<strong>指针接收者的方法更接近其他语言中 “类方法操作实例本身” 的默认行为</strong>。例如，当需要通过方法修改结构体的字段时，必须使用指针接收者，否则修改只会作用于副本，这和其他语言中 “<a href="http://this.xxx">this.xxx</a> 修改的是当前对象” 的逻辑一致。</p>
+<h4 id="3-区别：Go-没有-“类”-的继承等特性"><a class="header-anchor" href="#3-区别：Go-没有-“类”-的继承等特性">¶</a>3. 区别：Go 没有 “类” 的继承等特性</h4>
+<p>需要注意的是，Go 的结构体 + 方法与其他语言的 “类” 并非完全等同，核心区别在于：</p>
+<ul>
+<li>其他语言的类通常支持<strong>继承</strong>（如 Java 的 <code>extends</code>），而 Go 不支持继承，而是通过 “结构体嵌套” 实现组合复用；</li>
+<li>其他语言的类有<strong>访问控制修饰符</strong>（如 <code>public</code>/<code>private</code>），Go 仅通过字段 / 方法名的首字母大小写区分可见性（大写公开，小写私有）；</li>
+<li>其他语言的类方法有 “静态方法”（属于类本身，而非实例），Go 中没有 “静态方法”，而是通过包级函数实现类似功能（如 <code>PersonCreate()</code> 作为结构体的构造函数）。</li>
+</ul>
+<h3 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h3>
+<p>你的理解抓住了核心：<strong>Go 用 “结构体 + 方法” 实现了类似其他语言 “类 + 成员方法” 的封装效果，指针接收者的方法更接近类方法操作实例本身的行为</strong>。这种设计是 Go 语言 “简洁性” 的体现 —— 不引入 “类” 的复杂概念，而是通过结构体和方法的组合，灵活实现数据与行为的绑定。</p>
+]]></content>
+      <categories>
+        <category>go</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+      </tags>
+  </entry>
 </search>

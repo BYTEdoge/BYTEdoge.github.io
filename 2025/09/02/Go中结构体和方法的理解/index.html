@@ -24,28 +24,27 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"bytedoge.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="技术学习笔记">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zhyBlogs">
-<meta property="og:url" content="https://bytedoge.github.io/categories/">
+    <meta name="description" content="Go 中的结构体（struct）可以类比其他语言（如 Java、C++）中的 “类”，结构体的字段对应类的 “成员变量”，而绑定到结构体的方法（通过接收者）对应类的 “成员方法”。而将接收者设置为指针类型，本质是让方法能够直接操作结构体的原始实例（而非副本），这更接近其他语言中 “类方法默认操作当前实例” 的行为。 ¶具体分析： ¶1. 结构体 vs 类：功能相似性 其他语言的 “类” 是 “数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Go中结构体和方法的理解">
+<meta property="og:url" content="https://bytedoge.github.io/2025/09/02/Go%E4%B8%AD%E7%BB%93%E6%9E%84%E4%BD%93%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E7%90%86%E8%A7%A3/">
 <meta property="og:site_name" content="zhyBlogs">
-<meta property="og:description" content="技术学习笔记">
+<meta property="og:description" content="Go 中的结构体（struct）可以类比其他语言（如 Java、C++）中的 “类”，结构体的字段对应类的 “成员变量”，而绑定到结构体的方法（通过接收者）对应类的 “成员方法”。而将接收者设置为指针类型，本质是让方法能够直接操作结构体的原始实例（而非副本），这更接近其他语言中 “类方法默认操作当前实例” 的行为。 ¶具体分析： ¶1. 结构体 vs 类：功能相似性 其他语言的 “类” 是 “数据">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-08-26T06:02:47.000Z">
-<meta property="article:modified_time" content="2025-08-28T02:42:56.146Z">
+<meta property="article:published_time" content="2025-09-02T07:42:08.000Z">
+<meta property="article:modified_time" content="2025-09-02T07:42:47.105Z">
 <meta property="article:author" content="Zheng HanYang">
-<meta property="article:tag" content="技术学习笔记">
+<meta property="article:tag" content="go">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://bytedoge.github.io/categories/">
+<link rel="canonical" href="https://bytedoge.github.io/2025/09/02/Go%E4%B8%AD%E7%BB%93%E6%9E%84%E4%BD%93%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E7%90%86%E8%A7%A3/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":true,"permalink":"https://bytedoge.github.io/categories/","path":"categories/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bytedoge.github.io/2025/09/02/Go%E4%B8%AD%E7%BB%93%E6%9E%84%E4%BD%93%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E7%90%86%E8%A7%A3/","path":"2025/09/02/Go中结构体和方法的理解/","title":"Go中结构体和方法的理解"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>分类 | zhyBlogs
-</title>
+<title>Go中结构体和方法的理解 | zhyBlogs</title>
   
 
 
@@ -324,7 +323,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -337,6 +336,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B7%E4%BD%93%E5%88%86%E6%9E%90%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">具体分析：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E7%BB%93%E6%9E%84%E4%BD%93-vs-%E7%B1%BB%EF%BC%9A%E5%8A%9F%E8%83%BD%E7%9B%B8%E4%BC%BC%E6%80%A7"><span class="nav-number">1.1.</span> <span class="nav-text">1. 结构体 vs 类：功能相似性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%8C%87%E9%92%88%E6%8E%A5%E6%94%B6%E8%80%85%E7%9A%84%E6%84%8F%E4%B9%89%EF%BC%9A%E6%9B%B4%E6%8E%A5%E8%BF%91-%E2%80%9C%E7%B1%BB%E6%96%B9%E6%B3%95%E6%93%8D%E4%BD%9C%E5%AE%9E%E4%BE%8B%E2%80%9D-%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-number">1.2.</span> <span class="nav-text">2. 指针接收者的意义：更接近 “类方法操作实例” 的特性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%8C%BA%E5%88%AB%EF%BC%9AGo-%E6%B2%A1%E6%9C%89-%E2%80%9C%E7%B1%BB%E2%80%9D-%E7%9A%84%E7%BB%A7%E6%89%BF%E7%AD%89%E7%89%B9%E6%80%A7"><span class="nav-number">1.3.</span> <span class="nav-text">3. 区别：Go 没有 “类” 的继承等特性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">2.</span> <span class="nav-text">总结</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -384,42 +384,147 @@
 
       </div>
 
-      <div class="main-inner page posts-expand">
+      <div class="main-inner post posts-expand">
 
 
-    
-    
-    
-    <div class="post-block" lang="zh-CN"><header class="post-header">
+  
 
-<h1 class="post-title" itemprop="name headline">
-</h1>
 
-<div class="post-meta-container">
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bytedoge.github.io/2025/09/02/Go%E4%B8%AD%E7%BB%93%E6%9E%84%E4%BD%93%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E7%90%86%E8%A7%A3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zheng HanYang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhyBlogs">
+      <meta itemprop="description" content="技术学习笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Go中结构体和方法的理解 | zhyBlogs">
+      <meta itemprop="description" content="">
+    </span>
+        
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">
+            Go中结构体和方法的理解
+          </h1>
+
+          <div class="post-meta-container">
+            <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-09-02 15:42:08 / 修改时间：15:42:47" itemprop="dateCreated datePublished" datetime="2025-09-02T15:42:08+08:00">2025-09-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/go/" itemprop="url" rel="index"><span itemprop="name">go</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
 </div>
 
-</header>
+          </div>
+        </header>
 
-      
-      
-      
-      <div class="post-body"><div class="category-all-page">
-  <div class="category-all-title">
-    目前共计 13 个分类
-  </div>
-  <div class="category-all">
-    <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/git/">git</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/">go</a><span class="category-list-count">5</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/go/goframe/">goframe</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go/%E6%8E%A5%E5%8F%A3%E8%AE%BE%E8%AE%A1/">接口设计</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/go-context/">go,context</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/go%E8%AF%AD%E8%A8%80%E6%95%99%E7%A8%8B/">go语言教程</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/sagooiot/">sagooiot</a><span class="category-list-count">3</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/sagooiot/%E6%8F%92%E4%BB%B6/">插件</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">分布式</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%89%8D%E7%AB%AF/">前端</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/">博客搭建</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E5%B9%B6%E5%8F%91/">并发</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/">网络安全</a><span class="category-list-count">1</span></li></ul>
-  </div>
-</div>
+    
+    
+    
+      <div class="post-body" itemprop="articleBody"><p><strong>Go 中的结构体（struct）可以类比其他语言（如 Java、C++）中的 “类”，结构体的字段对应类的 “成员变量”，而绑定到结构体的方法（通过接收者）对应类的 “成员方法”</strong>。而将接收者设置为指针类型，本质是让方法能够直接操作结构体的原始实例（而非副本），这更接近其他语言中 “类方法默认操作当前实例” 的行为。</p>
+<h3 id="具体分析："><a class="header-anchor" href="#具体分析：">¶</a>具体分析：</h3>
+<h4 id="1-结构体-vs-类：功能相似性"><a class="header-anchor" href="#1-结构体-vs-类：功能相似性">¶</a>1. 结构体 vs 类：功能相似性</h4>
+<p>其他语言的 “类” 是 “数据（成员变量）+ 行为（成员方法）” 的封装体；Go 中没有 “类” 的概念，但通过 “结构体（存储数据）+ 方法（绑定到结构体，定义行为）” 的组合，实现了类似的封装效果。</p>
+<p>例如，Java 的类：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Person</span> &#123;</span><br><span class="line">    <span class="comment">// 成员变量（数据）</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">int</span> age;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 成员方法（行为）</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setName</span><span class="params">(String name)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.name = name; <span class="comment">// 操作当前实例的变量</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>对应的 Go 代码：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line">    name <span class="type">string</span> <span class="comment">// 结构体字段（对应成员变量）</span></span><br><span class="line">    age  <span class="type">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 方法（对应成员方法），接收者为指针类型，可修改原实例</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span></span> SetName(name <span class="type">string</span>) &#123;</span><br><span class="line">    p.name = name <span class="comment">// 操作原始实例的字段</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>可以看到，两者都实现了 “数据与操作数据的行为绑定”，因此说 “结构体对应类，方法对应类的方法” 是合理的。</p>
+<h4 id="2-指针接收者的意义：更接近-“类方法操作实例”-的特性"><a class="header-anchor" href="#2-指针接收者的意义：更接近-“类方法操作实例”-的特性">¶</a>2. 指针接收者的意义：更接近 “类方法操作实例” 的特性</h4>
+<p>在其他语言中，类的成员方法默认操作的是 “当前实例”（即调用方法的对象本身），修改方法内的成员变量会直接影响实例。</p>
+<p>Go 中：</p>
+<ul>
+<li><strong>值接收者</strong>：方法接收的是结构体的副本，修改不会影响原始实例（类似 “传值调用”）；</li>
+<li><strong>指针接收者</strong>：方法接收的是结构体的指针，修改会直接影响原始实例（类似 “传引用调用”）。</li>
+</ul>
+<p>因此，<strong>指针接收者的方法更接近其他语言中 “类方法操作实例本身” 的默认行为</strong>。例如，当需要通过方法修改结构体的字段时，必须使用指针接收者，否则修改只会作用于副本，这和其他语言中 “<a target="_blank" rel="noopener" href="http://this.xxx">this.xxx</a> 修改的是当前对象” 的逻辑一致。</p>
+<h4 id="3-区别：Go-没有-“类”-的继承等特性"><a class="header-anchor" href="#3-区别：Go-没有-“类”-的继承等特性">¶</a>3. 区别：Go 没有 “类” 的继承等特性</h4>
+<p>需要注意的是，Go 的结构体 + 方法与其他语言的 “类” 并非完全等同，核心区别在于：</p>
+<ul>
+<li>其他语言的类通常支持<strong>继承</strong>（如 Java 的 <code>extends</code>），而 Go 不支持继承，而是通过 “结构体嵌套” 实现组合复用；</li>
+<li>其他语言的类有<strong>访问控制修饰符</strong>（如 <code>public</code>/<code>private</code>），Go 仅通过字段 / 方法名的首字母大小写区分可见性（大写公开，小写私有）；</li>
+<li>其他语言的类方法有 “静态方法”（属于类本身，而非实例），Go 中没有 “静态方法”，而是通过包级函数实现类似功能（如 <code>PersonCreate()</code> 作为结构体的构造函数）。</li>
+</ul>
+<h3 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h3>
+<p>你的理解抓住了核心：<strong>Go 用 “结构体 + 方法” 实现了类似其他语言 “类 + 成员方法” 的封装效果，指针接收者的方法更接近类方法操作实例本身的行为</strong>。这种设计是 Go 语言 “简洁性” 的体现 —— 不引入 “类” 的复杂概念，而是通过结构体和方法的组合，灵活实现数据与行为的绑定。</p>
 
       </div>
-      
-      
-      
-    </div>
 
     
     
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/go/" rel="tag"># go</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/09/02/go%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85/" rel="next" title="go中的闭包">
+                  go中的闭包 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
 
 
 </div>
