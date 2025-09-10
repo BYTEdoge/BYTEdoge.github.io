@@ -2205,4 +2205,43 @@ Markdown 文章头部包含 Front-matter 配置：</li>
         <tag>go</tag>
       </tags>
   </entry>
+  <entry>
+    <title>goframe框架详解</title>
+    <url>/2025/09/10/goframe%E6%A1%86%E6%9E%B6%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<p>goframe框架是一种企业级开发框架，可以实现项目初始的构建，代码的生成，能够让开发者更加关注业务本身的逻辑</p>
+<h2 id="1-框架下载，以及项目初始构建"><a class="header-anchor" href="#1-框架下载，以及项目初始构建">¶</a>1.框架下载，以及项目初始构建</h2>
+<p>[goframe教程](<a href="https://goframe.org/docs/cli/install">工具安装-install | GoFrame官网 - 类似PHP-Laravel,Java-SpringBoot的Go语言开发框架</a>)在教程网页中选择适合当前版本的goframe进行下载，然后运行，会提示选择安装目录，这时注意要选择已经添加到环境变量中的go语言的路径。</p>
+<p>下载好之后就可以进行项目的初始构建了，首先创建一个文件夹，作为项目的文件夹，现在用到的有以下几种方法：</p>
+<ul>
+<li>在当前的空文件夹下直接初始化构建项目：<code>gf init .</code></li>
+<li>在当前的空文件夹下创建一个新的项目名的文件夹，并在新的文件夹下初始化构建项目：<code>gf init project'sname</code></li>
+</ul>
+<h2 id="2-自动构建dao，do，entity"><a class="header-anchor" href="#2-自动构建dao，do，entity">¶</a>2.自动构建dao，do，entity</h2>
+<p>在hack中，将需要生成相关代码的数据库配置写入config文件中，然后执行<code>gf gen dao</code>命令，生成相关的代码文件</p>
+<ul>
+<li>
+<h5 id="dao，do，entity的相关辨析"><a class="header-anchor" href="#dao，do，entity的相关辨析">¶</a>dao，do，entity的相关辨析</h5>
+</li>
+</ul>
+<p>​		首先dao层分为internal和外层，internal包含自动生成的基础实现，外层是提供给外部调用的接口</p>
+<p>​		内层interna通过下面的方法将<mark>gdb.model</mark>中的基础方法注册到ctx中</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(dao *UserDao)</span></span> Ctx(ctx context.Context) *gdb.Model &#123;</span><br><span class="line">	model := dao.DB().Model(dao.table)</span><br><span class="line">	<span class="keyword">for</span> _, handler := <span class="keyword">range</span> dao.handlers &#123;</span><br><span class="line">		model = handler(model)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> model.Safe().Ctx(ctx)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​		dao,do,entity使用时的相关关系，dao层负责具体的数据库操作，do层负责传递查询条件，entity层负责接收返回的数据</p>
+<p>​		在实际开发中，DO和Entity在DAO层的典型应用场景包括：</p>
+<p>1.查询操作 : 使用DO构建 Where 条件，使用Entity接收查询结果</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> message entity.ChatMessage</span><br><span class="line">err := dao.ChatMessage.Ctx(ctx).Where(do.ChatMessage&#123;Id: <span class="number">1</span>&#125;).Scan(&amp;message)</span><br></pre></td></tr></table></figure>
+<p>2.插入操作 : 使用DO构建插入数据，执行插入操作</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">result, err := dao.ChatMessage.Ctx(ctx).Data(do.ChatMessage&#123;</span><br><span class="line">    Senderuid: <span class="number">1</span>, </span><br><span class="line">    Receiveruid: <span class="number">2</span>, </span><br><span class="line">    Content: <span class="string">&quot;Hello&quot;</span>,</span><br><span class="line">&#125;).Insert()</span><br></pre></td></tr></table></figure>
+<p>3.更新操作 : 结合主键条件和DO数据进行更新</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">result, err := dao.ChatMessage.Ctx(ctx).</span><br><span class="line">    WherePri(<span class="number">1</span>).</span><br><span class="line">    Data(do.ChatMessage&#123;Content: <span class="string">&quot;Updated content&quot;</span>&#125;).</span><br><span class="line">    Update()</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>goframe</category>
+      </categories>
+      <tags>
+        <tag>goframe</tag>
+        <tag>goframe cli</tag>
+        <tag>gdb</tag>
+      </tags>
+  </entry>
 </search>
