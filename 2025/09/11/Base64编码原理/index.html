@@ -24,28 +24,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"bytedoge.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="在 Go 语言中，闭包（Closure）是指一个函数捕获并引用了其外部作用域中的变量，即使外部函数已经执行完毕，这些被捕获的变量依然可以被内部函数访问和修改。简单来说，闭包就是 “函数 + 其捕获的外部变量” 的组合体。 ¶用 Go 代码理解闭包 先看一个简单的例子，直观感受闭包的特性： 1234567891011121314151617181920212223package mainimport">
+    <meta name="description" content="要理解 Base64 编码原理及中文的编码过程，需先明确 Base64 的核心逻辑 ——将 “二进制数据” 转换为 “可打印 ASCII 字符”，而中文因涉及字符集（如 UTF-8、GBK），需先转换为二进制，再进入 Base64 编码流程。以下分两部分详细拆解： ¶一、Base64 编码的核心原理 Base64 是一种 “基于 64 个可打印字符” 的编码方案，本质是 “二进制数据的分组重排”，">
 <meta property="og:type" content="article">
-<meta property="og:title" content="go中的闭包">
-<meta property="og:url" content="https://bytedoge.github.io/2025/09/02/go%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85/">
+<meta property="og:title" content="Base64编码原理">
+<meta property="og:url" content="https://bytedoge.github.io/2025/09/11/Base64%E7%BC%96%E7%A0%81%E5%8E%9F%E7%90%86/">
 <meta property="og:site_name" content="zhyBlogs">
-<meta property="og:description" content="在 Go 语言中，闭包（Closure）是指一个函数捕获并引用了其外部作用域中的变量，即使外部函数已经执行完毕，这些被捕获的变量依然可以被内部函数访问和修改。简单来说，闭包就是 “函数 + 其捕获的外部变量” 的组合体。 ¶用 Go 代码理解闭包 先看一个简单的例子，直观感受闭包的特性： 1234567891011121314151617181920212223package mainimport">
+<meta property="og:description" content="要理解 Base64 编码原理及中文的编码过程，需先明确 Base64 的核心逻辑 ——将 “二进制数据” 转换为 “可打印 ASCII 字符”，而中文因涉及字符集（如 UTF-8、GBK），需先转换为二进制，再进入 Base64 编码流程。以下分两部分详细拆解： ¶一、Base64 编码的核心原理 Base64 是一种 “基于 64 个可打印字符” 的编码方案，本质是 “二进制数据的分组重排”，">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-09-02T07:00:31.000Z">
-<meta property="article:modified_time" content="2025-09-02T07:02:30.229Z">
+<meta property="article:published_time" content="2025-09-11T02:35:30.000Z">
+<meta property="article:modified_time" content="2025-09-11T02:36:32.930Z">
 <meta property="article:author" content="Zheng HanYang">
-<meta property="article:tag" content="go">
-<meta property="article:tag" content="闭包">
+<meta property="article:tag" content="base64">
+<meta property="article:tag" content="编码">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://bytedoge.github.io/2025/09/02/go%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85/">
+<link rel="canonical" href="https://bytedoge.github.io/2025/09/11/Base64%E7%BC%96%E7%A0%81%E5%8E%9F%E7%90%86/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bytedoge.github.io/2025/09/02/go%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85/","path":"2025/09/02/go中的闭包/","title":"go中的闭包"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bytedoge.github.io/2025/09/11/Base64%E7%BC%96%E7%A0%81%E5%8E%9F%E7%90%86/","path":"2025/09/11/Base64编码原理/","title":"Base64编码原理"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>go中的闭包 | zhyBlogs</title>
+<title>Base64编码原理 | zhyBlogs</title>
   
 
 
@@ -337,7 +337,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%A8-Go-%E4%BB%A3%E7%A0%81%E7%90%86%E8%A7%A3%E9%97%AD%E5%8C%85"><span class="nav-number">1.</span> <span class="nav-text">用 Go 代码理解闭包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AD%E5%8C%85%E7%9A%84%E4%BC%98%E7%82%B9"><span class="nav-number">2.</span> <span class="nav-text">闭包的优点</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%B0%81%E8%A3%85%E7%8A%B6%E6%80%81%EF%BC%8C%E5%AE%9E%E7%8E%B0-%E2%80%9C%E7%A7%81%E6%9C%89%E5%8F%98%E9%87%8F%E2%80%9D"><span class="nav-number">2.1.</span> <span class="nav-text">1. 封装状态，实现 “私有变量”</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%BF%9D%E6%8C%81%E7%8A%B6%E6%80%81%EF%BC%8C%E7%AE%80%E5%8C%96%E9%80%BB%E8%BE%91"><span class="nav-number">2.2.</span> <span class="nav-text">2. 保持状态，简化逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%87%8F%E5%B0%91%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F%EF%BC%8C%E9%99%8D%E4%BD%8E%E5%89%AF%E4%BD%9C%E7%94%A8"><span class="nav-number">2.3.</span> <span class="nav-text">3. 减少全局变量，降低副作用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E5%8A%A8%E6%80%81%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0%EF%BC%8C%E6%8F%90%E9%AB%98%E7%81%B5%E6%B4%BB%E6%80%A7"><span class="nav-number">2.4.</span> <span class="nav-text">4. 动态生成函数，提高灵活性</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">3.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%8E%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E8%A7%92%E5%BA%A6%E7%90%86%E8%A7%A3%EF%BC%9A%E6%A0%88-vs-%E5%A0%86"><span class="nav-number">4.</span> <span class="nav-text">从内存分配角度理解：栈 vs 堆</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AD%E5%8C%85%E7%9A%84%E5%8F%98%E9%87%8F%E5%AD%98%E5%82%A8%E9%80%BB%E8%BE%91"><span class="nav-number">5.</span> <span class="nav-text">闭包的变量存储逻辑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B-%E5%86%85%E5%AD%98%E5%88%86%E6%9E%90"><span class="nav-number">6.</span> <span class="nav-text">代码示例 + 内存分析</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%86%85%E5%AD%98%E8%BF%87%E7%A8%8B%E8%A7%A3%E6%9E%90%EF%BC%9A"><span class="nav-number">6.1.</span> <span class="nav-text">内存过程解析：</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E4%BD%95%E9%AA%8C%E8%AF%81%E5%8F%98%E9%87%8F-%E2%80%9C%E9%80%83%E9%80%B8%E5%88%B0%E5%A0%86%E2%80%9D%EF%BC%9F"><span class="nav-number">7.</span> <span class="nav-text">如何验证变量 “逃逸到堆”？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-2"><span class="nav-number">8.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81Base64-%E7%BC%96%E7%A0%81%E7%9A%84%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86"><span class="nav-number">1.</span> <span class="nav-text">一、Base64 编码的核心原理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E6%A0%B8%E5%BF%83%E8%A6%81%E7%B4%A0%EF%BC%9A64-%E4%B8%AA%E5%9F%BA%E7%A1%80%E5%AD%97%E7%AC%A6"><span class="nav-number">1.1.</span> <span class="nav-text">1. 核心要素：64 个基础字符</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%BC%96%E7%A0%81%E9%80%BB%E8%BE%91%EF%BC%9A3-%E5%AD%97%E8%8A%82%E2%86%924-%E5%AD%97%E7%AC%A6%EF%BC%8C%E4%B8%8D%E8%B6%B3%E8%A1%A5-0"><span class="nav-number">1.2.</span> <span class="nav-text">2. 编码逻辑：3 字节→4 字符，不足补 0</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%89%B9%E6%AE%8A%E6%83%85%E5%86%B5%EF%BC%9A%E4%B8%8D%E8%B6%B3-3-%E5%AD%97%E8%8A%82%E7%9A%84%E8%A1%A5%E9%BD%90%E8%A7%84%E5%88%99"><span class="nav-number">1.3.</span> <span class="nav-text">3. 特殊情况：不足 3 字节的补齐规则</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%B8%AD%E6%96%87%E7%9A%84-Base64-%E7%BC%96%E7%A0%81%E5%AE%8C%E6%95%B4%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">二、中文的 Base64 编码完整流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4-1%EF%BC%9A%E4%B8%AD%E6%96%87%E2%86%92UTF-8-%E5%AD%97%E8%8A%82%E6%B5%81%EF%BC%88%E6%A0%B8%E5%BF%83%EF%BC%9A%E5%AD%97%E7%AC%A6%E9%9B%86%E8%BD%AC%E6%8D%A2%EF%BC%89"><span class="nav-number">2.1.</span> <span class="nav-text">步骤 1：中文→UTF-8 字节流（核心：字符集转换）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4-2%EF%BC%9AUTF-8-%E5%AD%97%E8%8A%82%E6%B5%81%E2%86%92Base64-%E7%BC%96%E7%A0%81%EF%BC%88%E5%A4%8D%E7%94%A8%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%EF%BC%89"><span class="nav-number">2.2.</span> <span class="nav-text">步骤 2：UTF-8 字节流→Base64 编码（复用核心原理）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AD%A5%E9%AA%A4-3%EF%BC%9A%E9%AA%8C%E8%AF%81%E4%B8%8E%E8%A7%A3%E7%A0%81%EF%BC%88%E5%8F%8D%E5%90%91%E6%B5%81%E7%A8%8B%EF%BC%89"><span class="nav-number">2.3.</span> <span class="nav-text">步骤 3：验证与解码（反向流程）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%85%B3%E9%94%AE%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">3.</span> <span class="nav-text">三、关键注意事项</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -396,7 +396,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://bytedoge.github.io/2025/09/02/go%E4%B8%AD%E7%9A%84%E9%97%AD%E5%8C%85/">
+    <link itemprop="mainEntityOfPage" href="https://bytedoge.github.io/2025/09/11/Base64%E7%BC%96%E7%A0%81%E5%8E%9F%E7%90%86/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -409,13 +409,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="go中的闭包 | zhyBlogs">
+      <meta itemprop="name" content="Base64编码原理 | zhyBlogs">
       <meta itemprop="description" content="">
     </span>
         
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">
-            go中的闭包
+            Base64编码原理
           </h1>
 
           <div class="post-meta-container">
@@ -427,7 +427,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2025-09-02 15:00:31 / 修改时间：15:02:30" itemprop="dateCreated datePublished" datetime="2025-09-02T15:00:31+08:00">2025-09-02</time>
+      <time title="创建时间：2025-09-11 10:35:30 / 修改时间：10:36:32" itemprop="dateCreated datePublished" datetime="2025-09-11T10:35:30+08:00">2025-09-11</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -435,7 +435,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/go/" itemprop="url" rel="index"><span itemprop="name">go</span></a>
+          <a href="/categories/%E7%BC%96%E7%A0%81/" itemprop="url" rel="index"><span itemprop="name">编码</span></a>
         </span>
     </span>
 
@@ -453,14 +453,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>3.4k</span>
+      <span>2.1k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>3 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -470,78 +470,64 @@
     
     
     
-      <div class="post-body" itemprop="articleBody"><p>在 Go 语言中，闭包（Closure）是指一个函数<strong>捕获并引用了其外部作用域中的变量</strong>，即使外部函数已经执行完毕，这些被捕获的变量依然可以被内部函数访问和修改。简单来说，闭包就是 “函数 + 其捕获的外部变量” 的组合体。</p>
-<h3 id="用-Go-代码理解闭包"><a class="header-anchor" href="#用-Go-代码理解闭包">¶</a>用 Go 代码理解闭包</h3>
-<p>先看一个简单的例子，直观感受闭包的特性：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 外部函数：返回一个内部函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">outer</span><span class="params">()</span></span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    count := <span class="number">0</span> <span class="comment">// 被捕获的外部变量</span></span><br><span class="line">    <span class="comment">// 内部函数（闭包）：引用了外部变量count</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span> &#123;</span><br><span class="line">        count++ <span class="comment">// 修改外部变量</span></span><br><span class="line">        <span class="keyword">return</span> count</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 接收闭包函数</span></span><br><span class="line">    closure := outer()</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 多次调用闭包</span></span><br><span class="line">    fmt.Println(closure()) <span class="comment">// 输出：1</span></span><br><span class="line">    fmt.Println(closure()) <span class="comment">// 输出：2</span></span><br><span class="line">    fmt.Println(closure()) <span class="comment">// 输出：3</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>在这个例子中：</p>
-<ul>
-<li><code>outer</code> 是外部函数，定义了变量 <code>count</code>。</li>
-<li><code>outer</code> 返回了一个匿名内部函数，这个内部函数引用并修改了 <code>count</code>。</li>
-<li>当 <code>outer</code> 执行完毕后，<code>count</code> 并没有被销毁，而是被返回的内部函数（闭包）“捕获” 并保留了下来。</li>
-<li>每次调用 <code>closure()</code> 时，都会基于上一次的 <code>count</code> 值进行修改，这就是闭包的核心特性：<strong>保留并操作外部作用域的变量</strong>。</li>
-</ul>
-<h3 id="闭包的优点"><a class="header-anchor" href="#闭包的优点">¶</a>闭包的优点</h3>
-<p>闭包在 Go 中被广泛使用（如回调函数、中间件等），其核心优点体现在以下几个方面：</p>
-<h4 id="1-封装状态，实现-“私有变量”"><a class="header-anchor" href="#1-封装状态，实现-“私有变量”">¶</a>1. 封装状态，实现 “私有变量”</h4>
-<p>闭包可以将变量隐藏在外部函数中，只通过返回的函数暴露操作接口，实现类似 “类的私有变量” 的封装效果。</p>
-<p>例如，实现一个只能通过特定方法修改的计数器：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">createCounter</span><span class="params">()</span></span> (<span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span>, <span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span>) &#123;</span><br><span class="line">    count := <span class="number">0</span></span><br><span class="line">    <span class="comment">// 读取计数器</span></span><br><span class="line">    get := <span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> count</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 增加计数器</span></span><br><span class="line">    increment := <span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span> &#123;</span><br><span class="line">        count++</span><br><span class="line">        <span class="keyword">return</span> count</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> get, increment</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    get, increment := createCounter()</span><br><span class="line">    increment()</span><br><span class="line">    increment()</span><br><span class="line">    fmt.Println(get()) <span class="comment">// 输出：2（只能通过get()读取，通过increment()修改）</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里的 <code>count</code> 无法被外部直接访问，只能通过闭包提供的 <code>get</code> 和 <code>increment</code> 操作，实现了状态的封装。</p>
-<h4 id="2-保持状态，简化逻辑"><a class="header-anchor" href="#2-保持状态，简化逻辑">¶</a>2. 保持状态，简化逻辑</h4>
-<p>闭包可以在多次调用中 “记住” 变量的状态，无需依赖全局变量即可维持上下文，简化代码逻辑。</p>
-<p>例如，实现一个累加器（每次调用都在上一次结果上累加）：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">adder</span><span class="params">(init <span class="type">int</span>)</span></span> <span class="function"><span class="keyword">func</span><span class="params">(<span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    sum := init <span class="comment">// 初始值被闭包捕获</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(num <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">        sum += num <span class="comment">// 每次调用都基于上一次的sum累加</span></span><br><span class="line">        <span class="keyword">return</span> sum</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    add := adder(<span class="number">10</span>) <span class="comment">// 初始值10</span></span><br><span class="line">    fmt.Println(add(<span class="number">5</span>))  <span class="comment">// 10+5=15</span></span><br><span class="line">    fmt.Println(add(<span class="number">3</span>))  <span class="comment">// 15+3=18</span></span><br><span class="line">    fmt.Println(add(<span class="number">2</span>))  <span class="comment">// 18+2=20</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这里的 <code>sum</code> 会在多次调用中保持状态，避免了使用全局变量可能导致的冲突。</p>
-<h4 id="3-减少全局变量，降低副作用"><a class="header-anchor" href="#3-减少全局变量，降低副作用">¶</a>3. 减少全局变量，降低副作用</h4>
-<p>如果不使用闭包，要实现上述 “保持状态” 的功能，可能需要定义全局变量。而全局变量容易被意外修改，导致不可预知的副作用。</p>
-<p>闭包通过捕获局部变量来维持状态，避免了全局变量的使用，让代码更安全、可维护性更高。</p>
-<h4 id="4-动态生成函数，提高灵活性"><a class="header-anchor" href="#4-动态生成函数，提高灵活性">¶</a>4. 动态生成函数，提高灵活性</h4>
-<p>闭包可以根据外部参数动态生成具有不同行为的函数，增强代码的灵活性。</p>
-<p>例如，生成不同倍数的乘法函数：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">multiplier</span><span class="params">(factor <span class="type">int</span>)</span></span> <span class="function"><span class="keyword">func</span><span class="params">(<span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    <span class="comment">// 根据factor动态生成乘法逻辑</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">(num <span class="type">int</span>)</span></span> <span class="type">int</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> num * factor</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    double := multiplier(<span class="number">2</span>)  <span class="comment">// 生成“乘以2”的函数</span></span><br><span class="line">    triple := multiplier(<span class="number">3</span>)  <span class="comment">// 生成“乘以3”的函数</span></span><br><span class="line">    </span><br><span class="line">    fmt.Println(double(<span class="number">5</span>)) <span class="comment">// 10</span></span><br><span class="line">    fmt.Println(triple(<span class="number">5</span>)) <span class="comment">// 15</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>通过闭包，我们可以基于不同的参数（<code>factor</code>）生成不同功能的函数，无需重复编写类似逻辑。</p>
-<h3 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h3>
-<p>闭包是 Go 语言中非常强大的特性，其核心是 “函数 + 捕获的外部变量”。通过闭包，我们可以实现状态封装、保持上下文、减少全局变量、动态生成函数等功能，让代码更简洁、灵活且安全。在实际开发中，闭包常用于回调函数、中间件、工厂函数等场景。</p>
-<p>在 Go 语言中，闭包之所以能在多次调用时 “记住” 变量状态（不重新创建变量，而是在原有基础上修改），核心原因是<strong>被闭包捕获的变量会从栈内存 “逃逸” 到堆内存</strong>，并被闭包函数持续引用，从而延长了生命周期。</p>
-<h3 id="从内存分配角度理解：栈-vs-堆"><a class="header-anchor" href="#从内存分配角度理解：栈-vs-堆">¶</a>从内存分配角度理解：栈 vs 堆</h3>
-<p>首先需要明确两个基本概念：</p>
-<ul>
-<li><strong>栈内存</strong>：函数内部的局部变量默认分配在栈上，函数执行结束后，栈上的变量会被自动释放（内存回收）。</li>
-<li><strong>堆内存</strong>：动态分配的内存，生命周期不受函数执行范围限制，只有当没有任何引用指向它时，才会被垃圾回收器回收。</li>
-</ul>
-<h3 id="闭包的变量存储逻辑"><a class="header-anchor" href="#闭包的变量存储逻辑">¶</a>闭包的变量存储逻辑</h3>
-<p>当一个函数返回闭包时，Go 编译器会通过 “逃逸分析” 发现：被内部函数（闭包）引用的外部变量，在外部函数执行结束后仍需被使用（因为闭包会被返回并在外部调用）。此时，编译器会将这些变量从栈内存 “移动” 到堆内存。</p>
-<p>闭包函数本身会持有这些堆内存变量的<strong>引用（指针）</strong>，因此：</p>
-<ul>
-<li>即使外部函数已经执行完毕，堆上的变量也不会被释放（因为闭包还在引用它）。</li>
-<li>每次调用闭包时，操作的都是堆上的同一个变量实例，而非重新创建。</li>
-</ul>
-<h3 id="代码示例-内存分析"><a class="header-anchor" href="#代码示例-内存分析">¶</a>代码示例 + 内存分析</h3>
-<p>用之前的计数器例子拆解：</p>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">outer</span><span class="params">()</span></span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span> &#123;</span><br><span class="line">    count := <span class="number">0</span> <span class="comment">// 被闭包捕获的变量</span></span><br><span class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> <span class="type">int</span> &#123;</span><br><span class="line">        count++ </span><br><span class="line">        <span class="keyword">return</span> count</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    closure := outer() <span class="comment">// 接收闭包</span></span><br><span class="line">    closure() <span class="comment">// 1</span></span><br><span class="line">    closure() <span class="comment">// 2</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="内存过程解析："><a class="header-anchor" href="#内存过程解析：">¶</a>内存过程解析：</h4>
+      <div class="post-body" itemprop="articleBody"><p>要理解 Base64 编码原理及中文的编码过程，需先明确 Base64 的核心逻辑 ——<strong>将 “二进制数据” 转换为 “可打印 ASCII 字符”</strong>，而中文因涉及字符集（如 UTF-8、GBK），需先转换为二进制，再进入 Base64 编码流程。以下分两部分详细拆解：</p>
+<h3 id="一、Base64-编码的核心原理"><a class="header-anchor" href="#一、Base64-编码的核心原理">¶</a>一、Base64 编码的核心原理</h3>
+<p>Base64 是一种 “基于 64 个可打印字符” 的编码方案，本质是 <strong>“二进制数据的分组重排”</strong>，解决非文本数据（如图片、中文）在文本协议（如 HTTP、邮件）中传输乱码的问题。</p>
+<h4 id="1-核心要素：64-个基础字符"><a class="header-anchor" href="#1-核心要素：64-个基础字符">¶</a>1. 核心要素：64 个基础字符</h4>
+<p>Base64 定义了 64 个固定字符，涵盖大小写字母、数字，共 64 个（2⁶=64），对应 0-63 的索引，如下：<br>
+<code>A-Z</code>（26 个，索引 0-25）、<code>a-z</code>（26 个，索引 26-51）、<code>0-9</code>（10 个，索引 52-61）、<code>+</code>（索引 62）、<code>/</code>（索引 63）。<br>
+（注：URL 安全的 Base64 会用<code>-</code>代替<code>+</code>、<code>_</code>代替<code>/</code>，避免特殊字符转义）</p>
+<h4 id="2-编码逻辑：3-字节→4-字符，不足补-0"><a class="header-anchor" href="#2-编码逻辑：3-字节→4-字符，不足补-0">¶</a>2. 编码逻辑：3 字节→4 字符，不足补 0</h4>
+<p>Base64 的核心是<strong>将 3 个 8 位二进制字节（共 24 位），拆分为 4 个 6 位二进制组</strong>（24÷6=4），每个 6 位组对应 0-63 的索引，再映射到上述 64 个字符。若二进制总长度不是 24 的倍数（即输入字节数不是 3 的倍数），则通过 “补 0” 和 “加等号（=）” 标识补齐。</p>
+<p>具体步骤（以 3 字节数据为例）：</p>
 <ol>
-<li>调用<code>outer()</code>时，正常情况下<code>count</code>应分配在<code>outer</code>的栈帧上。</li>
-<li>但编译器发现：<code>count</code>被内部匿名函数引用，且该匿名函数会被返回给<code>main</code>函数（即<code>outer</code>执行结束后，<code>count</code>仍需被使用）。</li>
-<li>因此，编译器触发 “逃逸分析”，将<code>count</code>从栈内存移到<strong>堆内存</strong>（分配一个堆地址，比如<code>0x1040a120</code>）。</li>
-<li><code>outer</code>返回的闭包函数，内部会持有<code>count</code>在堆上的地址（即指针<code>*int = 0x1040a120</code>）。</li>
-<li><code>main</code>函数中，<code>closure</code>变量存储的就是这个闭包（包含对堆上<code>count</code>的引用）。</li>
-<li>每次调用<code>closure()</code>时，实际操作的都是<code>0x1040a120</code>地址上的<code>count</code>，因此会在原有值基础上累加。</li>
+<li><strong>取 3 个 8 位字节</strong>：假设输入字节为 <code>01001101</code>（M）、<code>01100001</code>（a）、<code>01101110</code>（n），拼接为 24 位二进制：<code>01001101 01100001 01101110</code>。</li>
+<li><strong>拆分为 4 个 6 位组</strong>：按 6 位分割，得到 <code>010011</code>、<code>010110</code>、<code>000101</code>、<code>101110</code>。</li>
+<li><strong>转十进制查索引</strong>：4 个 6 位组的十进制值分别为 19、22、5、46，对应 Base64 字符为 <code>T</code>、<code>W</code>、<code>F</code>、<code>u</code>。</li>
+<li><strong>最终结果</strong>：<code>Man</code> → <code>TWFu</code>（这是 Base64 的经典示例）。</li>
 </ol>
-<h3 id="如何验证变量-“逃逸到堆”？"><a class="header-anchor" href="#如何验证变量-“逃逸到堆”？">¶</a>如何验证变量 “逃逸到堆”？</h3>
-<p>可以通过 Go 的编译工具查看变量是否逃逸到堆。对上述代码执行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">go build -gcflags=<span class="string">&quot;-m&quot;</span> main.go</span><br></pre></td></tr></table></figure>
-<p>输出会包含类似信息：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./main.go:6:2: moved to heap: count</span><br></pre></td></tr></table></figure>
-<p>这表明<code>count</code>变量被移动到了堆上，印证了我们的分析。</p>
-<h3 id="总结-2"><a class="header-anchor" href="#总结-2">¶</a>总结</h3>
-<p>闭包之所以能保持变量状态，本质是：</p>
+<h4 id="3-特殊情况：不足-3-字节的补齐规则"><a class="header-anchor" href="#3-特殊情况：不足-3-字节的补齐规则">¶</a>3. 特殊情况：不足 3 字节的补齐规则</h4>
+<p>若输入字节数为 1 或 2（二进制总长度不足 24 位），需通过 “补 0” 和 “等号” 标识：</p>
+<ul>
+<li><strong>1 字节（8 位）</strong>：补 4 个 0，凑成 12 位（2 个 6 位组），末尾加 2 个<code>=</code>。<br>
+例：输入字符 <code>A</code>（ASCII 65，二进制 <code>01000001</code>）→ 补 0 后 <code>010000 010000</code> → 对应 Base64 字符 <code>QQ</code> → 最终 <code>QQ==</code>。</li>
+<li><strong>2 字节（16 位）</strong>：补 2 个 0，凑成 18 位（3 个 6 位组），末尾加 1 个<code>=</code>。<br>
+例：输入字符 <code>Ab</code>（二进制 <code>01000001 01100010</code>）→ 补 0 后 <code>010000 010110 001000</code> → 对应 Base64 字符 <code>QWJ</code> → 最终 <code>QWJ=</code>。</li>
+</ul>
+<h3 id="二、中文的-Base64-编码完整流程"><a class="header-anchor" href="#二、中文的-Base64-编码完整流程">¶</a>二、中文的 Base64 编码完整流程</h3>
+<p>中文本身不是 “二进制数据”，也不属于 ASCII 字符集，因此<strong>必须先将中文转换为 “二进制字节流”</strong>（依赖具体字符集，如 UTF-8、GBK），再对字节流执行 Base64 编码。</p>
+<p>以最常用的<strong>UTF-8 字符集</strong>为例（中文在 UTF-8 中占 3 个字节），完整流程分 3 步：</p>
+<h4 id="步骤-1：中文→UTF-8-字节流（核心：字符集转换）"><a class="header-anchor" href="#步骤-1：中文→UTF-8-字节流（核心：字符集转换）">¶</a>步骤 1：中文→UTF-8 字节流（核心：字符集转换）</h4>
+<p>中文在不同字符集中的字节长度不同（如 UTF-8 占 3 字节，GBK 占 2 字节），这是中文 Base64 编码的 “关键前置步骤”。<br>
+例：输入中文 <strong>“你好”</strong>，先转换为 UTF-8 字节流：</p>
+<ul>
+<li>“你” 的 UTF-8 编码：<code>0xE4 0xBD 0xA0</code>（3 个字节）</li>
+<li>“好” 的 UTF-8 编码：<code>0xE5 0xA5 0xBD</code>（3 个字节）</li>
+<li>完整字节流：<code>E4 BD A0 E5 A5 BD</code>（共 6 字节，是 3 的倍数，无需补 0）。</li>
+</ul>
+<h4 id="步骤-2：UTF-8-字节流→Base64-编码（复用核心原理）"><a class="header-anchor" href="#步骤-2：UTF-8-字节流→Base64-编码（复用核心原理）">¶</a>步骤 2：UTF-8 字节流→Base64 编码（复用核心原理）</h4>
+<p>将步骤 1 得到的 6 字节（共 48 位）按 Base64 规则拆分：</p>
 <ol>
-<li>被捕获的变量从栈逃逸到堆，生命周期延长；</li>
-<li>闭包函数持有这些堆变量的引用，每次调用时操作的是同一个内存地址的变量，而非重新创建。</li>
+<li>6 字节 = 2 组 3 字节，每组 3 字节拆为 4 个 6 位组，共 8 个 6 位组：
+<ul>
+<li>第一组（“你” 的字节 <code>E4 BD A0</code>）：<br>
+二进制：<code>11100100 10111101 10100000</code> → 拆为 4 个 6 位组：<code>111001</code>、<code>001011</code>、<code>110110</code>、<code>100000</code> → 十进制：57、11、54、32 → 对应 Base64 字符：<code>5</code>、<code>L</code>、<code>2</code>、<code>g</code>。</li>
+<li>第二组（“好” 的字节 <code>E5 A5 BD</code>）：<br>
+二进制：<code>11100101 10100101 10111101</code> → 拆为 4 个 6 位组：<code>111001</code>、<code>011010</code>、<code>010110</code>、<code>111101</code> → 十进制：57、26、22、61 → 对应 Base64 字符：<code>5</code>、<code>a</code>、<code>W</code>、<code>9</code>。</li>
+</ul>
+</li>
+<li>拼接 8 个字符，得到 “你好” 的 Base64 编码：<code>5L2g5aW9</code>。</li>
 </ol>
-<p>这种机制让闭包能够 “记住” 上下文状态，成为 Go 中实现状态封装、回调函数等功能的核心基础。</p>
+<h4 id="步骤-3：验证与解码（反向流程）"><a class="header-anchor" href="#步骤-3：验证与解码（反向流程）">¶</a>步骤 3：验证与解码（反向流程）</h4>
+<p>若需解码，需先将 Base64 字符串 <code>5L2g5aW9</code> 转回 UTF-8 字节流 <code>E4 BD A0 E5 A5 BD</code>，再通过 UTF-8 字符集转换为中文 “你好”。</p>
+<h3 id="三、关键注意事项"><a class="header-anchor" href="#三、关键注意事项">¶</a>三、关键注意事项</h3>
+<ol>
+<li><strong>字符集决定 Base64 结果</strong>：同一中文在不同字符集下的 Base64 编码不同。<br>
+例：“你好” 在 GBK 中是 <code>C4 E3 BA C3</code>（4 字节），Base64 编码为 <code>xLK7s8</code>；在 UTF-8 中是 <code>5L2g5aW9</code>，两者完全不同。因此，编码和解码必须使用<strong>相同字符集</strong>，否则会出现乱码。</li>
+<li><strong>Base64 是 “编码” 不是 “加密”</strong>：Base64 仅为 “二进制→文本” 的转换，无安全性，任何人可通过 Base64 工具解码，不能用于敏感数据保护。</li>
+<li><strong>编码后长度固定增加</strong>：因 3 字节→4 字符，编码后数据长度是原字节流的 <code>4/3</code> 倍（若有补齐，长度会略增，如 1 字节→4 字符，增长 300%）。</li>
+</ol>
+<p>通过以上流程，即可清晰理解中文如何通过 “字符集转二进制→Base64 分组编码” 的步骤，最终转换为可打印的 Base64 字符串。</p>
 
       </div>
 
@@ -551,21 +537,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/go/" rel="tag"># go</a>
-              <a href="/tags/%E9%97%AD%E5%8C%85/" rel="tag"># 闭包</a>
+              <a href="/tags/base64/" rel="tag"># base64</a>
+              <a href="/tags/%E7%BC%96%E7%A0%81/" rel="tag"># 编码</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2025/09/02/Go%E4%B8%AD%E7%BB%93%E6%9E%84%E4%BD%93%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E7%90%86%E8%A7%A3/" rel="prev" title="Go中结构体和方法的理解">
-                  <i class="fa fa-angle-left"></i> Go中结构体和方法的理解
-                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2025/09/02/%E5%B9%B6%E5%8F%91%E5%AE%89%E5%85%A8%E7%9A%84%E6%A6%82%E5%BF%B5%E4%BB%A5%E5%8F%8A%E8%A7%A3%E5%86%B3/" rel="next" title="并发安全的概念以及解决">
-                  并发安全的概念以及解决 <i class="fa fa-angle-right"></i>
+                <a href="/2025/09/10/goframe%E6%A1%86%E6%9E%B6%E8%AF%A6%E8%A7%A3/" rel="next" title="goframe框架详解">
+                  goframe框架详解 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>
