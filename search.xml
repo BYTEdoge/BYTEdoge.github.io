@@ -2236,7 +2236,6 @@ Markdown 文章头部包含 Front-matter 配置：</li>
 <figure class="highlight go"><table><tr><td class="code"><pre><span class="line">result, err := dao.ChatMessage.Ctx(ctx).</span><br><span class="line">    WherePri(<span class="number">1</span>).</span><br><span class="line">    Data(do.ChatMessage&#123;Content: <span class="string">&quot;Updated content&quot;</span>&#125;).</span><br><span class="line">    Update()</span><br></pre></td></tr></table></figure>
 <p>4.[关联查询](<a href="https://www.bilibili.com/video/BV1Uu4y1u7kX?spm_id_from=333.788.player.switch&amp;vd_source=00efd8b4e434a200cf3845438685feb4&amp;p=33">33 关联查询-一对多_哔哩哔哩_bilibili</a>)</p>
 <p>5.service需要实现的内容</p>
-<p><img src="C:%5CUsers%5C%E6%B8%85%E9%A3%8E%5CAppData%5CRoaming%5CTypora%5Ctypora-user-images%5Cimage-20250910162245857.png" alt="image-20250910162245857"></p>
 <img src="/img/接口实现.png">
 <p>6.goframe项目的构建顺序</p>
 <ul>
@@ -2245,7 +2244,11 @@ Markdown 文章头部包含 Front-matter 配置：</li>
 <li>创建service层的相关内容</li>
 <li>在logic层实现service层对应的接口方法</li>
 <li>在controller层调用service层的接口</li>
+<li>router层注册绑定controller层的相关接口方法</li>
 </ul>
+<h2 id="3-api层，controller层以及router层（自己实现）之间的关系"><a class="header-anchor" href="#3-api层，controller层以及router层（自己实现）之间的关系">¶</a>3.api层，controller层以及router层（自己实现）之间的关系</h2>
+<p>使用goframe框架的整个接口创建注册流程图</p>
+<img src="/img/路由分组.png">
 ]]></content>
       <categories>
         <category>goframe</category>
@@ -2324,6 +2327,82 @@ Markdown 文章头部包含 Front-matter 配置：</li>
       <tags>
         <tag>base64</tag>
         <tag>编码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>goframe项目编写顺序(web)</title>
+    <url>/2025/09/11/goframe%E9%A1%B9%E7%9B%AE%E7%BC%96%E5%86%99%E9%A1%BA%E5%BA%8F/</url>
+    <content><![CDATA[<p>在 GoFrame 框架中，<code>api</code>、<code>router</code>、<code>controller</code>、<code>service</code>、<code>logic</code> 几层的开发顺序需要遵循 “依赖倒置” 原则（上层依赖下层的接口，而非具体实现），同时兼顾开发效率和协作成本。个人开发者和团队开发者的最优顺序略有差异，核心是<strong>先定义 “契约”，再实现 “逻辑”，最后绑定 “路由”</strong>。</p>
+<h3 id="一、各层核心职责与依赖关系"><a class="header-anchor" href="#一、各层核心职责与依赖关系">¶</a>一、各层核心职责与依赖关系</h3>
+<p>首先明确各层的核心作用及依赖方向，这是确定开发顺序的基础：</p>
+<ul>
+<li><strong>api 层</strong>：定义请求 / 响应的数据结构（DTO）、参数校验规则、接口元信息（路由路径、请求方法等），是前后端 / 服务间的 “契约层”。<br>
+👉 无依赖（最底层，被其他层依赖）。</li>
+<li><strong>service 层</strong>：定义业务服务接口（如 <code>UserService</code>），封装核心业务能力（如事务控制、跨领域逻辑协调），是 “业务接口层”。<br>
+👉 依赖 api 层（可能使用 api 定义的 DTO），被 controller 层依赖。</li>
+<li><strong>logic 层</strong>：实现 service 层定义的接口，处理具体业务逻辑（如数据校验、计算、调用 model 层操作数据库），是 “业务实现层”。<br>
+👉 依赖 service 层的接口（实现接口）、api 层的 DTO，被 service 层调用。</li>
+<li><strong>controller 层</strong>：接收客户端请求，解析 api 层的请求参数，调用 service 层处理业务，返回响应，是 “请求处理层”。<br>
+👉 依赖 api 层（请求 / 响应结构）、service 层（业务接口），被 router 层依赖。</li>
+<li><strong>router 层</strong>：注册路由，绑定 controller 与路由规则（结合 api 层的元信息），是 “路由分发层”。<br>
+👉 依赖 controller 层，无上层依赖。</li>
+</ul>
+<h3 id="二、个人开发者的最优开发顺序"><a class="header-anchor" href="#二、个人开发者的最优开发顺序">¶</a>二、个人开发者的最优开发顺序</h3>
+<p>个人开发时，流程可更灵活，按 “自底向上、逐步递进” 的线性顺序开发，减少上下文切换成本：</p>
+<h4 id="1-第一步：api-层（定义契约）"><a class="header-anchor" href="#1-第一步：api-层（定义契约）">¶</a>1. 第一步：api 层（定义契约）</h4>
+<p>先明确接口的输入（请求参数）和输出（响应数据），包括：</p>
+<ul>
+<li>请求结构体（如 <code>UserCreateReq</code>），用 <code>g.Meta</code> 定义路由路径、请求方法（如 <code>path:/user,method:POST</code>）。</li>
+<li>响应结构体（如 <code>UserCreateRes</code>），定义返回字段（如 <code>Id</code>、<code>Name</code>）。</li>
+<li>参数校验规则（如 <code>v:&quot;required#用户名不能为空&quot;</code>）。</li>
+</ul>
+<p><strong>示例</strong>：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// api/user.go</span></span><br><span class="line"><span class="keyword">package</span> api</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;github.com/gogf/gf/v2/frame/g&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// UserCreateReq 新建用户请求</span></span><br><span class="line"><span class="keyword">type</span> UserCreateReq <span class="keyword">struct</span> &#123;</span><br><span class="line">    g.Meta <span class="string">`path:&quot;/user&quot; method:&quot;POST&quot;`</span></span><br><span class="line">    Name   <span class="type">string</span> <span class="string">`json:&quot;name&quot; v:&quot;required#用户名不能为空&quot;`</span></span><br><span class="line">    Age    <span class="type">int</span>    <span class="string">`json:&quot;age&quot; v:&quot;min:0#年龄不能为负数&quot;`</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// UserCreateRes 新建用户响应</span></span><br><span class="line"><span class="keyword">type</span> UserCreateRes <span class="keyword">struct</span> &#123;</span><br><span class="line">    Id   <span class="type">int</span>    <span class="string">`json:&quot;id&quot;`</span></span><br><span class="line">    Name <span class="type">string</span> <span class="string">`json:&quot;name&quot;`</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-第二步：service-层（定义业务接口）"><a class="header-anchor" href="#2-第二步：service-层（定义业务接口）">¶</a>2. 第二步：service 层（定义业务接口）</h4>
+<p>基于 api 层的契约，定义业务服务的接口（“做什么”），不关心具体实现。接口需明确输入（可复用 api 的请求 DTO）和输出（可复用 api 的响应 DTO）。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// service/user.go</span></span><br><span class="line"><span class="keyword">package</span> service</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;context&quot;</span></span><br><span class="line">    <span class="string">&quot;your-project/api&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// UserService 用户服务接口</span></span><br><span class="line"><span class="keyword">type</span> UserService <span class="keyword">interface</span> &#123;</span><br><span class="line">    Create(ctx context.Context, req *api.UserCreateReq) (*api.UserCreateRes, <span class="type">error</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 全局变量，供controller调用（后续由logic层实现）</span></span><br><span class="line"><span class="keyword">var</span> User UserService</span><br></pre></td></tr></table></figure>
+<h4 id="3-第三步：logic-层（实现业务接口）"><a class="header-anchor" href="#3-第三步：logic-层（实现业务接口）">¶</a>3. 第三步：logic 层（实现业务接口）</h4>
+<p>实现 service 层定义的接口（“怎么做”），处理具体业务逻辑（如调用数据库、第三方服务等）。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// logic/user.go</span></span><br><span class="line"><span class="keyword">package</span> logic</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;context&quot;</span></span><br><span class="line">    <span class="string">&quot;your-project/api&quot;</span></span><br><span class="line">    <span class="string">&quot;your-project/service&quot;</span></span><br><span class="line">    <span class="string">&quot;your-project/model/user&quot;</span> <span class="comment">// 假设存在数据模型层</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// UserLogic 实现UserService接口</span></span><br><span class="line"><span class="keyword">type</span> UserLogic <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="comment">// 将实现注册到service层的全局变量，供controller调用</span></span><br><span class="line">    service.User = &amp;UserLogic&#123;&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create 实现新建用户逻辑</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(l *UserLogic)</span></span> Create(ctx context.Context, req *api.UserCreateReq) (*api.UserCreateRes, <span class="type">error</span>) &#123;</span><br><span class="line">    <span class="comment">// 1. 业务逻辑处理（如插入数据库）</span></span><br><span class="line">    result, err := user.Model.Insert(ctx, user.Entity&#123;</span><br><span class="line">        Name: req.Name,</span><br><span class="line">        Age:  req.Age,</span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 2. 构造响应</span></span><br><span class="line">    id, _ := result.LastInsertId()</span><br><span class="line">    <span class="keyword">return</span> &amp;api.UserCreateRes&#123;</span><br><span class="line">        Id:   <span class="type">int</span>(id),</span><br><span class="line">        Name: req.Name,</span><br><span class="line">    &#125;, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4-第四步：controller-层（处理请求）"><a class="header-anchor" href="#4-第四步：controller-层（处理请求）">¶</a>4. 第四步：controller 层（处理请求）</h4>
+<p>接收 api 层的请求参数，调用 service 层的接口处理业务，返回响应。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// controller/user.go</span></span><br><span class="line"><span class="keyword">package</span> controller</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;context&quot;</span></span><br><span class="line">    <span class="string">&quot;your-project/api&quot;</span></span><br><span class="line">    <span class="string">&quot;your-project/service&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/gogf/gf/v2/frame/g&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// UserController 用户控制器</span></span><br><span class="line"><span class="keyword">type</span> UserController <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Create 处理新建用户请求</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *UserController)</span></span> Create(ctx context.Context, req *api.UserCreateReq) (res *api.UserCreateRes, err <span class="type">error</span>) &#123;</span><br><span class="line">    <span class="comment">// 调用service层处理业务</span></span><br><span class="line">    <span class="keyword">return</span> service.User.Create(ctx, req)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="5-第五步：router-层（注册路由）"><a class="header-anchor" href="#5-第五步：router-层（注册路由）">¶</a>5. 第五步：router 层（注册路由）</h4>
+<p>绑定 controller 与路由分组，框架会自动解析 api 层的 <code>g.Meta</code> 元信息生成完整路由。</p>
+<p><strong>示例</strong>：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// router/user.go</span></span><br><span class="line"><span class="keyword">package</span> router</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;your-project/controller&quot;</span></span><br><span class="line">    <span class="string">&quot;github.com/gogf/gf/v2/net/ghttp&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    s := ghttp.GetServer()</span><br><span class="line">    <span class="comment">// 路由分组（如 /api/v1）</span></span><br><span class="line">    group := s.Group(<span class="string">&quot;/api/v1&quot;</span>)</span><br><span class="line">    <span class="comment">// 绑定controller，自动注册路由</span></span><br><span class="line">    group.Bind(<span class="built_in">new</span>(controller.UserController))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="三、团队开发者的最优开发顺序"><a class="header-anchor" href="#三、团队开发者的最优开发顺序">¶</a>三、团队开发者的最优开发顺序</h3>
+<p>团队开发时，需优先明确 “公共契约”，再分工并行开发，提高效率：</p>
+<h4 id="1-第一步：api-层（集体定义，作为协作基础）"><a class="header-anchor" href="#1-第一步：api-层（集体定义，作为协作基础）">¶</a>1. 第一步：api 层（集体定义，作为协作基础）</h4>
+<p>由架构师或核心开发者牵头，团队共同评审确定 api 层的请求 / 响应结构、路由路径、校验规则（相当于 “接口契约”）。这一步是团队协作的基础，必须先统一，避免后续返工。</p>
+<h4 id="2-第二步：service-层（定义接口，拆分任务）"><a class="header-anchor" href="#2-第二步：service-层（定义接口，拆分任务）">¶</a>2. 第二步：service 层（定义接口，拆分任务）</h4>
+<p>基于 api 层的契约，团队按业务模块拆分 service 接口（如用户模块、订单模块），明确各模块的服务边界。此时只需定义接口（“做什么”），无需实现，作为各开发人员的任务边界。</p>
+<h4 id="3-第三步：并行开发（controller、logic-层）"><a class="header-anchor" href="#3-第三步：并行开发（controller、logic-层）">¶</a>3. 第三步：并行开发（controller、logic 层）</h4>
+<ul>
+<li>负责 controller 的开发者：基于 api 层的请求结构和 service 层的接口，编写请求处理逻辑（无需等待 logic 层实现，可通过接口 mock 调试）。</li>
+<li>负责 logic 的开发者：基于 service 层的接口，实现具体业务逻辑（无需关心 controller 如何调用）。</li>
+</ul>
+<p><strong>优势</strong>：通过 “接口” 解耦，不同开发者可并行开发，减少等待。</p>
+<h4 id="4-第四步：router-层（统一注册，集成测试）"><a class="header-anchor" href="#4-第四步：router-层（统一注册，集成测试）">¶</a>4. 第四步：router 层（统一注册，集成测试）</h4>
+<p>最后由专人（如架构师或测试工程师）负责 router 层的路由注册、中间件配置（如认证、日志），并进行整体集成测试，确保路由与 controller 正确绑定。</p>
+<h3 id="四、核心原则总结"><a class="header-anchor" href="#四、核心原则总结">¶</a>四、核心原则总结</h3>
+<p>无论个人还是团队开发，核心遵循：</p>
+<ol>
+<li><strong>先契约后实现</strong>：api 层（数据契约）和 service 层（接口契约）必须先定义，再实现 logic 和 controller。</li>
+<li><strong>依赖倒置</strong>：上层（controller）依赖下层（service）的接口，而非具体实现（logic），便于并行开发和单元测试。</li>
+<li><strong>路由最后绑定</strong>：router 层依赖 controller，必须在 controller 实现后再注册，避免无效路由。</li>
+</ol>
+<p>按此顺序开发，可减少代码耦合，提高可维护性和协作效率。</p>
+]]></content>
+      <categories>
+        <category>goframe</category>
+      </categories>
+      <tags>
+        <tag>goframe</tag>
+        <tag>工程开发</tag>
       </tags>
   </entry>
 </search>
