@@ -24,25 +24,27 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"bytedoge.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="技术学习笔记">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zhyBlogs">
-<meta property="og:url" content="https://bytedoge.github.io/categories/git/">
+    <meta name="description" content="以下是对话中涉及的 GoFrame 框架核心变量、函数及其含义，重点标注路由相关部分： ¶一、核心变量  ghttp.Server  含义：GoFrame 框架的 HTTP 服务器对象，用于创建和管理 HTTP 服务。 路由相关：是所有路由配置的载体，通过它可以创建路由组、注册路由规则。   ghttp.Router  含义：路由管理器对象，负责管理具体的路由规则（路径、方法、处理函数的映射）。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="goframe路由相关变量">
+<meta property="og:url" content="https://bytedoge.github.io/2025/09/12/goframe%E8%B7%AF%E7%94%B1%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F/">
 <meta property="og:site_name" content="zhyBlogs">
-<meta property="og:description" content="技术学习笔记">
+<meta property="og:description" content="以下是对话中涉及的 GoFrame 框架核心变量、函数及其含义，重点标注路由相关部分： ¶一、核心变量  ghttp.Server  含义：GoFrame 框架的 HTTP 服务器对象，用于创建和管理 HTTP 服务。 路由相关：是所有路由配置的载体，通过它可以创建路由组、注册路由规则。   ghttp.Router  含义：路由管理器对象，负责管理具体的路由规则（路径、方法、处理函数的映射）。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-12T04:24:40.000Z">
+<meta property="article:modified_time" content="2025-09-12T04:25:04.733Z">
 <meta property="article:author" content="Zheng HanYang">
-<meta property="article:tag" content="技术学习笔记">
+<meta property="article:tag" content="goframe">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://bytedoge.github.io/categories/git/">
+<link rel="canonical" href="https://bytedoge.github.io/2025/09/12/goframe%E8%B7%AF%E7%94%B1%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"categories/git/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bytedoge.github.io/2025/09/12/goframe%E8%B7%AF%E7%94%B1%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F/","path":"2025/09/12/goframe路由相关变量/","title":"goframe路由相关变量"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>分类: git | zhyBlogs</title>
+<title>goframe路由相关变量 | zhyBlogs</title>
   
 
 
@@ -321,7 +323,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -334,6 +336,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%A0%B8%E5%BF%83%E5%8F%98%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">一、核心变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E6%A0%B8%E5%BF%83%E5%87%BD%E6%95%B0-%E6%96%B9%E6%B3%95"><span class="nav-number">2.</span> <span class="nav-text">二、核心函数 &#x2F; 方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%B7%AF%E7%94%B1%E7%9B%B8%E5%85%B3%E6%A0%B8%E5%BF%83%E6%A6%82%E5%BF%B5%E8%A1%A5%E5%85%85"><span class="nav-number">3.</span> <span class="nav-text">三、路由相关核心概念补充</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -381,48 +384,221 @@
 
       </div>
 
-      <div class="main-inner category posts-collapse">
+      <div class="main-inner post posts-expand">
 
 
   
-  
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 分类 "git" 下共有 1 篇文章 继续努力。</span>
-      </div>
 
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bytedoge.github.io/2025/09/12/goframe%E8%B7%AF%E7%94%B1%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zheng HanYang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhyBlogs">
+      <meta itemprop="description" content="技术学习笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="goframe路由相关变量 | zhyBlogs">
+      <meta itemprop="description" content="">
+    </span>
+        
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">
+            goframe路由相关变量
+          </h1>
+
+          <div class="post-meta-container">
+            <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2025</span>
-    </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-08-26T11:52:17+08:00"
-              content="2025-08-26">
-          08-26
-        </time>
+      <time title="创建时间：2025-09-12 12:24:40 / 修改时间：12:25:04" itemprop="dateCreated datePublished" datetime="2025-09-12T12:24:40+08:00">2025-09-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/goframe/" itemprop="url" rel="index"><span itemprop="name">goframe</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>1.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+          </div>
+        </header>
+
+    
+    
+    
+      <div class="post-body" itemprop="articleBody"><p>以下是对话中涉及的 GoFrame 框架核心变量、函数及其含义，重点标注路由相关部分：</p>
+<h3 id="一、核心变量"><a class="header-anchor" href="#一、核心变量">¶</a>一、核心变量</h3>
+<ol>
+<li><strong><code>ghttp.Server</code></strong>
+<ul>
+<li>含义：GoFrame 框架的 HTTP 服务器对象，用于创建和管理 HTTP 服务。</li>
+<li>路由相关：是所有路由配置的载体，通过它可以创建路由组、注册路由规则。</li>
+</ul>
+</li>
+<li><strong><code>ghttp.Router</code></strong>
+<ul>
+<li>含义：路由管理器对象，负责管理具体的路由规则（路径、方法、处理函数的映射）。</li>
+<li>路由相关：<code>Server</code> 内置的路由管理组件，<code>Group()</code> 方法的实际调用者（早期版本中需通过 <code>Server.Router</code> 获取，新版本可直接通过 <code>Server</code> 调用）。</li>
+</ul>
+</li>
+<li><strong><code>ghttp.RouterGroup</code></strong>
+<ul>
+<li>含义：路由分组对象，用于对路由进行归类管理（如按模块、权限划分）。</li>
+<li>路由相关：通过 <code>Group(prefix)</code> 方法创建，支持嵌套分组，便于批量添加前缀、中间件。</li>
+</ul>
+</li>
+<li><strong><code>g.Meta</code></strong>
+<ul>
+<li>含义：接口元数据结构体，用于在 <code>api</code> 层定义接口的元信息。</li>
+<li>路由相关：通过 <code>path</code> 和 <code>method</code> 字段指定接口路径和请求方法（自动路由模式下直接决定路由规则），如 <code>g.Meta&#123;path:&quot;/user/login&quot;, method:&quot;post&quot;&#125;</code>。</li>
+</ul>
+</li>
+</ol>
+<h3 id="二、核心函数-方法"><a class="header-anchor" href="#二、核心函数-方法">¶</a>二、核心函数 / 方法</h3>
+<ol>
+<li><strong><code>ghttp.GetServer()</code></strong>
+<ul>
+<li>含义：获取全局唯一的 HTTP 服务器实例（单例模式）。</li>
+<li>路由相关：返回的 <code>Server</code> 对象可直接用于注册路由，自动读取配置文件中的服务器设置（如端口）。</li>
+</ul>
+</li>
+<li><strong><code>g.Server()</code></strong>
+<ul>
+<li>含义：<code>ghttp.GetServer()</code> 的简写，功能完全一致，获取全局 HTTP 服务器实例。</li>
+</ul>
+</li>
+<li><strong><code>Server.Run()</code></strong>
+<ul>
+<li>含义：启动 HTTP 服务器，监听配置文件或代码中指定的端口。</li>
+<li>路由相关：服务器启动后，所有注册的路由规则开始生效。</li>
+</ul>
+</li>
+<li><strong><code>Server.Group(prefix string)</code></strong>
+<ul>
+<li>含义：创建路由分组，为一组路由统一添加前缀（如 <code>/api/v1</code>）。</li>
+<li>路由相关：路由分组的核心方法，返回 <code>RouterGroup</code> 对象，用于后续绑定具体路由。</li>
+</ul>
+</li>
+<li><strong><code>RouterGroup.GET(path, handler)</code> / <code>POST</code> / <code>PUT</code> / <code>DELETE</code></strong>
+<ul>
+<li>含义：为路由分组注册具体的路由规则，指定 HTTP 方法、路径和处理函数。</li>
+<li>路由相关：手动路由模式的核心，例如 <code>group.POST(&quot;/login&quot;, controller.User.Login)</code> 表示将 <code>POST /prefix/login</code> 映射到 <code>User.Login</code> 方法。</li>
+</ul>
+</li>
+<li><strong><code>Request.Parse(req interface&#123;&#125;)</code></strong>
+<ul>
+<li>含义：解析 HTTP 请求参数，自动绑定到 <code>api</code> 层的请求结构体，并执行参数校验。</li>
+<li>路由相关：在控制器中用于获取前端请求参数，与 <code>api</code> 层的结构体和 <code>g.Meta</code> 配合使用。</li>
+</ul>
+</li>
+<li><strong><code>g.Cfg().MustGet(ctx, &quot;server&quot;)</code></strong>
+<ul>
+<li>含义：读取配置文件中指定节点的配置（此处为 <code>server</code> 节点）。</li>
+<li>路由相关：可用于将配置文件中的服务器设置（如端口、路由前缀）绑定到独立的 <code>ghttp.Server</code> 实例。</li>
+</ul>
+</li>
+<li><strong><code>ghttp.NewServer()</code></strong>
+<ul>
+<li>含义：创建一个独立的 HTTP 服务器实例（非单例，可创建多个）。</li>
+<li>路由相关：默认不读取全局配置，需手动指定端口或绑定配置，适用于多服务器场景。</li>
+</ul>
+</li>
+</ol>
+<h3 id="三、路由相关核心概念补充"><a class="header-anchor" href="#三、路由相关核心概念补充">¶</a>三、路由相关核心概念补充</h3>
+<ol>
+<li><strong>自动路由（Auto Router）</strong>
+<ul>
+<li>机制：通过 <code>api</code> 层 <code>g.Meta</code> 中的 <code>path</code> 和 <code>method</code> 自动生成路由，无需手动编写 <code>router</code> 层代码。</li>
+<li>关联：框架通过反射将 <code>api</code> 层请求结构体与控制器方法绑定，直接注册路由。</li>
+</ul>
+</li>
+<li><strong>手动路由</strong>
+<ul>
+<li>机制：在 <code>router</code> 层通过 <code>Group()</code>、<code>GET()</code>/<code>POST()</code> 等方法显式注册路由，需保证与 <code>api</code> 层 <code>g.Meta</code> 定义一致。</li>
+<li>优势：支持复杂路由配置（如中间件、版本控制、动态路由参数）。</li>
+</ul>
+</li>
+<li><strong>中间件绑定</strong>
+<ul>
+<li>方式：通过路由分组的第二个参数绑定，如 <code>group.Group(&quot;/user&quot;, middleware.Auth)</code>，表示该分组下所有路由都需经过 <code>Auth</code> 中间件验证。</li>
+</ul>
+</li>
+</ol>
+<p>这些变量和函数是 GoFrame 路由管理的核心，理解它们的作用和关联关系，能帮助更好地掌握框架的路由设计思想（如自动路由与手动路由的区别、配置文件的作用范围等）。</p>
+
       </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/08/26/git%E5%BF%AB%E9%80%9F%E4%B8%8A%E6%89%8B/" itemprop="url">
-            <span itemprop="name">git快速上手</span>
-          </a>
-      </div>
+    
+    
+    
 
-      
-    </header>
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/goframe/" rel="tag"># goframe</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/09/11/%E5%89%8D%E7%AB%AFtoken%E7%9A%84%E5%88%B7%E6%96%B0/" rel="next" title="前端token的刷新">
+                  前端token的刷新 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
   </article>
+</div>
 
-    </div>
-  </div>
-  
-  
-  
+
+
+
+
 
 </div>
     </main>
