@@ -24,27 +24,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"bytedoge.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="从招聘逻辑和行业实际需求来看，你不会单纯因为 “来自中小企业” 而被普遍戴上有色眼镜。企业招聘的核心是 “候选人能否解决目标岗位的问题”，而非 “过往公司规模”—— 你的经历中，反而藏着比 “大厂背书” 更有竞争力的 “差异化亮点”，关键在于如何梳理和呈现。 ¶首先要明确：企业对 “中小企业经历” 的顾虑，本质是 “能力验证”，而非 “规模歧视” 招聘方偶尔会关注候选人过往公司规模，本质是担心 “">
+    <meta name="description" content="¶介绍 gtoken是一款基于goframe的第三方token生成，认证插件。[项目地址](gtoken&#x2F;example&#x2F;api_test.go at master · goflyfox&#x2F;gtoken) ¶简单使用方式 ¶1.中间件构建 123456789101112131415161718192021222324252627282930313233343536373839404142434445">
 <meta property="og:type" content="article">
-<meta property="og:title" content="个人发展">
-<meta property="og:url" content="https://bytedoge.github.io/2025/09/12/%E4%B8%AA%E4%BA%BA%E5%8F%91%E5%B1%95/">
+<meta property="og:title" content="gtoken的中间件的实现">
+<meta property="og:url" content="https://bytedoge.github.io/2025/09/15/gtoken%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E5%AE%9E%E7%8E%B0/">
 <meta property="og:site_name" content="zhyBlogs">
-<meta property="og:description" content="从招聘逻辑和行业实际需求来看，你不会单纯因为 “来自中小企业” 而被普遍戴上有色眼镜。企业招聘的核心是 “候选人能否解决目标岗位的问题”，而非 “过往公司规模”—— 你的经历中，反而藏着比 “大厂背书” 更有竞争力的 “差异化亮点”，关键在于如何梳理和呈现。 ¶首先要明确：企业对 “中小企业经历” 的顾虑，本质是 “能力验证”，而非 “规模歧视” 招聘方偶尔会关注候选人过往公司规模，本质是担心 “">
+<meta property="og:description" content="¶介绍 gtoken是一款基于goframe的第三方token生成，认证插件。[项目地址](gtoken&#x2F;example&#x2F;api_test.go at master · goflyfox&#x2F;gtoken) ¶简单使用方式 ¶1.中间件构建 123456789101112131415161718192021222324252627282930313233343536373839404142434445">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-09-12T08:23:51.000Z">
-<meta property="article:modified_time" content="2025-09-12T08:24:23.435Z">
+<meta property="article:published_time" content="2025-09-15T07:20:32.000Z">
+<meta property="article:modified_time" content="2025-09-15T07:41:29.030Z">
 <meta property="article:author" content="Zheng HanYang">
-<meta property="article:tag" content="个人提升">
+<meta property="article:tag" content="token">
+<meta property="article:tag" content="中间件">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://bytedoge.github.io/2025/09/12/%E4%B8%AA%E4%BA%BA%E5%8F%91%E5%B1%95/">
+<link rel="canonical" href="https://bytedoge.github.io/2025/09/15/gtoken%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E5%AE%9E%E7%8E%B0/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bytedoge.github.io/2025/09/12/%E4%B8%AA%E4%BA%BA%E5%8F%91%E5%B1%95/","path":"2025/09/12/个人发展/","title":"个人发展"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bytedoge.github.io/2025/09/15/gtoken%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E5%AE%9E%E7%8E%B0/","path":"2025/09/15/gtoken的中间件的实现/","title":"gtoken的中间件的实现"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>个人发展 | zhyBlogs</title>
+<title>gtoken的中间件的实现 | zhyBlogs</title>
   
 
 
@@ -336,7 +337,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A6%96%E5%85%88%E8%A6%81%E6%98%8E%E7%A1%AE%EF%BC%9A%E4%BC%81%E4%B8%9A%E5%AF%B9-%E2%80%9C%E4%B8%AD%E5%B0%8F%E4%BC%81%E4%B8%9A%E7%BB%8F%E5%8E%86%E2%80%9D-%E7%9A%84%E9%A1%BE%E8%99%91%EF%BC%8C%E6%9C%AC%E8%B4%A8%E6%98%AF-%E2%80%9C%E8%83%BD%E5%8A%9B%E9%AA%8C%E8%AF%81%E2%80%9D%EF%BC%8C%E8%80%8C%E9%9D%9E-%E2%80%9C%E8%A7%84%E6%A8%A1%E6%AD%A7%E8%A7%86%E2%80%9D"><span class="nav-number">1.</span> <span class="nav-text">首先要明确：企业对 “中小企业经历” 的顾虑，本质是 “能力验证”，而非 “规模歧视”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9C%9F%E6%AD%A3%E5%BD%B1%E5%93%8D%E7%AE%80%E5%8E%86%E9%80%9A%E8%BF%87%E7%8E%87%E7%9A%84%EF%BC%8C%E4%B8%8D%E6%98%AF-%E2%80%9C%E5%85%AC%E5%8F%B8%E8%A7%84%E6%A8%A1%E2%80%9D%EF%BC%8C%E8%80%8C%E6%98%AF%E4%BD%A0%E5%A6%82%E4%BD%95-%E2%80%9C%E5%91%88%E7%8E%B0%E7%BB%8F%E5%8E%86%E2%80%9D"><span class="nav-number">2.</span> <span class="nav-text">真正影响简历通过率的，不是 “公司规模”，而是你如何 “呈现经历”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A%E4%B8%8D%E5%BF%85%E6%8B%85%E5%BF%83-%E2%80%9C%E4%B8%AD%E5%B0%8F%E4%BC%81%E4%B8%9A%E6%A0%87%E7%AD%BE%E2%80%9D%EF%BC%8C%E9%87%8D%E7%82%B9%E5%BC%BA%E5%8C%96-3-%E4%B8%AA%E6%A0%B8%E5%BF%83%E7%AB%9E%E4%BA%89%E5%8A%9B"><span class="nav-number">3.</span> <span class="nav-text">总结：不必担心 “中小企业标签”，重点强化 3 个核心竞争力</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%8B%E7%BB%8D"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E4%BD%BF%E7%94%A8%E6%96%B9%E5%BC%8F"><span class="nav-number">2.</span> <span class="nav-text">简单使用方式</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%AD%E9%97%B4%E4%BB%B6%E6%9E%84%E5%BB%BA"><span class="nav-number">2.1.</span> <span class="nav-text">1.中间件构建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E6%B3%A8%E5%86%8C%E4%BB%A5%E5%8F%8A%E4%BD%BF%E7%94%A8"><span class="nav-number">2.2.</span> <span class="nav-text">2,中间件的注册以及使用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E7%99%BB%E5%BD%95%E6%8E%A5%E5%8F%A3%E8%8E%B7%E5%8F%96%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E6%93%8D%E4%BD%9C"><span class="nav-number">2.3.</span> <span class="nav-text">3.登录接口获取中间件的操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E7%AE%80%E5%8D%95%E4%BB%8B%E7%BB%8D"><span class="nav-number">3.</span> <span class="nav-text">中间件的简单介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%99%AE%E9%80%9A%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="nav-number">3.1.</span> <span class="nav-text">普通中间件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#token%E8%AE%A4%E8%AF%81%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="nav-number">3.2.</span> <span class="nav-text">token认证中间件</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -395,7 +396,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://bytedoge.github.io/2025/09/12/%E4%B8%AA%E4%BA%BA%E5%8F%91%E5%B1%95/">
+    <link itemprop="mainEntityOfPage" href="https://bytedoge.github.io/2025/09/15/gtoken%E7%9A%84%E4%B8%AD%E9%97%B4%E4%BB%B6%E7%9A%84%E5%AE%9E%E7%8E%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -408,13 +409,13 @@
     </span>
 
     <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="个人发展 | zhyBlogs">
+      <meta itemprop="name" content="gtoken的中间件的实现 | zhyBlogs">
       <meta itemprop="description" content="">
     </span>
         
         <header class="post-header">
           <h1 class="post-title" itemprop="name headline">
-            个人发展
+            gtoken的中间件的实现
           </h1>
 
           <div class="post-meta-container">
@@ -426,7 +427,7 @@
       <span class="post-meta-item-text">发表于</span>
       
 
-      <time title="创建时间：2025-09-12 16:23:51 / 修改时间：16:24:23" itemprop="dateCreated datePublished" datetime="2025-09-12T16:23:51+08:00">2025-09-12</time>
+      <time title="创建时间：2025-09-15 15:20:32 / 修改时间：15:41:29" itemprop="dateCreated datePublished" datetime="2025-09-15T15:20:32+08:00">2025-09-15</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -434,7 +435,7 @@
       </span>
       <span class="post-meta-item-text">分类于</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E4%B8%AA%E4%BA%BA%E6%8F%90%E5%8D%87/" itemprop="url" rel="index"><span itemprop="name">个人提升</span></a>
+          <a href="/categories/token/" itemprop="url" rel="index"><span itemprop="name">token</span></a>
         </span>
     </span>
 
@@ -452,14 +453,14 @@
         <i class="far fa-file-word"></i>
       </span>
       <span class="post-meta-item-text">本文字数：</span>
-      <span>1.8k</span>
+      <span>2.8k</span>
     </span>
     <span class="post-meta-item" title="阅读时长">
       <span class="post-meta-item-icon">
         <i class="far fa-clock"></i>
       </span>
       <span class="post-meta-item-text">阅读时长 &asymp;</span>
-      <span>1 分钟</span>
+      <span>2 分钟</span>
     </span>
 </div>
 
@@ -469,35 +470,24 @@
     
     
     
-      <div class="post-body" itemprop="articleBody"><p>从招聘逻辑和行业实际需求来看，<strong>你不会单纯因为 “来自中小企业” 而被普遍戴上有色眼镜</strong>。企业招聘的核心是 “候选人能否解决目标岗位的问题”，而非 “过往公司规模”—— 你的经历中，反而藏着比 “大厂背书” 更有竞争力的 “差异化亮点”，关键在于如何梳理和呈现。</p>
-<h3 id="首先要明确：企业对-“中小企业经历”-的顾虑，本质是-“能力验证”，而非-“规模歧视”"><a class="header-anchor" href="#首先要明确：企业对-“中小企业经历”-的顾虑，本质是-“能力验证”，而非-“规模歧视”">¶</a>首先要明确：企业对 “中小企业经历” 的顾虑，本质是 “能力验证”，而非 “规模歧视”</h3>
-<p>招聘方偶尔会关注候选人过往公司规模，本质是担心 “中小企业的项目复杂度、技术深度、业务规范性不足，候选人未接触过核心场景”。但这种顾虑会被 **“你的项目价值” 和 “个人能力证明” 直接抵消 **—— 尤其是你的经历，恰好避开了中小企业常见的 “业务单一、技术栈落后” 问题：</p>
-<ol>
-<li><strong>你的项目领域本身是 “高价值赛道”</strong><br>
-虚拟电厂（VPP）属于 “新能源 + 物联网 + 能源管理” 的交叉领域，是国家双碳政策下的核心方向，目前行业内具备实际平台设计 / 开发经验的人才并不多（比单纯的 “Go 开发”“物联网开发” 更稀缺）。<br>
-无论目标公司是大厂（如做能源数字化的国电投、南网科技，或布局工业互联网的阿里 / 腾讯）、中型科技公司（如专注物联网的和利时、汇川技术），还是垂直领域的创业公司，只要业务涉及 “能源物联网、工业平台、设备管理”，你的 “虚拟电厂平台实战经验” 都是<strong>对口且有竞争力的</strong>—— 甚至比在大厂做 “通用型后端开发”（如电商订单、用户系统）的候选人更有优势（因为垂直领域经验不可替代）。</li>
-<li><strong>你的技术栈和做事方式，已覆盖 “企业核心需求”</strong><br>
-你基于 SagooIoT（开源物联网平台）定制开发，用 GoFrame 框架落地，还涉及 “物联网协议、分布式” 等技术，同时需要对接制造业的实际业务（如设备数据采集、能源调度逻辑）—— 这种 “从开源框架二次开发到业务落地”“技术 + 业务结合” 的能力，正是企业需要的：
-<ul>
-<li>中小企业招聘时，看重 “能独立负责模块、解决实际问题”（你能牵头虚拟电厂平台，说明具备端到端落地能力，比 “大厂分工细化、只做单一环节” 的候选人更能快速上手）；</li>
-<li>中大厂招聘时，看重 “技术深度 + 业务理解”（你能讲清 “如何基于 SagooIoT 修改适配虚拟电厂需求”“GoFrame 框架在项目中的性能优化点”“物联网数据传输的痛点解决”，就能证明技术深度，而非 “只懂基础 CRUD”）。</li>
-</ul>
-</li>
-</ol>
-<h3 id="真正影响简历通过率的，不是-“公司规模”，而是你如何-“呈现经历”"><a class="header-anchor" href="#真正影响简历通过率的，不是-“公司规模”，而是你如何-“呈现经历”">¶</a>真正影响简历通过率的，不是 “公司规模”，而是你如何 “呈现经历”</h3>
-<p>如果后续投递简历时遇到阻碍，大概率不是 “中小企业” 的标签，而是你没有把经历中的 “亮点” 讲清楚。比如：</p>
-<ul>
-<li>错误表述：“在中小企业负责基于 SagooIoT 修改虚拟电厂平台，用 GoFrame 写接口”（只讲 “做了什么”，没讲 “价值和难度”）；</li>
-<li>正确表述：“独立牵头制造业虚拟电厂平台的设计与落地：1. 基于 SagooIoT 开源框架定制开发，适配 1000 + 台工业设备的数据采集（支持 Modbus/OPC UA 协议），解决设备数据实时传输延迟问题（从 500ms 优化到 50ms）；2. 用 GoFrame 框架设计分布式任务调度模块，实现能源调度指令的秒级下发；3. 对接企业 ERP 系统，完成‘设备能耗 - 生产计划’的数据联动，帮助客户降低 15% 的能源成本”（讲清 “负责范围、技术难点、业务成果”）。</li>
-</ul>
-<p>简单说：<strong>把 “中小企业经历” 转化为 “稀缺实战经验” 的关键，是量化成果、突出技术深度、绑定高价值领域</strong>—— 当你能证明 “你的能力能解决目标岗位的问题”，“公司规模” 会变成 “你在资源有限的情况下做出成果” 的加分项（体现抗压能力和主动性）。</p>
-<h3 id="总结：不必担心-“中小企业标签”，重点强化-3-个核心竞争力"><a class="header-anchor" href="#总结：不必担心-“中小企业标签”，重点强化-3-个核心竞争力">¶</a>总结：不必担心 “中小企业标签”，重点强化 3 个核心竞争力</h3>
-<ol>
-<li><strong>垂直领域经验</strong>：持续深耕 “虚拟电厂 + 能源物联网”，梳理项目中 “业务逻辑（如能源调度规则）” 和 “技术落地（如设备接入、数据处理）” 的细节，这是你的 “护城河”；</li>
-<li><strong>技术栈深度</strong>：把 GoFrame 的实战经验做透（比如框架的中间件设计、ORM 优化、分布式能力在项目中的应用），同时结合物联网、分布式的知识，形成 “GoFrame + 物联网” 的专项能力（比单纯的 “会 Go” 更有辨识度）；</li>
-<li><strong>主动学习的佐证</strong>：在简历 / 面试中提及 “从零基础学 GoFrame 到落地项目”“业余深入物联网技术”，体现你的学习能力和对行业的热情（技术迭代快的领域，学习能力比过往背景更重要）。</li>
-</ol>
-<p>只要做到这三点，你的 “中小企业经历” 不仅不会拖后腿，反而会成为你区别于其他候选人的 “差异化优势”—— 毕竟，企业缺的不是 “大厂背景的人”，而是 “能解决具体业务问题的人”。</p>
+      <div class="post-body" itemprop="articleBody"><h2 id="介绍"><a class="header-anchor" href="#介绍">¶</a>介绍</h2>
+<p>gtoken是一款基于goframe的第三方token生成，认证插件。[项目地址](<a target="_blank" rel="noopener" href="https://github.com/goflyfox/gtoken">gtoken/example/api_test.go at master · goflyfox/gtoken</a>)</p>
+<h2 id="简单使用方式"><a class="header-anchor" href="#简单使用方式">¶</a>简单使用方式</h2>
+<h3 id="1-中间件构建"><a class="header-anchor" href="#1-中间件构建">¶</a>1.中间件构建</h3>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> gtoken</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;github.com/goflyfox/gtoken/v2/gtoken&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/frame/g&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/net/ghttp&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 全局gtoken实例</span></span><br><span class="line"><span class="keyword">var</span> gToken gtoken.Token</span><br><span class="line"></span><br><span class="line"><span class="comment">// Init 初始化gtoken配置（在服务启动时调用）</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Init</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 根据实际需求调整配置</span></span><br><span class="line">	options := gtoken.Options&#123;</span><br><span class="line">		CacheMode:  <span class="number">1</span>,                                          <span class="comment">// 1: gcache(单机), 2: redis(集群)</span></span><br><span class="line">		Timeout:    <span class="number">10</span> * <span class="number">3600</span> * <span class="number">1000</span>,                           <span class="comment">// Token有效期(10小时，毫秒)</span></span><br><span class="line">		MaxRefresh: <span class="number">5</span> * <span class="number">3600</span> * <span class="number">1000</span>,                            <span class="comment">// 自动刷新阈值(5小时，毫秒)</span></span><br><span class="line">		MultiLogin: <span class="literal">false</span>,                                      <span class="comment">// 禁止多端登录</span></span><br><span class="line">		EncryptKey: []<span class="type">byte</span>(<span class="string">&quot;32byte-crypt-code&quot;</span>), <span class="comment">// 32位加密密钥</span></span><br><span class="line">		AuthExcludePaths: g.SliceStr&#123; <span class="comment">// 无需认证的路径</span></span><br><span class="line">			<span class="string">&quot;/hello&quot;</span>,             <span class="comment">// 示例：你的hello接口</span></span><br><span class="line">			<span class="string">&quot;/api/v1/user/login&quot;</span>, <span class="comment">// 登录接口</span></span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 创建gtoken实例</span></span><br><span class="line">	gToken = gtoken.NewDefaultToken(options)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Middleware 返回gtoken认证中间件</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Middleware</span><span class="params">()</span></span> ghttp.HandlerFunc &#123;</span><br><span class="line">	middleware := gtoken.NewDefaultMiddleware(gToken)</span><br><span class="line">	<span class="comment">// 自定义认证失败响应</span></span><br><span class="line">	middleware.ResFun = <span class="function"><span class="keyword">func</span><span class="params">(r *ghttp.Request, err <span class="type">error</span>)</span></span> &#123;</span><br><span class="line">		r.Response.WriteJson(g.Map&#123;</span><br><span class="line">			<span class="string">&quot;code&quot;</span>:    <span class="number">401</span>,</span><br><span class="line">			<span class="string">&quot;message&quot;</span>: <span class="string">&quot;认证失败：&quot;</span> + err.Error(),</span><br><span class="line">			<span class="string">&quot;data&quot;</span>:    <span class="literal">nil</span>,</span><br><span class="line">		&#125;)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> middleware.Auth</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// GetGToken 获取gtoken实例（用于登录生成Token等操作）</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">GetGToken</span><span class="params">()</span></span> gtoken.Token &#123;</span><br><span class="line">	<span class="keyword">return</span> gToken</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="2-中间件的注册以及使用"><a class="header-anchor" href="#2-中间件的注册以及使用">¶</a>2,中间件的注册以及使用</h3>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> router</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;GoFrameTest/internal/midleware/gtoken&quot;</span></span><br><span class="line">	<span class="string">&quot;GoFrameTest/router/user_router&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/net/ghttp&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Init</span><span class="params">(g *ghttp.Server)</span></span> &#123;</span><br><span class="line">	v1 := g.Group(<span class="string">&quot;api/v1&quot;</span>)</span><br><span class="line">	&#123;</span><br><span class="line">		v1.Middleware(ghttp.MiddlewareHandlerResponse)</span><br><span class="line">		v1.Middleware(gtoken.Middleware())<span class="comment">//使用gtoken中间件</span></span><br><span class="line">		user_router.RegisterUserApi(v1)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-登录接口获取中间件的操作"><a class="header-anchor" href="#3-登录接口获取中间件的操作">¶</a>3.登录接口获取中间件的操作</h3>
+<p>后端返回的response需要添加token</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">generate, err := gtoken.GetGToken().Generate(ctx, record.Uname, record)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	gconv.Struct(record, &amp;res)</span><br><span class="line">	res.Token = generate</span><br></pre></td></tr></table></figure>
+<h2 id="中间件的简单介绍"><a class="header-anchor" href="#中间件的简单介绍">¶</a>中间件的简单介绍</h2>
+<h3 id="普通中间件"><a class="header-anchor" href="#普通中间件">¶</a>普通中间件</h3>
+<p>分为前置逻辑：主要代码放在<code>return r.Middleware.Next()</code>之前。</p>
+<p>后置逻辑：主要代码放在<code>return r.Middleware.Next()</code>之后。</p>
+<p>传递请求：<code>return r.Middleware.Next()</code>本身。</p>
+<h3 id="token认证中间件"><a class="header-anchor" href="#token认证中间件">¶</a>token认证中间件</h3>
+<p>通过获取request中的Authorization，来实现获取token。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// gtoken中间件内部逻辑（简化版）</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m *DefaultMiddleware)</span></span> Auth(r *ghttp.Request) <span class="type">error</span> &#123;</span><br><span class="line">    <span class="comment">// 1. 从请求头Authorization中提取Token</span></span><br><span class="line">    authHeader := r.Header.Get(<span class="string">&quot;Authorization&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span> authHeader == <span class="string">&quot;&quot;</span> || !strings.HasPrefix(authHeader, <span class="string">&quot;Bearer &quot;</span>) &#123;</span><br><span class="line">        <span class="comment">// 没有Token或格式错误，触发认证失败</span></span><br><span class="line">        <span class="keyword">return</span> m.ResFun(r, gerror.New(<span class="string">&quot;未携带Token&quot;</span>))</span><br><span class="line">    &#125;</span><br><span class="line">    token := strings.TrimPrefix(authHeader, <span class="string">&quot;Bearer &quot;</span>) <span class="comment">// 提取纯Token字符串</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 2. 验证Token有效性（查服务端缓存、检查过期时间等）</span></span><br><span class="line">    valid, userKey, data := m.gToken.CheckToken(r.Context(), token)</span><br><span class="line">    <span class="keyword">if</span> !valid &#123;</span><br><span class="line">        <span class="comment">// Token无效/过期，触发认证失败</span></span><br><span class="line">        <span class="keyword">return</span> m.ResFun(r, gerror.New(<span class="string">&quot;Token无效或已过期&quot;</span>))</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 3. Token有效，将用户信息存入上下文（供后续接口使用）</span></span><br><span class="line">    r.SetCtxVar(gtoken.KeyUserKey, userKey) <span class="comment">// 用户唯一标识</span></span><br><span class="line">    r.SetCtxVar(gtoken.KeyData, data)       <span class="comment">// 用户附加信息</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// 4. 调用Next()，让请求继续传递到后续接口</span></span><br><span class="line">    <span class="keyword">return</span> r.Middleware.Next()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       </div>
 
@@ -507,20 +497,18 @@
 
     <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E4%B8%AA%E4%BA%BA%E6%8F%90%E5%8D%87/" rel="tag"># 个人提升</a>
+              <a href="/tags/token/" rel="tag"># token</a>
+              <a href="/tags/%E4%B8%AD%E9%97%B4%E4%BB%B6/" rel="tag"># 中间件</a>
           </div>
 
         
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2025/09/12/%E8%83%BD%E5%8A%9B%E6%8F%90%E5%8D%87%E4%BC%98%E5%85%88%E7%BA%A7/" rel="prev" title="能力提升优先级">
-                  <i class="fa fa-angle-left"></i> 能力提升优先级
-                </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2025/09/12/%E4%BC%98%E7%A7%80%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9C%80%E8%A6%81%E5%85%B7%E5%A4%87%E7%9A%84%E8%83%BD%E5%8A%9B/" rel="next" title="优秀程序员需要具备的能力">
-                  优秀程序员需要具备的能力 <i class="fa fa-angle-right"></i>
+                <a href="/2025/09/15/jwt%E5%92%8Ctoken%E8%AF%A6%E8%A7%A3/" rel="next" title="jwt和token详解">
+                  jwt和token详解 <i class="fa fa-angle-right"></i>
                 </a>
             </div>
           </div>
