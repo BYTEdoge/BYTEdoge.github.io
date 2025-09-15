@@ -3650,4 +3650,165 @@ Session 是 “服务器存储用户状态”（SessionID 存在 Cookie，用户
         <tag>中间件</tag>
       </tags>
   </entry>
+  <entry>
+    <title>redis详解</title>
+    <url>/2025/09/15/redis%E8%AF%A6%E8%A7%A3/</url>
+    <content><![CDATA[<h3 id="一、Redis-详细介绍"><a class="header-anchor" href="#一、Redis-详细介绍">¶</a>一、Redis 详细介绍</h3>
+<p>Redis（Remote Dictionary Server）是一款<strong>开源的高性能键值对（Key-Value）内存数据库</strong>，以 “快” 为核心特点，同时支持持久化、多种数据结构和分布式部署，广泛用于缓存、会话存储、分布式锁等场景。</p>
+<h4 id="1-核心特性"><a class="header-anchor" href="#1-核心特性">¶</a>1. 核心特性</h4>
+<ul>
+<li><strong>内存存储</strong>：数据主要存于内存，读写速度极快（单机 QPS 可达 10 万 +），延迟通常在微秒级。</li>
+<li><strong>多数据结构</strong>：支持 String（字符串）、Hash（哈希）、List（列表）、Set（集合）、Sorted Set（有序集合）等，满足复杂业务需求。</li>
+<li><strong>持久化</strong>：通过 RDB（快照）和 AOF（日志）机制将内存数据持久化到磁盘，避免重启后数据丢失。</li>
+<li><strong>高可用</strong>：支持主从复制、哨兵（Sentinel）和集群（Cluster）模式，解决单点故障问题。</li>
+<li><strong>原子操作</strong>：内置丰富的原子命令（如<code>INCR</code>、<code>HSETNX</code>），适合计数器、分布式锁等场景。</li>
+</ul>
+<h4 id="2-核心数据结构及应用场景"><a class="header-anchor" href="#2-核心数据结构及应用场景">¶</a>2. 核心数据结构及应用场景</h4>
+<table>
+<thead>
+<tr>
+<th>数据结构</th>
+<th>特点</th>
+<th>典型场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>简单键值对，可存储文本、数字、二进制</td>
+<td>缓存用户 Token、计数器（如文章阅读量）</td>
+</tr>
+<tr>
+<td>Hash</td>
+<td>键值对集合，适合存储对象多属性</td>
+<td>缓存用户信息（用户名、ID、角色）</td>
+</tr>
+<tr>
+<td>List</td>
+<td>有序字符串列表，支持两端操作</td>
+<td>消息队列、最新评论列表</td>
+</tr>
+<tr>
+<td>Set</td>
+<td>无序不重复集合，支持交集 / 并集运算</td>
+<td>标签系统、好友关系（共同好友）</td>
+</tr>
+<tr>
+<td>Sorted Set</td>
+<td>有序集合（按分数排序），支持范围查询</td>
+<td>排行榜（如销量 Top10）、延时任务</td>
+</tr>
+</tbody>
+</table>
+<h4 id="3-典型应用场景"><a class="header-anchor" href="#3-典型应用场景">¶</a>3. 典型应用场景</h4>
+<ul>
+<li><strong>缓存</strong>：存储高频访问数据（如商品详情），减少数据库压力；</li>
+<li><strong>会话存储</strong>：分布式系统中共享用户登录态（Session）；</li>
+<li><strong>分布式锁</strong>：通过<code>SETNX</code>命令实现跨服务互斥操作（如秒杀库存扣减）；</li>
+<li><strong>计数器</strong>：实时统计（如在线人数、接口调用次数）；</li>
+<li><strong>消息队列</strong>：基于 List 的<code>LPUSH</code>/<code>RPOP</code>实现简单消息队列。</li>
+</ul>
+<h3 id="二、GoFrame-框架中操作-Redis-的核心语句"><a class="header-anchor" href="#二、GoFrame-框架中操作-Redis-的核心语句">¶</a>二、GoFrame 框架中操作 Redis 的核心语句</h3>
+<p>GoFrame 提供 <code>gredis</code> 组件封装了 Redis 操作，支持连接池、集群、TLS 等特性，API 设计简洁，与框架生态无缝集成。</p>
+<h4 id="1-初始化-Redis-客户端"><a class="header-anchor" href="#1-初始化-Redis-客户端">¶</a>1. 初始化 Redis 客户端</h4>
+<p>首先需要配置 Redis 连接信息（支持通过配置文件或代码硬编码），并创建客户端实例。</p>
+<p><strong>示例：通过代码配置初始化</strong></p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;context&quot;</span></span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/frame/g&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/os/gctx&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/database/gredis&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ctx := gctx.New()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 1. 配置 Redis 连接（地址、密码、数据库编号等）</span></span><br><span class="line">	config := &amp;gredis.Config&#123;</span><br><span class="line">		Address:  <span class="string">&quot;127.0.0.1:6379&quot;</span>, <span class="comment">// Redis 地址</span></span><br><span class="line">		Password: <span class="string">&quot;your-redis-pass&quot;</span>, <span class="comment">// 密码（无密码可省略）</span></span><br><span class="line">		Db:       <span class="number">0</span>,                 <span class="comment">// 数据库编号（默认0）</span></span><br><span class="line">		PoolSize: <span class="number">10</span>,                <span class="comment">// 连接池大小</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 2. 创建 Redis 客户端</span></span><br><span class="line">	redisClient, err := gredis.New(config)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Log().Fatal(ctx, <span class="string">&quot;创建Redis客户端失败：&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 测试连接</span></span><br><span class="line">	_, err = redisClient.Ping(ctx)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		g.Log().Fatal(ctx, <span class="string">&quot;Redis连接失败：&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	g.Log().Info(ctx, <span class="string">&quot;Redis连接成功&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>示例：通过配置文件初始化（推荐）</strong><br>
+在 <code>config.yaml</code> 中配置：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">redis:</span></span><br><span class="line">  <span class="attr">default:</span></span><br><span class="line">    <span class="attr">address:</span> <span class="string">&quot;127.0.0.1:6379&quot;</span></span><br><span class="line">    <span class="attr">password:</span> <span class="string">&quot;your-redis-pass&quot;</span></span><br><span class="line">    <span class="attr">db:</span> <span class="number">0</span></span><br><span class="line">    <span class="attr">poolSize:</span> <span class="number">10</span></span><br></pre></td></tr></table></figure>
+<p>代码中直接通过 <code>g.Redis()</code> 获取默认客户端：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">redisClient := g.Redis() <span class="comment">// 自动读取配置文件中的redis.default配置</span></span><br></pre></td></tr></table></figure>
+<h4 id="2-常用数据结构操作示例"><a class="header-anchor" href="#2-常用数据结构操作示例">¶</a>2. 常用数据结构操作示例</h4>
+<p>以下是 <code>gredis</code> 对 Redis 核心数据结构的操作示例，均基于 <code>redisClient</code> 实例。</p>
+<h5 id="（1）String-类型"><a class="header-anchor" href="#（1）String-类型">¶</a>（1）String 类型</h5>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 设置键值对（过期时间10秒）</span></span><br><span class="line">_, err := redisClient.SetEx(ctx, <span class="string">&quot;user:name:100&quot;</span>, <span class="string">&quot;张三&quot;</span>, <span class="number">10</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    g.Log().Error(ctx, <span class="string">&quot;SetEx失败：&quot;</span>, err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取值</span></span><br><span class="line">name, err := redisClient.Get(ctx, <span class="string">&quot;user:name:100&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    g.Log().Error(ctx, <span class="string">&quot;Get失败：&quot;</span>, err)</span><br><span class="line">&#125;</span><br><span class="line">fmt.Println(<span class="string">&quot;用户名：&quot;</span>, name.String()) <span class="comment">// 输出：张三</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 自增（计数器）</span></span><br><span class="line">_, err = redisClient.Incr(ctx, <span class="string">&quot;user:login:count&quot;</span>) <span class="comment">// 每次登录+1</span></span><br></pre></td></tr></table></figure>
+<h5 id="（2）Hash-类型（适合存储对象）"><a class="header-anchor" href="#（2）Hash-类型（适合存储对象）">¶</a>（2）Hash 类型（适合存储对象）</h5>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 存储用户信息（Hash键：user:info:100，字段包括id、name、age）</span></span><br><span class="line">_, err = redisClient.HSet(ctx, <span class="string">&quot;user:info:100&quot;</span>, g.Map&#123;</span><br><span class="line">    <span class="string">&quot;id&quot;</span>:   <span class="number">100</span>,</span><br><span class="line">    <span class="string">&quot;name&quot;</span>: <span class="string">&quot;张三&quot;</span>,</span><br><span class="line">    <span class="string">&quot;age&quot;</span>:  <span class="number">25</span>,</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取单个字段</span></span><br><span class="line">age, err := redisClient.HGet(ctx, <span class="string">&quot;user:info:100&quot;</span>, <span class="string">&quot;age&quot;</span>)</span><br><span class="line">fmt.Println(<span class="string">&quot;年龄：&quot;</span>, age.Int()) <span class="comment">// 输出：25</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取所有字段</span></span><br><span class="line">userInfo, err := redisClient.HGetAll(ctx, <span class="string">&quot;user:info:100&quot;</span>)</span><br><span class="line">fmt.Println(<span class="string">&quot;用户信息：&quot;</span>, userInfo.Map()) <span class="comment">// 输出：map[id:100 name:张三 age:25]</span></span><br></pre></td></tr></table></figure>
+<h5 id="（3）List-类型（消息队列示例）"><a class="header-anchor" href="#（3）List-类型（消息队列示例）">¶</a>（3）List 类型（消息队列示例）</h5>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 向列表左侧添加元素（生产者）</span></span><br><span class="line">_, err = redisClient.LPush(ctx, <span class="string">&quot;message:queue&quot;</span>, <span class="string">&quot;消息1&quot;</span>, <span class="string">&quot;消息2&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 从列表右侧获取并移除元素（消费者，阻塞等待10秒）</span></span><br><span class="line">message, err := redisClient.BRPop(ctx, <span class="number">10</span>, <span class="string">&quot;message:queue&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> err == <span class="literal">nil</span> &#123;</span><br><span class="line">    fmt.Println(<span class="string">&quot;消费消息：&quot;</span>, message) <span class="comment">// 输出：消息1（按插入顺序）</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="（4）Set-类型（去重集合）"><a class="header-anchor" href="#（4）Set-类型（去重集合）">¶</a>（4）Set 类型（去重集合）</h5>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 添加元素</span></span><br><span class="line">_, err = redisClient.SAdd(ctx, <span class="string">&quot;user:tags:100&quot;</span>, <span class="string">&quot;体育&quot;</span>, <span class="string">&quot;音乐&quot;</span>, <span class="string">&quot;体育&quot;</span>) <span class="comment">// 自动去重</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取所有元素</span></span><br><span class="line">tags, err := redisClient.SMembers(ctx, <span class="string">&quot;user:tags:100&quot;</span>)</span><br><span class="line">fmt.Println(<span class="string">&quot;用户标签：&quot;</span>, tags.Slice()) <span class="comment">// 输出：[体育 音乐]</span></span><br></pre></td></tr></table></figure>
+<h5 id="（5）Sorted-Set-类型（排行榜示例）"><a class="header-anchor" href="#（5）Sorted-Set-类型（排行榜示例）">¶</a>（5）Sorted Set 类型（排行榜示例）</h5>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 添加元素（分数+值，分数代表销量）</span></span><br><span class="line">_, err = redisClient.ZAdd(ctx, <span class="string">&quot;goods:sales:rank&quot;</span>, </span><br><span class="line">    gredis.ZAddItem&#123;Score: <span class="number">100</span>, Member: <span class="string">&quot;商品A&quot;</span>&#125;,</span><br><span class="line">    gredis.ZAddItem&#123;Score: <span class="number">200</span>, Member: <span class="string">&quot;商品B&quot;</span>&#125;,</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 获取销量前2名（从高到低）</span></span><br><span class="line">rank, err := redisClient.ZRevRangeWithScores(ctx, <span class="string">&quot;goods:sales:rank&quot;</span>, <span class="number">0</span>, <span class="number">1</span>)</span><br><span class="line"><span class="keyword">for</span> _, item := <span class="keyword">range</span> rank &#123;</span><br><span class="line">    fmt.Printf(<span class="string">&quot;%s 销量：%.0f\n&quot;</span>, item.Member, item.Score) </span><br><span class="line">    <span class="comment">// 输出：商品B 销量：200；商品A 销量：100</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-高级操作：事务与管道"><a class="header-anchor" href="#3-高级操作：事务与管道">¶</a>3. 高级操作：事务与管道</h4>
+<ul>
+<li><strong>事务</strong>：确保一组命令原子执行（全部成功或全部失败）；</li>
+<li><strong>管道</strong>：批量发送命令，减少网络往返，提升效率。</li>
+</ul>
+<p><strong>事务示例</strong>：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 开启事务</span></span><br><span class="line">tx, err := redisClient.NewTransaction(ctx)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    g.Log().Error(ctx, <span class="string">&quot;开启事务失败：&quot;</span>, err)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 向事务添加命令</span></span><br><span class="line">tx.Set(ctx, <span class="string">&quot;key1&quot;</span>, <span class="string">&quot;val1&quot;</span>)</span><br><span class="line">tx.Set(ctx, <span class="string">&quot;key2&quot;</span>, <span class="string">&quot;val2&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 执行事务</span></span><br><span class="line">_, err = tx.Exec(ctx)</span><br><span class="line"><span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">    g.Log().Error(ctx, <span class="string">&quot;事务执行失败：&quot;</span>, err)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>管道示例</strong>：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 创建管道</span></span><br><span class="line">pipe := redisClient.NewPipeline()</span><br><span class="line"></span><br><span class="line"><span class="comment">// 添加批量命令</span></span><br><span class="line">pipe.Set(ctx, <span class="string">&quot;p1&quot;</span>, <span class="string">&quot;v1&quot;</span>)</span><br><span class="line">pipe.Set(ctx, <span class="string">&quot;p2&quot;</span>, <span class="string">&quot;v2&quot;</span>)</span><br><span class="line">pipe.Incr(ctx, <span class="string">&quot;counter&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 执行管道（一次性发送所有命令）</span></span><br><span class="line">_, err := pipe.Exec(ctx)</span><br></pre></td></tr></table></figure>
+<h3 id="三、分布式框架中-Redis-通讯安全保障"><a class="header-anchor" href="#三、分布式框架中-Redis-通讯安全保障">¶</a>三、分布式框架中 Redis 通讯安全保障</h3>
+<p>在分布式系统中，Redis 作为共享组件，需确保<strong>传输安全、访问控制、数据可靠</strong>，防止未授权访问、数据泄露或篡改。</p>
+<h4 id="1-网络传输安全：加密通信"><a class="header-anchor" href="#1-网络传输安全：加密通信">¶</a>1. 网络传输安全：加密通信</h4>
+<p>Redis 默认通过明文 TCP 传输数据，存在被中间人窃听的风险。解决方式：<strong>启用 TLS/SSL 加密</strong>。</p>
+<ul>
+<li>
+<p><strong>Redis 服务端配置</strong>：<br>
+在 <code>redis.conf</code> 中开启 TLS：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">tls-port 6379                  # TLS端口</span><br><span class="line">tls-cert-file /path/server.crt # 服务器证书</span><br><span class="line">tls-key-file /path/server.key  # 服务器私钥</span><br><span class="line">tls-auth-clients yes           # 验证客户端证书（可选）</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>GoFrame 客户端配置</strong>：<br>
+在 <code>gredis.Config</code> 中启用 TLS：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">config := &amp;gredis.Config&#123;</span><br><span class="line">    Address:  <span class="string">&quot;127.0.0.1:6379&quot;</span>,</span><br><span class="line">    TLSConfig: &amp;tls.Config&#123;</span><br><span class="line">        InsecureSkipVerify: <span class="literal">false</span>, <span class="comment">// 生产环境禁用（需验证服务器证书）</span></span><br><span class="line">        RootCAs:            x509.NewCertPool(), <span class="comment">// 加载CA证书</span></span><br><span class="line">    &#125;,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// 加载CA证书（验证服务器身份）</span></span><br><span class="line">caCert, _ := os.ReadFile(<span class="string">&quot;/path/ca.crt&quot;</span>)</span><br><span class="line">config.TLSConfig.RootCAs.AppendCertsFromPEM(caCert)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="2-访问控制：限制谁能访问"><a class="header-anchor" href="#2-访问控制：限制谁能访问">¶</a>2. 访问控制：限制谁能访问</h4>
+<ul>
+<li>
+<p><strong>密码认证</strong>：为 Redis 设置密码，客户端必须提供密码才能连接。<br>
+Redis 配置：<code>requirepass your-strong-password</code>（密码需复杂，避免弱口令）；<br>
+GoFrame 客户端配置：<code>config.Password = &quot;your-strong-password&quot;</code>。</p>
+</li>
+<li>
+<p><strong>IP 限制</strong>：通过防火墙或 Redis 配置限制允许访问的 IP（仅信任应用服务器 IP）。<br>
+Redis 配置：<code>bind 192.168.1.100 192.168.1.101</code>（只允许指定 IP 连接）；<br>
+防火墙：如 iptables 只开放 6379 端口给应用服务器。</p>
+</li>
+<li>
+<p><strong>最小权限原则</strong>：避免使用 Redis 管理员账号，为应用分配仅需的命令权限（如仅允许 <code>GET</code>/<code>SET</code>，禁用 <code>FLUSHALL</code> 等危险命令）。<br>
+可通过 Redis 的 <code>rename-command</code> 配置禁用危险命令：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">rename-command FLUSHALL &quot;&quot;   # 禁用清空所有数据的命令</span><br><span class="line">rename-command CONFIG &quot;&quot;     # 禁用修改配置的命令</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="3-数据安全：防止泄露与篡改"><a class="header-anchor" href="#3-数据安全：防止泄露与篡改">¶</a>3. 数据安全：防止泄露与篡改</h4>
+<ul>
+<li>
+<p><strong>敏感数据加密存储</strong>：Redis 中的数据是明文存储的（即使开启 TLS，存储仍为明文），若需存储半敏感数据（如手机号），需在存入前加密（如 AES 加密），取出后解密。<br>
+示例：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 加密手机号后存入Redis</span></span><br><span class="line">encryptedPhone := aesEncrypt(<span class="string">&quot;13800138000&quot;</span>, <span class="string">&quot;your-aes-key&quot;</span>)</span><br><span class="line">redisClient.Set(ctx, <span class="string">&quot;user:phone:100&quot;</span>, encryptedPhone, <span class="number">3600</span>)</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>避免存储高敏感数据</strong>：绝对不存储密码、Token 密钥、银行卡号等，此类数据应仅存于数据库（且密码需哈希加盐）。</p>
+</li>
+<li>
+<p><strong>数据备份与恢复</strong>：开启 Redis 持久化（推荐 AOF+RDB 混合模式），定期备份数据文件，防止 Redis 故障导致数据丢失。</p>
+</li>
+</ul>
+<h4 id="4-高可用与一致性：避免单点故障"><a class="header-anchor" href="#4-高可用与一致性：避免单点故障">¶</a>4. 高可用与一致性：避免单点故障</h4>
+<p>分布式框架中，Redis 需保证服务不中断、数据一致：</p>
+<ul>
+<li><strong>主从复制</strong>：1 主 N 从，主库写入，从库读，分担读压力，主库故障时可切换到从库；</li>
+<li><strong>哨兵（Sentinel）</strong>：自动监控主从状态，主库故障时自动将从库提升为主库，实现故障转移；</li>
+<li><strong>集群（Cluster）</strong>：分片存储数据（数据分散到多个节点），支持水平扩容，单个节点故障不影响整体服务。</li>
+</ul>
+<p>GoFrame 支持直接连接 Redis 集群，配置示例</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">config := &amp;gredis.Config&#123;</span><br><span class="line">    Address: <span class="string">&quot;127.0.0.1:6379,127.0.0.1:6380,127.0.0.1:6381&quot;</span>, <span class="comment">// 集群节点地址</span></span><br><span class="line">    Cluster: <span class="literal">true</span>, <span class="comment">// 启用集群模式</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h3>
+<ul>
+<li><strong>Redis</strong> 是高性能内存数据库，支持多数据结构和分布式部署，是缓存、会话存储等场景的核心组件；</li>
+<li><strong>GoFrame 操作 Redis</strong> 主要通过 <code>gredis</code> 组件，API 简洁，支持连接池、事务、管道等高级特性；</li>
+<li><strong>分布式安全</strong> 需从传输加密（TLS）、访问控制（密码 + IP 限制）、数据加密、高可用（集群 / 哨兵）等方面保障，防止未授权访问和数据风险。</li>
+</ul>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+      </tags>
+  </entry>
 </search>
