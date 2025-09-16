@@ -4012,4 +4012,78 @@ Redis 配置：<code>bind 192.168.1.100 192.168.1.101</code>（只允许指定 I
         <tag>redis</tag>
       </tags>
   </entry>
+  <entry>
+    <title>goframe中的stri()和strings()</title>
+    <url>/2025/09/16/goframe%E4%B8%AD%E7%9A%84stri-%E5%92%8Cstrings/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
+    <title>goframe中的字符串转换方法</title>
+    <url>/2025/09/16/goframe%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95/</url>
+    <content><![CDATA[<p>在 GoFrame 框架的<code>gredis.Value</code>类型（Redis 操作返回的结果类型）中，<code>String()</code>和<code>Strings()</code>是两个功能完全不同的方法，它们的区别主要体现在<strong>返回类型</strong>和<strong>适用场景</strong>上，这也是导致你观察到不同输出结果的核心原因。</p>
+<h3 id="1-String-方法"><a class="header-anchor" href="#1-String-方法">¶</a>1. <code>String()</code> 方法</h3>
+<ul>
+<li><strong>返回类型</strong>：<code>string</code>（单个字符串）。</li>
+<li><strong>作用</strong>：将 Redis 返回的单个值转换为字符串形式。</li>
+<li><strong>适用场景</strong>：当 Redis 操作返回<strong>单个值</strong>时使用（如<code>Get</code>、<code>HGet</code>等命令）。</li>
+</ul>
+<h3 id="2-Strings-方法"><a class="header-anchor" href="#2-Strings-方法">¶</a>2. <code>Strings()</code> 方法</h3>
+<ul>
+<li><strong>返回类型</strong>：<code>[]string</code>（字符串切片，即多个字符串的集合）。</li>
+<li><strong>作用</strong>：将 Redis 返回的多个值转换为字符串切片。</li>
+<li><strong>适用场景</strong>：当 Redis 操作返回<strong>多个值</strong>时使用（如<code>MGet</code>、<code>SMembers</code>、<code>LRANGE</code>等命令）。</li>
+</ul>
+<h3 id="为什么String-能-“输出结构体”，而Strings-不能？"><a class="header-anchor" href="#为什么String-能-“输出结构体”，而Strings-不能？">¶</a>为什么<code>String()</code>能 “输出结构体”，而<code>Strings()</code>不能？</h3>
+<p>首先要明确：<strong><code>String()</code>本身不能直接 “输出结构体”</strong>，它只能返回 Redis 中存储的<strong>原始字符串内容</strong>（对你的场景来说，就是序列化后的 JSON 字符串）。你最终能得到结构体，是因为后续通过<code>gjson.DecodeTo</code>将这个 JSON 字符串反序列化为了结构体。</p>
+<p>具体到你的代码场景：</p>
+<ul>
+<li>
+<p>你用</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redis.Set(ctx, &quot;res&quot;, resJson)</span><br></pre></td></tr></table></figure>
+<p>存储的是单个 JSON 字符串（序列化后的结构体），因此</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">redis.Get(ctx, &quot;res&quot;)</span><br></pre></td></tr></table></figure>
+<p>返回的是单个值。</p>
+<ul>
+<li>调用<code>String()</code>时，会直接返回这个 JSON 字符串（如<code>&#123;&quot;uid&quot;:1,&quot;uname&quot;:&quot;教学资料&quot;...&#125;</code>），后续可以通过反序列化得到结构体。</li>
+<li>调用<code>Strings()</code>时，由于 Redis 返回的是单个值，<code>Strings()</code>会将其包装为长度为 1 的字符串切片（<code>[]string&#123;&quot;&#123;&quot;uid&quot;:1,&quot;uname&quot;:&quot;教学资料&quot;...&#125;&quot;&#125;</code>）。而<code>println</code>打印切片时，只会输出切片的内存信息（如<code>[1/1]0xc0004fa1a0</code>），不会显示切片中的具体字符串内容，因此你看不到 JSON 结构，更无法直接得到结构体。</li>
+</ul>
+</li>
+</ul>
+<h3 id="直观对比示例"><a class="header-anchor" href="#直观对比示例">¶</a>直观对比示例</h3>
+<p>假设 Redis 中存储的键<code>&quot;res&quot;</code>的值是<code>&#123;&quot;uid&quot;:1,&quot;uname&quot;:&quot;test&quot;&#125;</code>：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 获取Redis值</span></span><br><span class="line">redisValue, _ := redis.Get(ctx, <span class="string">&quot;res&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 1. 调用String()</span></span><br><span class="line">s := redisValue.String()</span><br><span class="line">fmt.Println(s)  <span class="comment">// 输出：&#123;&quot;uid&quot;:1,&quot;uname&quot;:&quot;test&quot;&#125;（JSON字符串）</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 2. 调用Strings()</span></span><br><span class="line">ss := redisValue.Strings()</span><br><span class="line">fmt.Println(ss) <span class="comment">// 输出：[1/1]0xc000xxxxx（切片的内存表示）</span></span><br><span class="line">fmt.Println(ss[<span class="number">0</span>]) <span class="comment">// 输出：&#123;&quot;uid&quot;:1,&quot;uname&quot;:&quot;test&quot;&#125;（切片第一个元素才是实际内容）</span></span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h3>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>返回类型</th>
+<th>适用场景</th>
+<th>你的场景中为何不适用？</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>String()</code></td>
+<td><code>string</code></td>
+<td>单个值（如<code>Get</code>命令结果）</td>
+<td>适用，能直接获取 JSON 字符串，用于反序列化结构体</td>
+</tr>
+<tr>
+<td><code>Strings()</code></td>
+<td><code>[]string</code></td>
+<td>多个值（如<code>MGet</code>命令结果）</td>
+<td>不适用，会将单个值包装为切片，打印时看不到内容</td>
+</tr>
+</tbody>
+</table>
+<p>简单说：<strong>单个值用<code>String()</code>，多个值用<code>Strings()</code></strong>。你的场景是单个 JSON 字符串，因此必须用<code>String()</code>才能获取到可反序列化的内容，进而得到结构体。</p>
+]]></content>
+      <categories>
+        <category>goframe</category>
+      </categories>
+      <tags>
+        <tag>goframe</tag>
+      </tags>
+  </entry>
 </search>
