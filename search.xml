@@ -4013,11 +4013,6 @@ Redis 配置：<code>bind 192.168.1.100 192.168.1.101</code>（只允许指定 I
       </tags>
   </entry>
   <entry>
-    <title>goframe中的stri()和strings()</title>
-    <url>/2025/09/16/goframe%E4%B8%AD%E7%9A%84stri-%E5%92%8Cstrings/</url>
-    <content><![CDATA[]]></content>
-  </entry>
-  <entry>
     <title>goframe中的字符串转换方法</title>
     <url>/2025/09/16/goframe%E4%B8%AD%E7%9A%84%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%AC%E6%8D%A2%E6%96%B9%E6%B3%95/</url>
     <content><![CDATA[<p>在 GoFrame 框架的<code>gredis.Value</code>类型（Redis 操作返回的结果类型）中，<code>String()</code>和<code>Strings()</code>是两个功能完全不同的方法，它们的区别主要体现在<strong>返回类型</strong>和<strong>适用场景</strong>上，这也是导致你观察到不同输出结果的核心原因。</p>
@@ -4084,6 +4079,55 @@ Redis 配置：<code>bind 192.168.1.100 192.168.1.101</code>（只允许指定 I
       </categories>
       <tags>
         <tag>goframe</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>goframe中redis使用技巧</title>
+    <url>/2025/09/16/goframe%E4%B8%ADredis%E8%BF%94%E5%9B%9E%E6%95%B0%E7%A9%BA%E5%80%BC%E5%A4%84%E7%90%86/</url>
+    <content><![CDATA[<h2 id="redis的返回值类型"><a class="header-anchor" href="#redis的返回值类型">¶</a>redis的返回值类型</h2>
+<p>gvar.var类型，该类型永远不为空。</p>
+<h2 id="判断控制方式"><a class="header-anchor" href="#判断控制方式">¶</a>判断控制方式</h2>
+<p>使用方法 redis返回值.IsEmpty()来进行判断</p>
+<h2 id="redis键名添加前缀，防止简明重复被覆盖"><a class="header-anchor" href="#redis键名添加前缀，防止简明重复被覆盖">¶</a>redis键名添加前缀，防止简明重复被覆盖</h2>
+<p>使用<code>key := fmt.Sprintf(&quot;user:info:%s&quot;, req.Uname) // 如 &quot;user:info:zhangsan&quot;</code>方法</p>
+<h2 id="redis过期时间的意义"><a class="header-anchor" href="#redis过期时间的意义">¶</a>redis过期时间的意义</h2>
+<p>以一个实际应用来进行说明：</p>
+<p>如果实现一个物联网平台，设备的状态信息存储进redis中，下面是设置过期时间和未设置过期时间的区别</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>设置过期时间</th>
+<th>未设置过期时间</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>容量</td>
+<td>设备离线到时自动销毁数据，防止容量溢出</td>
+<td>即使设备离线，设备数据仍然存储在redis中</td>
+</tr>
+<tr>
+<td>覆盖</td>
+<td>采用set类型，自动覆盖同一键名</td>
+<td>采用set类型，自动覆盖同一键名</td>
+</tr>
+<tr>
+<td>应用</td>
+<td>设备离线，可通过查找redis数据为空来实现辨别</td>
+<td>设备离线，数据仍然保存在redis中</td>
+</tr>
+</tbody>
+</table>
+<h2 id="序列化和反序列化"><a class="header-anchor" href="#序列化和反序列化">¶</a>序列化和反序列化</h2>
+<p>序列化：<code>redisJson, err := gjson.Encode(userInfo)</code></p>
+<p>反序列化：<code>err = gjson.DecodeTo(userInfo.String(), &amp;out)</code></p>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
       </tags>
   </entry>
 </search>
