@@ -24,25 +24,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"bytedoge.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="技术学习笔记">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zhyBlogs">
-<meta property="og:url" content="https://bytedoge.github.io/archives/2025/09/page/2/">
+    <meta name="description" content="缓存穿透的核心是 “拦截对不存在数据的无效查询”，常见解决方式有 4 种，各自的实现逻辑、优劣和适用场景如下： ¶1. 布隆过滤器（Bloom Filter） ¶实现逻辑  用一个位数组记录 “所有合法存在的 key”（如用户 ID、商品 ID），查询前先通过布隆过滤器判断 key 是否 “可能存在”：  若判断 “不存在”，直接返回，不查缓存和数据库； 若判断 “可能存在”，再走正常的 “缓存→">
+<meta property="og:type" content="article">
+<meta property="og:title" content="缓存穿透的解决方法">
+<meta property="og:url" content="https://bytedoge.github.io/2025/09/17/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
 <meta property="og:site_name" content="zhyBlogs">
-<meta property="og:description" content="技术学习笔记">
+<meta property="og:description" content="缓存穿透的核心是 “拦截对不存在数据的无效查询”，常见解决方式有 4 种，各自的实现逻辑、优劣和适用场景如下： ¶1. 布隆过滤器（Bloom Filter） ¶实现逻辑  用一个位数组记录 “所有合法存在的 key”（如用户 ID、商品 ID），查询前先通过布隆过滤器判断 key 是否 “可能存在”：  若判断 “不存在”，直接返回，不查缓存和数据库； 若判断 “可能存在”，再走正常的 “缓存→">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-17T02:03:40.000Z">
+<meta property="article:modified_time" content="2025-09-17T02:08:38.854Z">
 <meta property="article:author" content="Zheng HanYang">
-<meta property="article:tag" content="技术学习笔记">
+<meta property="article:tag" content="网络安全">
+<meta property="article:tag" content="工程开发">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://bytedoge.github.io/archives/2025/09/page/2/">
+<link rel="canonical" href="https://bytedoge.github.io/2025/09/17/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"archives/2025/09/page/2/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bytedoge.github.io/2025/09/17/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/","path":"2025/09/17/缓存穿透的解决方法/","title":"缓存穿透的解决方法"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>归档 | zhyBlogs</title>
+<title>缓存穿透的解决方法 | zhyBlogs</title>
   
 
 
@@ -267,7 +270,7 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">zhyBlogs</h1>
+      <p class="site-title">zhyBlogs</p>
       <i class="logo-line"></i>
     </a>
       <p class="site-subtitle" itemprop="description">技术学习笔记</p>
@@ -321,7 +324,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -334,6 +337,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%88Bloom-Filter%EF%BC%89"><span class="nav-number">1.</span> <span class="nav-text">1. 布隆过滤器（Bloom Filter）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91"><span class="nav-number">1.1.</span> <span class="nav-text">实现逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E7%82%B9"><span class="nav-number">1.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9"><span class="nav-number">1.3.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">1.4.</span> <span class="nav-text">适用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E7%A9%BA%E5%80%BC%E7%BC%93%E5%AD%98%EF%BC%88Null-Cache%EF%BC%89"><span class="nav-number">2.</span> <span class="nav-text">2. 空值缓存（Null Cache）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91-2"><span class="nav-number">2.1.</span> <span class="nav-text">实现逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-2"><span class="nav-number">2.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-2"><span class="nav-number">2.3.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-2"><span class="nav-number">2.4.</span> <span class="nav-text">适用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E6%8E%A5%E5%8F%A3%E5%B1%82%E5%8F%82%E6%95%B0%E6%A0%A1%E9%AA%8C"><span class="nav-number">3.</span> <span class="nav-text">3. 接口层参数校验</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91-3"><span class="nav-number">3.1.</span> <span class="nav-text">实现逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-3"><span class="nav-number">3.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-3"><span class="nav-number">3.3.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-3"><span class="nav-number">3.4.</span> <span class="nav-text">适用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E7%99%BD%E5%90%8D%E5%8D%95%E6%9C%BA%E5%88%B6%EF%BC%88%E5%8F%8D%E5%90%91%E6%A0%A1%E9%AA%8C%EF%BC%89"><span class="nav-number">4.</span> <span class="nav-text">4. 白名单机制（反向校验）</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0%E9%80%BB%E8%BE%91-4"><span class="nav-number">4.1.</span> <span class="nav-text">实现逻辑</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BC%98%E7%82%B9-4"><span class="nav-number">4.2.</span> <span class="nav-text">优点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%BC%BA%E7%82%B9-4"><span class="nav-number">4.3.</span> <span class="nav-text">缺点</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%80%82%E7%94%A8%E5%9C%BA%E6%99%AF-4"><span class="nav-number">4.4.</span> <span class="nav-text">适用场景</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%E5%AF%B9%E6%AF%94%E8%A1%A8"><span class="nav-number">5.</span> <span class="nav-text">总结对比表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="nav-number">6.</span> <span class="nav-text">最佳实践</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81QPS-%E7%9A%84%E5%AE%9A%E4%B9%89%EF%BC%9A%E6%AF%8F%E7%A7%92%E6%9F%A5%E8%AF%A2%E7%8E%87"><span class="nav-number">7.</span> <span class="nav-text">一、QPS 的定义：每秒查询率</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81QPS-%E7%9A%84%E6%A0%B8%E5%BF%83%E4%BD%9C%E7%94%A8%EF%BC%9A%E8%AF%84%E4%BC%B0%E7%B3%BB%E7%BB%9F%E6%80%A7%E8%83%BD%E4%B8%8E%E7%93%B6%E9%A2%88"><span class="nav-number">8.</span> <span class="nav-text">二、QPS 的核心作用：评估系统性能与瓶颈</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%AE%B9%E6%98%93%E6%B7%B7%E6%B7%86%E7%9A%84%E6%A6%82%E5%BF%B5%EF%BC%9AQPS-vs-TPS"><span class="nav-number">9.</span> <span class="nav-text">三、容易混淆的概念：QPS vs TPS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E5%85%B3%E9%94%AE%E8%A1%A5%E5%85%85%EF%BC%9A%E5%B3%B0%E5%80%BC-QPS-%E4%B8%8E%E5%B9%B3%E5%9D%87-QPS"><span class="nav-number">10.</span> <span class="nav-text">四、关键补充：峰值 QPS 与平均 QPS</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">11.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E7%BC%93%E5%AD%98%E9%A2%84%E7%83%AD%EF%BC%9A%E6%8F%90%E5%89%8D%E5%8A%A0%E8%BD%BD%E7%83%AD%E7%82%B9%E6%95%B0%E6%8D%AE%E5%88%B0%E7%BC%93%E5%AD%98"><span class="nav-number">12.</span> <span class="nav-text">一、缓存预热：提前加载热点数据到缓存</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%EF%BC%9A%E6%8C%89%E5%9C%BA%E6%99%AF%E9%80%89%E6%8B%A9%E5%8A%A0%E8%BD%BD%E7%AD%96%E7%95%A5"><span class="nav-number">12.1.</span> <span class="nav-text">1. 实现方式：按场景选择加载策略</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%881%EF%BC%89%E7%B3%BB%E7%BB%9F%E5%90%AF%E5%8A%A8%E6%97%B6%E5%85%A8%E9%87%8F%E9%A2%84%E7%83%AD%EF%BC%88%E9%80%82%E5%90%88%E6%A0%B8%E5%BF%83%E5%9F%BA%E7%A1%80%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="nav-number">12.1.1.</span> <span class="nav-text">（1）系统启动时全量预热（适合核心基础数据）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%882%EF%BC%89%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1%E5%A2%9E%E9%87%8F%E9%A2%84%E7%83%AD%EF%BC%88%E9%80%82%E5%90%88%E5%8A%A8%E6%80%81%E6%9B%B4%E6%96%B0%E7%9A%84%E7%83%AD%E7%82%B9%E6%95%B0%E6%8D%AE%EF%BC%89"><span class="nav-number">12.1.2.</span> <span class="nav-text">（2）定时任务增量预热（适合动态更新的热点数据）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%EF%BC%883%EF%BC%89%E5%9F%BA%E4%BA%8E%E7%94%A8%E6%88%B7%E8%A1%8C%E4%B8%BA%E9%A2%84%E6%B5%8B%E9%A2%84%E7%83%AD%EF%BC%88%E9%80%82%E5%90%88%E7%AA%81%E5%8F%91%E6%B5%81%E9%87%8F%E5%9C%BA%E6%99%AF%EF%BC%89"><span class="nav-number">12.1.3.</span> <span class="nav-text">（3）基于用户行为预测预热（适合突发流量场景）</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%BC%98%E7%82%B9%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9"><span class="nav-number">12.2.</span> <span class="nav-text">2. 优点与注意事项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E5%BB%B6%E8%BF%9F%E8%BF%87%E6%9C%9F%EF%BC%9A%E7%BB%99%E7%BC%93%E5%AD%98%E8%AE%BE%E7%BD%AE%E9%9A%8F%E6%9C%BA%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4%E5%81%8F%E7%A7%BB"><span class="nav-number">13.</span> <span class="nav-text">二、延迟过期：给缓存设置随机过期时间偏移</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%AE%9E%E7%8E%B0%E6%96%B9%E5%BC%8F%EF%BC%9A%E5%9F%BA%E7%A1%80%E8%BF%87%E6%9C%9F%E6%97%B6%E9%97%B4-%E9%9A%8F%E6%9C%BA%E5%81%8F%E7%A7%BB"><span class="nav-number">13.1.</span> <span class="nav-text">1. 实现方式：基础过期时间 + 随机偏移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E4%BC%98%E7%82%B9%E4%B8%8E%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9-2"><span class="nav-number">13.2.</span> <span class="nav-text">2. 优点与注意事项</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93-2"><span class="nav-number">14.</span> <span class="nav-text">总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E6%96%B9%E6%A1%88%E5%8F%AF%E8%A1%8C%E6%80%A7%EF%BC%9A%E6%A0%B8%E5%BF%83%E9%80%BB%E8%BE%91%E5%90%88%E7%90%86%EF%BC%8C%E9%80%82%E5%90%88%E5%86%85%E6%B5%8B%E9%98%B6%E6%AE%B5"><span class="nav-number">15.</span> <span class="nav-text">一、方案可行性：核心逻辑合理，适合内测阶段</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E9%9C%80%E4%BC%98%E5%8C%96%E7%9A%84%E7%BB%86%E8%8A%82%EF%BC%9A%E9%81%BF%E5%85%8D%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">16.</span> <span class="nav-text">二、需优化的细节：避免常见问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E8%AE%BF%E9%97%AE%E6%8C%87%E6%A0%87%E7%9A%84%E5%AD%98%E5%82%A8%E4%B8%8E%E8%BF%87%E6%9C%9F%E7%AD%96%E7%95%A5"><span class="nav-number">16.1.</span> <span class="nav-text">1. 访问指标的存储与过期策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E7%83%AD%E7%82%B9%E6%95%B0%E6%8D%AE%E7%9A%84%E7%BB%9F%E8%AE%A1%E5%91%A8%E6%9C%9F%E4%B8%8E%E6%97%B6%E6%95%88%E6%80%A7"><span class="nav-number">16.2.</span> <span class="nav-text">2. 热点数据的统计周期与时效性</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E5%86%B7%E6%95%B0%E6%8D%AE%E7%9A%84%E6%8C%87%E6%A0%87%E6%B8%85%E7%90%86"><span class="nav-number">16.3.</span> <span class="nav-text">3. 冷数据的指标清理</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%90%BD%E5%9C%B0%E6%AD%A5%E9%AA%A4%EF%BC%9A%E5%88%86%E9%98%B6%E6%AE%B5%E5%AE%9E%E7%8E%B0%EF%BC%8C%E9%A3%8E%E9%99%A9%E5%8F%AF%E6%8E%A7"><span class="nav-number">17.</span> <span class="nav-text">三、落地步骤：分阶段实现，风险可控</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%93%E8%AE%BA"><span class="nav-number">18.</span> <span class="nav-text">结论</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -381,233 +385,470 @@
 
       </div>
 
-      <div class="main-inner archive posts-collapse">
+      <div class="main-inner post posts-expand">
 
 
   
+
+
+<div class="post-block">
   
   
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bytedoge.github.io/2025/09/17/%E7%BC%93%E5%AD%98%E7%A9%BF%E9%80%8F%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%B3%95/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zheng HanYang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhyBlogs">
+      <meta itemprop="description" content="技术学习笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="缓存穿透的解决方法 | zhyBlogs">
+      <meta itemprop="description" content="">
+    </span>
         
-        <span class="collection-header">还行! 目前共计 36 篇日志。 继续努力。</span>
-      </div>
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">
+            缓存穿透的解决方法
+          </h1>
 
+          <div class="post-meta-container">
+            <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2025<span class="collection-year-count">36</span></span>
-    </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-09-12T16:23:51+08:00"
-              content="2025-09-12">
-          09-12
-        </time>
-      </div>
+      <time title="创建时间：2025-09-17 10:03:40 / 修改时间：10:08:38" itemprop="dateCreated datePublished" datetime="2025-09-17T10:03:40+08:00">2025-09-17</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" itemprop="url" rel="index"><span itemprop="name">网络安全</span></a>
+        </span>
+    </span>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/09/12/%E4%B8%AA%E4%BA%BA%E5%8F%91%E5%B1%95/" itemprop="url">
-            <span itemprop="name">个人发展</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-09-12T15:54:06+08:00"
-              content="2025-09-12">
-          09-12
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/09/12/%E4%BC%98%E7%A7%80%E7%A8%8B%E5%BA%8F%E5%91%98%E9%9C%80%E8%A6%81%E5%85%B7%E5%A4%87%E7%9A%84%E8%83%BD%E5%8A%9B/" itemprop="url">
-            <span itemprop="name">优秀程序员需要具备的能力</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-09-12T12:26:04+08:00"
-              content="2025-09-12">
-          09-12
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/09/12/goframe%E8%87%AA%E5%8A%A8%E8%B7%AF%E7%94%B1%E5%92%8C%E6%89%8B%E5%8A%A8%E8%B7%AF%E7%94%B1/" itemprop="url">
-            <span itemprop="name">goframe自动路由和手动路由</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-09-12T12:24:40+08:00"
-              content="2025-09-12">
-          09-12
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/09/12/goframe%E8%B7%AF%E7%94%B1%E7%9B%B8%E5%85%B3%E5%8F%98%E9%87%8F/" itemprop="url">
-            <span itemprop="name">goframe路由相关变量</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-09-11T17:17:49+08:00"
-              content="2025-09-11">
-          09-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/09/11/%E5%89%8D%E7%AB%AFtoken%E7%9A%84%E5%88%B7%E6%96%B0/" itemprop="url">
-            <span itemprop="name">前端token的刷新</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-09-11T17:08:36+08:00"
-              content="2025-09-11">
-          09-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/09/11/res%E5%92%8Centity%E7%9A%84%E5%8C%BA%E5%88%AB%E5%92%8C%E8%81%94%E7%B3%BB/" itemprop="url">
-            <span itemprop="name">res和entity的区别和联系</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-09-11T15:19:03+08:00"
-              content="2025-09-11">
-          09-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/09/11/goframe%E9%A1%B9%E7%9B%AE%E7%BC%96%E5%86%99%E9%A1%BA%E5%BA%8F/" itemprop="url">
-            <span itemprop="name">goframe项目编写顺序(web)</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-09-11T10:35:30+08:00"
-              content="2025-09-11">
-          09-11
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/09/11/Base64%E7%BC%96%E7%A0%81%E5%8E%9F%E7%90%86/" itemprop="url">
-            <span itemprop="name">Base64编码原理</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-09-10T09:18:09+08:00"
-              content="2025-09-10">
-          09-10
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/09/10/goframe%E6%A1%86%E6%9E%B6%E8%AF%A6%E8%A7%A3/" itemprop="url">
-            <span itemprop="name">goframe框架详解</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-09-02T15:42:08+08:00"
-              content="2025-09-02">
-          09-02
-        </time>
-      </div>
-
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/09/02/Go%E4%B8%AD%E7%BB%93%E6%9E%84%E4%BD%93%E5%92%8C%E6%96%B9%E6%B3%95%E7%9A%84%E7%90%86%E8%A7%A3/" itemprop="url">
-            <span itemprop="name">Go中结构体和方法的理解</span>
-          </a>
-      </div>
-
-      
-    </header>
-  </article>
-
-
-    </div>
-  </div>
   
-  
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" title="上一页" aria-label="上一页" href="/archives/2025/09/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/archives/2025/09/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/2025/09/page/3/">3</a><a class="extend next" rel="next" title="下一页" aria-label="下一页" href="/archives/2025/09/page/3/"><i class="fa fa-angle-right"></i></a>
-  </nav>
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>8.7k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>7 分钟</span>
+    </span>
+</div>
+
+          </div>
+        </header>
+
+    
+    
+    
+      <div class="post-body" itemprop="articleBody"><p>缓存穿透的核心是 “拦截对不存在数据的无效查询”，常见解决方式有 4 种，各自的实现逻辑、优劣和适用场景如下：</p>
+<h3 id="1-布隆过滤器（Bloom-Filter）"><a class="header-anchor" href="#1-布隆过滤器（Bloom-Filter）">¶</a>1. 布隆过滤器（Bloom Filter）</h3>
+<h4 id="实现逻辑"><a class="header-anchor" href="#实现逻辑">¶</a>实现逻辑</h4>
+<ul>
+<li>用一个位数组记录 “所有合法存在的 key”（如用户 ID、商品 ID），查询前先通过布隆过滤器判断 key 是否 “可能存在”：
+<ul>
+<li>若判断 “不存在”，直接返回，不查缓存和数据库；</li>
+<li>若判断 “可能存在”，再走正常的 “缓存→数据库” 流程。</li>
+</ul>
+</li>
+</ul>
+<h4 id="优点"><a class="header-anchor" href="#优点">¶</a>优点</h4>
+<ul>
+<li>空间效率极高：存储 100 万条数据仅需约 100KB（误判率 1% 时），适合海量数据场景；</li>
+<li>查询速度快：微秒级响应，几乎不影响接口性能；</li>
+<li>抗攻击性强：即使恶意请求大量无效 key，也能在过滤器层被拦截。</li>
+</ul>
+<h4 id="缺点"><a class="header-anchor" href="#缺点">¶</a>缺点</h4>
+<ul>
+<li>存在误判率（可通过参数调优降低，但无法消除）：可能将不存在的 key 误判为 “可能存在”，导致少量无效请求穿透到数据库；</li>
+<li>不支持删除：若数据被删除（如用户注销），无法从布隆过滤器中移除，需通过过期重建解决；</li>
+<li>需预热：需提前将数据库中已存在的 key 全量导入过滤器，初始化成本较高。</li>
+</ul>
+<h4 id="适用场景"><a class="header-anchor" href="#适用场景">¶</a>适用场景</h4>
+<ul>
+<li>有明确 “合法 key 集合” 且数据更新不频繁的场景（如商品 ID、用户 ID 查询）；</li>
+<li>海量数据场景（百万级以上），对内存占用敏感。</li>
+</ul>
+<h3 id="2-空值缓存（Null-Cache）"><a class="header-anchor" href="#2-空值缓存（Null-Cache）">¶</a>2. 空值缓存（Null Cache）</h3>
+<h4 id="实现逻辑-2"><a class="header-anchor" href="#实现逻辑-2">¶</a>实现逻辑</h4>
+<ul>
+<li>当数据库查询结果为空（key 不存在）时，仍将这个 “空结果” 存入缓存，设置较短的过期时间（如 5-60 秒）：
+<ul>
+<li>后续相同的无效请求会命中 “空缓存”，直接返回，不再次查询数据库。</li>
+</ul>
+</li>
+</ul>
+<h4 id="优点-2"><a class="header-anchor" href="#优点-2">¶</a>优点</h4>
+<ul>
+<li>实现简单：无需额外组件，仅需在缓存逻辑中增加 “空结果处理”；</li>
+<li>无额外误判：完全基于实际查询结果，不会误拦截有效请求；</li>
+<li>动态适应：新产生的无效 key 会自动被缓存，无需预热。</li>
+</ul>
+<h4 id="缺点-2"><a class="header-anchor" href="#缺点-2">¶</a>缺点</h4>
+<ul>
+<li>内存浪费：恶意攻击时，大量不同的无效 key 会生成大量空缓存，占用 Redis 内存；</li>
+<li>短期不一致：若后续该 key 被创建（如新增用户），空缓存未过期前会导致 “新数据查不到”（需设置较短过期时间缓解）。</li>
+</ul>
+<h4 id="适用场景-2"><a class="header-anchor" href="#适用场景-2">¶</a>适用场景</h4>
+<ul>
+<li>无效请求量小、key 分布分散的场景（如正常用户偶尔查询错误 ID）；</li>
+<li>快速临时防护（如突发少量无效请求时）。</li>
+</ul>
+<h3 id="3-接口层参数校验"><a class="header-anchor" href="#3-接口层参数校验">¶</a>3. 接口层参数校验</h3>
+<h4 id="实现逻辑-3"><a class="header-anchor" href="#实现逻辑-3">¶</a>实现逻辑</h4>
+<ul>
+<li>在接口入口（如 controller 层）对请求参数进行合法性校验，直接拦截明显无效的 key：
+<ul>
+<li>例如：用户 ID 必须是正整数且在合理范围（1-10 亿），商品分类 ID 必须在预设枚举值内等。</li>
+</ul>
+</li>
+</ul>
+<h4 id="优点-3"><a class="header-anchor" href="#优点-3">¶</a>优点</h4>
+<ul>
+<li>零成本：仅需代码逻辑判断，无需额外存储或组件；</li>
+<li>无副作用：完全基于业务规则，不会影响正常请求；</li>
+<li>前置拦截：在请求链路最上游拦截，不占用缓存和数据库资源。</li>
+</ul>
+<h4 id="缺点-3"><a class="header-anchor" href="#缺点-3">¶</a>缺点</h4>
+<ul>
+<li>覆盖范围有限：只能拦截 “格式或范围明显不合理” 的 key，无法识别 “格式合法但实际不存在” 的 key（如 ID=12345 是合法格式，但对应用户不存在）；</li>
+<li>依赖业务规则：需随业务变化更新校验逻辑（如用户 ID 范围扩大时需同步调整）。</li>
+</ul>
+<h4 id="适用场景-3"><a class="header-anchor" href="#适用场景-3">¶</a>适用场景</h4>
+<ul>
+<li>作为基础防护手段，与其他方法配合使用；</li>
+<li>参数有明确格式 / 范围约束的场景（如订单号、手机号等）。</li>
+</ul>
+<h3 id="4-白名单机制（反向校验）"><a class="header-anchor" href="#4-白名单机制（反向校验）">¶</a>4. 白名单机制（反向校验）</h3>
+<h4 id="实现逻辑-4"><a class="header-anchor" href="#实现逻辑-4">¶</a>实现逻辑</h4>
+<ul>
+<li>维护一个 “绝对存在的 key 列表”（白名单），仅允许白名单内的 key 通过查询：
+<ul>
+<li>例如：将所有已存在的用户 ID 存入 Redis 集合（Set），查询时先判断 ID 是否在集合中，不在则直接拦截。</li>
+</ul>
+</li>
+</ul>
+<h4 id="优点-4"><a class="header-anchor" href="#优点-4">¶</a>优点</h4>
+<ul>
+<li>零误判：白名单内的 key 一定存在，拦截逻辑绝对准确；</li>
+<li>实现简单：基于 Redis 的<code>SISMEMBER</code>命令即可实现。</li>
+</ul>
+<h4 id="缺点-4"><a class="header-anchor" href="#缺点-4">¶</a>缺点</h4>
+<ul>
+<li>内存占用高：白名单需存储完整的 key（如字符串类型的用户 ID），100 万条数据约占用 50MB（远高于布隆过滤器的 100KB）；</li>
+<li>维护成本高：数据新增 / 删除时需实时同步白名单（如用户注册时添加到 Set，注销时移除），否则会出现 “漏判”。</li>
+</ul>
+<h4 id="适用场景-4"><a class="header-anchor" href="#适用场景-4">¶</a>适用场景</h4>
+<ul>
+<li>key 数量少（万级以内）且更新频繁的场景；</li>
+<li>对误判零容忍的核心业务（如支付相关 ID 查询）。</li>
+</ul>
+<h3 id="总结对比表"><a class="header-anchor" href="#总结对比表">¶</a>总结对比表</h3>
+<table>
+<thead>
+<tr>
+<th>方式</th>
+<th>核心逻辑</th>
+<th>优点</th>
+<th>缺点</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>布隆过滤器</td>
+<td>位数组标记合法 key</td>
+<td>空间效率高、抗攻击</td>
+<td>有误判、不支持删除</td>
+<td>海量数据、ID 查询</td>
+</tr>
+<tr>
+<td>空值缓存</td>
+<td>缓存不存在的 key 结果</td>
+<td>实现简单、无预热成本</td>
+<td>内存浪费、短期不一致</td>
+<td>无效请求少、临时防护</td>
+</tr>
+<tr>
+<td>接口校验</td>
+<td>拦截格式 / 范围无效参数</td>
+<td>零成本、前置拦截</td>
+<td>覆盖有限、依赖业务规则</td>
+<td>基础防护，配合其他方法使用</td>
+</tr>
+<tr>
+<td>白名单机制</td>
+<td>仅允许存在的 key 查询</td>
+<td>零误判、实现简单</td>
+<td>内存占用高、维护成本高</td>
+<td>数据量少、对误判零容忍</td>
+</tr>
+</tbody>
+</table>
+<h3 id="最佳实践"><a class="header-anchor" href="#最佳实践">¶</a>最佳实践</h3>
+<p>实际项目中通常<strong>组合使用多种方式</strong>：</p>
+<ul>
+<li>基础防护：接口层参数校验（拦截明显无效请求）；</li>
+<li>核心防护：布隆过滤器（拦截大部分 “格式合法但不存在” 的请求）；</li>
+<li>补充防护：空值缓存（拦截布隆过滤器误判的少量请求）。</li>
+</ul>
+<p>这种多层防护既能覆盖大部分场景，又能平衡性能、内存和一致性。</p>
+<p>要理解 QPS，首先要明确它是衡量<strong>系统处理请求能力的核心性能指标</strong>，尤其在你之前讨论的 “缓存 - 数据库” 架构（如虚拟电厂交易平台）中，QPS 直接决定了系统能否应对高并发请求、避免页面卡顿或服务崩溃。</p>
+<h3 id="一、QPS-的定义：每秒查询率"><a class="header-anchor" href="#一、QPS-的定义：每秒查询率">¶</a>一、QPS 的定义：每秒查询率</h3>
+<p>QPS 是 <strong>Queries Per Second</strong> 的缩写，中文译为 “每秒查询率”，指的是<strong>系统在 1 秒钟内能够处理的 “查询类请求” 的数量</strong>。</p>
+<p>这里的 “查询请求” 是核心 —— 比如：</p>
+<ul>
+<li>虚拟电厂平台中，用户查询某台设备的实时发电量（<code>GET /device/123/power</code>）；</li>
+<li>缓存层（如 Redis）处理 “判断某个设备 ID 是否存在” 的请求；</li>
+<li>数据库（如 MySQL）处理 “查询某时段交易记录” 的 SQL 请求。</li>
+</ul>
+<p>简单说：QPS 越高，说明系统单位时间内处理查询的能力越强。</p>
+<h3 id="二、QPS-的核心作用：评估系统性能与瓶颈"><a class="header-anchor" href="#二、QPS-的核心作用：评估系统性能与瓶颈">¶</a>二、QPS 的核心作用：评估系统性能与瓶颈</h3>
+<p>在你之前关注的 “缓存穿透”“数据库压力” 等场景中，QPS 是判断系统是否健康的关键标尺，主要用于 3 件事：</p>
+<ol>
+<li><strong>评估系统承载能力</strong><br>
+不同组件的 QPS 上限差异极大，这也是 “缓存 - 数据库” 分层架构的核心原因：
+<ul>
+<li>缓存（如 Redis）：单机 QPS 通常能达到 <strong>10 万 - 100 万级</strong>（内存操作，速度极快）；</li>
+<li>数据库（如 MySQL）：单机 QPS 通常只有 <strong>1 万 - 5 万级</strong>（磁盘 IO 操作，速度慢）；</li>
+<li>应用服务器（如 Spring Boot）：单机 QPS 通常 <strong>1 万 - 10 万级</strong>（取决于业务逻辑复杂度）。<br>
+这就是为什么之前说 “缓存要拦住大部分请求”—— 如果大量请求穿透到数据库，很容易超过其 QPS 上限，导致查询排队、耗时变长（对应你说的 “页面卡顿”）。</li>
+</ul>
+</li>
+<li><strong>规划系统扩容与压测</strong><br>
+业务上线前，会通过 “压测” 模拟高并发场景，比如虚拟电厂平台在 “用电高峰时段” 可能有 10 万用户同时查询设备状态，此时需要确保：
+<ul>
+<li>缓存层 QPS 能扛住 10 万（不够就加 Redis 集群）；</li>
+<li>穿透到数据库的 QPS 控制在 1 万以内（通过布隆过滤器 + 空值缓存）。<br>
+若压测发现数据库 QPS 超过 5 万（达到其上限），就必须扩容（如分库分表）或优化缓存策略。</li>
+</ul>
+</li>
+<li><strong>定位性能瓶颈</strong><br>
+比如虚拟电厂平台突然出现页面卡顿，查看 QPS 指标：
+<ul>
+<li>若缓存 QPS 很低（如 1000），但数据库 QPS 很高（如 8000，接近上限）—— 说明缓存没起作用，大概率是缓存穿透（对应你之前的问题）；</li>
+<li>若缓存 QPS 很高（如 5 万），数据库 QPS 正常（如 5000）—— 卡顿可能是缓存本身过载，需要加缓存节点。</li>
+</ul>
+</li>
+</ol>
+<h3 id="三、容易混淆的概念：QPS-vs-TPS"><a class="header-anchor" href="#三、容易混淆的概念：QPS-vs-TPS">¶</a>三、容易混淆的概念：QPS vs TPS</h3>
+<p>很多人会把 QPS 和 TPS（Transactions Per Second，每秒事务数）搞混，两者的核心区别在于 <strong>“请求是否包含完整事务”</strong>，在你的业务场景中也需要区分：</p>
+<ul>
+<li><strong>QPS（查询率）</strong>：针对 “只读查询”，比如 “查设备状态”“查交易记录”—— 这类请求只需要系统返回数据，不需要修改数据，操作单一；</li>
+<li><strong>TPS（事务率）</strong>：针对 “包含读写的完整事务”，比如 “虚拟电厂的电力交易下单”—— 这个操作需要先查用户余额（读）、扣减余额（写）、生成订单（写）、更新库存（写），多个步骤组成一个 “事务”，必须全部成功或全部失败。</li>
+</ul>
+<p>简单说：<strong>所有 TPS 都包含 QPS（事务中的查询步骤），但 QPS 不一定是 TPS</strong>。比如你的平台中，“查询设备状态” 是 QPS，“完成一笔电力交易” 是 TPS。</p>
+<h3 id="四、关键补充：峰值-QPS-与平均-QPS"><a class="header-anchor" href="#四、关键补充：峰值-QPS-与平均-QPS">¶</a>四、关键补充：峰值 QPS 与平均 QPS</h3>
+<p>实际业务中，QPS 不是固定的，会随时间波动，需要关注两个核心值：</p>
+<ul>
+<li><strong>平均 QPS</strong>：一天 / 一小时内的平均请求数，用于日常资源规划（如虚拟电厂平台白天平均 QPS 可能是 1 万）；</li>
+<li><strong>峰值 QPS</strong>：某一时刻的最大请求数，用于应对突发流量（如用电高峰 / 交易截止前，峰值 QPS 可能达到 10 万）。<br>
+系统设计必须按 “峰值 QPS” 来配置资源，否则高峰期会因 QPS 超过上限导致服务不可用。</li>
+</ul>
+<h3 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h3>
+<p>QPS 是衡量 “系统每秒能处理多少查询请求” 的核心指标，直接关系到你关心的 “页面是否卡顿”“数据库是否过载”。在虚拟电厂这类高并发场景中，优化 QPS 的核心逻辑就是：<strong>让缓存扛住大部分查询请求（高 QPS），只让少量必要请求穿透到数据库（低 QPS）</strong>，这也是之前讨论 “布隆过滤器 + 空值缓存” 的底层逻辑之一。“缓存预热” 和 “延迟过期” 是缓存架构中两种提升稳定性的常用策略，前者解决 “新数据 / 热点数据首次查询穿透数据库” 的问题，后者避免 “大量缓存同时过期导致的缓存雪崩”。以下结合实际场景（如虚拟电厂平台）说明具体实现方式：</p>
+<h3 id="一、缓存预热：提前加载热点数据到缓存"><a class="header-anchor" href="#一、缓存预热：提前加载热点数据到缓存">¶</a>一、缓存预热：提前加载热点数据到缓存</h3>
+<p><strong>核心目标</strong>：在用户请求到来前，主动将高频访问的数据（如热门设备实时数据、活跃用户信息）加载到 Redis，避免首次查询穿透到数据库。</p>
+<h4 id="1-实现方式：按场景选择加载策略"><a class="header-anchor" href="#1-实现方式：按场景选择加载策略">¶</a>1. 实现方式：按场景选择加载策略</h4>
+<h5 id="（1）系统启动时全量预热（适合核心基础数据）"><a class="header-anchor" href="#（1）系统启动时全量预热（适合核心基础数据）">¶</a>（1）系统启动时全量预热（适合核心基础数据）</h5>
+<ul>
+<li><strong>适用场景</strong>：数据量不大但访问频繁的基础数据（如虚拟电厂的 “区域列表”“设备类型字典”）。</li>
+<li><strong>实现步骤</strong>：
+<ol>
+<li>系统启动后，通过初始化函数触发预热；</li>
+<li>从数据库批量查询所有基础数据；</li>
+<li>批量写入 Redis（设置合理过期时间）。</li>
+</ol>
+</li>
+<li><strong>代码示例（GoFrame）</strong>：</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 程序启动时执行缓存预热</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">init</span><span class="params">()</span></span> &#123;</span><br><span class="line">    ctx := context.Background()</span><br><span class="line">    <span class="comment">// 1. 查询所有区域基础数据</span></span><br><span class="line">    regions, err := dao.Region.Ctx(ctx).All()</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        g.Log().Error(ctx, <span class="string">&quot;区域数据预热失败&quot;</span>, err)</span><br><span class="line">        <span class="keyword">return</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 2. 批量写入Redis</span></span><br><span class="line">    pipe := g.Redis().Pipeline()</span><br><span class="line">    <span class="keyword">for</span> _, region := <span class="keyword">range</span> regions &#123;</span><br><span class="line">        key := fmt.Sprintf(<span class="string">&quot;region:info:%d&quot;</span>, region.Id)</span><br><span class="line">        data, _ := gjson.Encode(region)</span><br><span class="line">        pipe.SetEx(ctx, key, <span class="number">24</span>*time.Hour, data) <span class="comment">// 过期时间24小时</span></span><br><span class="line">    &#125;</span><br><span class="line">    _, err = pipe.Exec(ctx)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        g.Log().Error(ctx, <span class="string">&quot;区域数据写入缓存失败&quot;</span>, err)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        g.Log().Info(ctx, <span class="string">&quot;区域数据缓存预热完成，共&quot;</span>, <span class="built_in">len</span>(regions), <span class="string">&quot;条&quot;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="（2）定时任务增量预热（适合动态更新的热点数据）"><a class="header-anchor" href="#（2）定时任务增量预热（适合动态更新的热点数据）">¶</a>（2）定时任务增量预热（适合动态更新的热点数据）</h5>
+<ul>
+<li><strong>适用场景</strong>：数据频繁更新但有明显热点（如虚拟电厂中 “近 1 小时发电量 Top10 的设备数据”）。</li>
+<li><strong>实现步骤</strong>：
+<ol>
+<li>用定时任务（如每 10 分钟）统计近期访问量最高的前 N 条数据（通过访问日志或数据库统计）；</li>
+<li>从数据库查询这些热点数据；</li>
+<li>写入 / 更新 Redis 缓存（覆盖旧值）。</li>
+</ol>
+</li>
+<li><strong>代码示例（GoFrame）</strong>：</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 定时预热热点设备数据（每10分钟执行一次）</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">initHotDeviceCache</span><span class="params">()</span></span> &#123;</span><br><span class="line">    gtimer.Add(context.Background(), <span class="number">10</span>*time.Minute, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context)</span></span> &#123;</span><br><span class="line">        <span class="comment">// 1. 统计近1小时访问量Top50的设备ID</span></span><br><span class="line">        hotDeviceIDs, err := getTopNDeviceIDs(ctx, <span class="number">50</span>, <span class="number">1</span>*time.Hour)</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> || <span class="built_in">len</span>(hotDeviceIDs) == <span class="number">0</span> &#123;</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 2. 批量查询这些设备的最新数据</span></span><br><span class="line">        devices, err := dao.Device.Ctx(ctx).Where(<span class="string">&quot;id IN (?)&quot;</span>, hotDeviceIDs).All()</span><br><span class="line">        <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">            g.Log().Error(ctx, <span class="string">&quot;热点设备数据查询失败&quot;</span>, err)</span><br><span class="line">            <span class="keyword">return</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// 3. 更新缓存</span></span><br><span class="line">        pipe := g.Redis().Pipeline()</span><br><span class="line">        <span class="keyword">for</span> _, device := <span class="keyword">range</span> devices &#123;</span><br><span class="line">            key := fmt.Sprintf(<span class="string">&quot;device:info:%d&quot;</span>, device.Id)</span><br><span class="line">            data, _ := gjson.Encode(device)</span><br><span class="line">            pipe.SetEx(ctx, key, <span class="number">1</span>*time.Hour, data) <span class="comment">// 过期时间1小时（短于定时周期，确保数据新鲜）</span></span><br><span class="line">        &#125;</span><br><span class="line">        _, _ = pipe.Exec(ctx)</span><br><span class="line">        g.Log().Info(ctx, <span class="string">&quot;热点设备缓存预热完成，共&quot;</span>, <span class="built_in">len</span>(devices), <span class="string">&quot;条&quot;</span>)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="（3）基于用户行为预测预热（适合突发流量场景）"><a class="header-anchor" href="#（3）基于用户行为预测预热（适合突发流量场景）">¶</a>（3）基于用户行为预测预热（适合突发流量场景）</h5>
+<ul>
+<li><strong>适用场景</strong>：可预测的流量高峰（如虚拟电厂平台 “每天 9 点用户集中查看昨日收益”）。</li>
+<li>实现步骤：
+<ol>
+<li>分析历史流量规律，确定高峰前的 “预热窗口期”（如每天 8:30）；</li>
+<li>提前查询即将被高频访问的数据（如 “所有用户的昨日收益”）；</li>
+<li>批量写入 Redis，过期时间覆盖高峰时段（如 8:30-10:00）。</li>
+</ol>
+</li>
+</ul>
+<h4 id="2-优点与注意事项"><a class="header-anchor" href="#2-优点与注意事项">¶</a>2. 优点与注意事项</h4>
+<ul>
+<li><strong>优点</strong>：消除首次查询的数据库穿透，降低高峰时段数据库压力；</li>
+<li>注意事项：
+<ul>
+<li>避免预热数据量过大导致 Redis 内存溢出（只预热 “真正的热点数据”）；</li>
+<li>若数据更新频繁，需控制预热周期（如 10 分钟一次），避免缓存与数据库长期不一致。</li>
+</ul>
+</li>
+</ul>
+<h3 id="二、延迟过期：给缓存设置随机过期时间偏移"><a class="header-anchor" href="#二、延迟过期：给缓存设置随机过期时间偏移">¶</a>二、延迟过期：给缓存设置随机过期时间偏移</h3>
+<p><strong>核心目标</strong>：避免大量缓存 key 在同一时间点过期（否则会导致 “缓存雪崩”—— 所有请求同时穿透到数据库），通过随机偏移分散过期时间。</p>
+<h4 id="1-实现方式：基础过期时间-随机偏移"><a class="header-anchor" href="#1-实现方式：基础过期时间-随机偏移">¶</a>1. 实现方式：基础过期时间 + 随机偏移</h4>
+<ul>
+<li><strong>核心逻辑</strong>：设置缓存时，在 “基础过期时间”（如 2 小时）上叠加一个 “随机偏移量”（如 0-30 分钟），让不同 key 的过期时间错开。</li>
+<li><strong>代码示例（GoFrame）</strong>：</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 存储设备数据到缓存时，添加随机过期偏移</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">setDeviceCache</span><span class="params">(ctx context.Context, device *entity.Device)</span></span> <span class="type">error</span> &#123;</span><br><span class="line">    key := fmt.Sprintf(<span class="string">&quot;device:info:%d&quot;</span>, device.Id)</span><br><span class="line">    data, err := gjson.Encode(device)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> err</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 基础过期时间2小时，随机偏移0-30分钟</span></span><br><span class="line">    baseExpire := <span class="number">2</span> * time.Hour</span><br><span class="line">    randomOffset := time.Duration(grand.Intn(<span class="number">30</span>)) * time.Minute <span class="comment">// 0-30分钟随机数</span></span><br><span class="line">    totalExpire := baseExpire + randomOffset</span><br><span class="line">    _, err = g.Redis().SetEx(ctx, key, totalExpire, data)</span><br><span class="line">    <span class="keyword">return</span> err</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-优点与注意事项-2"><a class="header-anchor" href="#2-优点与注意事项-2">¶</a>2. 优点与注意事项</h4>
+<ul>
+<li><strong>优点</strong>：分散缓存过期时间，避免 “瞬间全量失效” 导致的数据库压力峰值；</li>
+<li>注意事项：
+<ul>
+<li>随机偏移量不宜过大（如不超过基础过期时间的 20%），否则可能导致缓存数据长期不更新；</li>
+<li>配合 “主动更新” 机制（如数据修改时同步更新缓存），避免缓存过期前数据已变更。</li>
+</ul>
+</li>
+</ul>
+<h3 id="总结-2"><a class="header-anchor" href="#总结-2">¶</a>总结</h3>
+<ul>
+<li><strong>缓存预热</strong>：通过 “主动加载” 热点数据到缓存，解决 “首次查询穿透” 问题，实现方式包括启动时全量加载、定时增量更新、行为预测预热；</li>
+<li><strong>延迟过期</strong>：通过 “随机过期偏移” 分散缓存失效时间，避免 “缓存雪崩”，核心是在基础过期时间上叠加随机值。</li>
+</ul>
+<p>两者结合可大幅提升缓存架构的稳定性，尤其适合虚拟电厂这类高并发、数据实时性要求高的场景。</p>
+<p>你的方案<strong>具有很强的可行性</strong>，本质是通过 “真实访问行为统计” 动态识别热点数据，避免了初期主观判断热点的偏差，尤其适合内测阶段（缺乏历史数据）的场景。以下从可行性分析、优化细节和落地步骤三个方面展开：</p>
+<h3 id="一、方案可行性：核心逻辑合理，适合内测阶段"><a class="header-anchor" href="#一、方案可行性：核心逻辑合理，适合内测阶段">¶</a>一、方案可行性：核心逻辑合理，适合内测阶段</h3>
+<p>你的思路本质是 “<strong>基于实际访问量的热点数据发现</strong>”，核心优势在于：</p>
+<ol>
+<li><strong>真实性</strong>：通过用户 / 系统的实际调用次数（自增指标）判断热点，比 “拍脑袋” 预设热点（如 “猜测某类设备是热点”）更准确；</li>
+<li><strong>低侵入性</strong>：内测阶段只需添加 “访问计数” 逻辑，不影响核心业务，符合 “先收集数据再优化” 的迭代思路；</li>
+<li><strong>易落地</strong>：技术实现简单（用 Redis 的<code>INCR</code>做自增计数，定期扫描计数取 Top N），无需复杂的统计模型。</li>
+</ol>
+<h3 id="二、需优化的细节：避免常见问题"><a class="header-anchor" href="#二、需优化的细节：避免常见问题">¶</a>二、需优化的细节：避免常见问题</h3>
+<h4 id="1-访问指标的存储与过期策略"><a class="header-anchor" href="#1-访问指标的存储与过期策略">¶</a>1. 访问指标的存储与过期策略</h4>
+<ul>
+<li><strong>问题</strong>：若缓存数据过期，但访问指标未同步清理，会导致统计 “已失效数据的访问量”，干扰热点判断。</li>
+<li>解决：
+<ul>
+<li>为每个缓存 key 的访问指标（如<code>key:access_count</code>）设置与缓存 key 相同的过期时间（或稍长 10 分钟，确保能统计到最后一次访问）；</li>
+<li>例如：缓存 key <code>device:info:123</code> 过期时间 2 小时，则其访问指标 <code>device:info:123:count</code> 也设置 2 小时 10 分钟过期。</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 访问缓存时，同步自增计数（GoFrame示例）</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">getDeviceFromCache</span><span class="params">(ctx context.Context, deviceID <span class="type">int</span>)</span></span> (*entity.Device, <span class="type">error</span>) &#123;</span><br><span class="line">    key := fmt.Sprintf(<span class="string">&quot;device:info:%d&quot;</span>, deviceID)</span><br><span class="line">    <span class="comment">// 1. 尝试从缓存获取数据</span></span><br><span class="line">    data, err := g.Redis().Get(ctx, key)</span><br><span class="line">    <span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nil</span>, err</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 2. 若命中缓存，自增访问计数</span></span><br><span class="line">    <span class="keyword">if</span> !data.IsEmpty() &#123;</span><br><span class="line">        countKey := fmt.Sprintf(<span class="string">&quot;%s:count&quot;</span>, key)</span><br><span class="line">        <span class="comment">// 设置计数key的过期时间（比缓存key长10分钟）</span></span><br><span class="line">        _, _ = g.Redis().IncrEx(ctx, countKey, <span class="number">2</span>*time.Hour+<span class="number">10</span>*time.Minute)</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 3. 后续反序列化逻辑...</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-热点数据的统计周期与时效性"><a class="header-anchor" href="#2-热点数据的统计周期与时效性">¶</a>2. 热点数据的统计周期与时效性</h4>
+<ul>
+<li><strong>问题</strong>：若统计周期过长（如 1 天），可能包含 “过时热点”（如某设备仅在上午被高频访问，下午无人问津）；周期过短（如 10 分钟），可能因数据量不足导致误判。</li>
+<li>解决：
+<ul>
+<li>内测阶段可设置 “<strong>滑动窗口统计</strong>”：每小时统计一次过去 1 小时的访问量（而非固定周期），兼顾时效性和数据量；</li>
+<li>例如：每天凌晨 2 点统计 “过去 24 小时的 Top 100 访问量”，同时保留 “过去 1 小时 Top 20”，后续预热时优先取 “重叠数据”（既长期热门又短期高频）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-冷数据的指标清理"><a class="header-anchor" href="#3-冷数据的指标清理">¶</a>3. 冷数据的指标清理</h4>
+<ul>
+<li>
+<p><strong>问题</strong>：大量低访问量的缓存 key（如访问次数 &lt; 5）的计数会占用 Redis 内存，且无实际意义。</p>
+</li>
+<li>
+<p>解决：</p>
+<ul>
+<li>统计热点数据后，批量删除访问量低于阈值（如 5 次）的计数 key；</li>
+<li>可在 “读取指标生成热门数据组” 的脚本中添加清理逻辑：</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 生成热门数据组后，清理低访问量计数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">cleanLowCountKeys</span><span class="params">(ctx context.Context, threshold <span class="type">int</span>)</span></span> &#123;</span><br><span class="line">    <span class="comment">// 模糊匹配所有计数key（需确保Redis key命名规范统一）</span></span><br><span class="line">    countKeys, _ := g.Redis().Keys(ctx, <span class="string">&quot;*:count&quot;</span>).Result()</span><br><span class="line">    <span class="keyword">for</span> _, key := <span class="keyword">range</span> countKeys &#123;</span><br><span class="line">        count, _ := g.Redis().Get(ctx, key).Int()</span><br><span class="line">        <span class="keyword">if</span> count &lt; threshold &#123;</span><br><span class="line">            g.Redis().Del(ctx, key)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h3 id="三、落地步骤：分阶段实现，风险可控"><a class="header-anchor" href="#三、落地步骤：分阶段实现，风险可控">¶</a>三、落地步骤：分阶段实现，风险可控</h3>
+<ol>
+<li><strong>内测版本（第一阶段）</strong>：
+<ul>
+<li>仅添加 “访问计数” 逻辑（用 Redis <code>INCR</code>），不做预热；</li>
+<li>部署定时任务（如每小时），扫描所有计数 key，记录访问量 Top N（如 Top 200），存储到 “候选热门数据组”（如 Redis 的<code>hot:data:candidate</code>集合）。</li>
+</ul>
+</li>
+<li><strong>数据验证阶段</strong>：
+<ul>
+<li>观察 1-2 周的候选热门数据组，分析是否符合业务直觉（如虚拟电厂中，“居民光伏设备” 是否确实比 “工业储能设备” 访问更频繁）；</li>
+<li>调整阈值（如访问量 Top 100 还是 Top 200）、统计周期（1 小时还是 24 小时），确保热点数据的准确性。</li>
+</ul>
+</li>
+<li><strong>下一版本（第二阶段）</strong>：
+<ul>
+<li>基于验证后的热门数据组，实现缓存预热（如系统启动时加载 Top 100，定时任务每小时更新 Top 20）；</li>
+<li>上线后对比预热前后的数据库穿透率（如从 10% 降至 2%），验证效果。</li>
+</ul>
+</li>
+</ol>
+<h3 id="结论"><a class="header-anchor" href="#结论">¶</a>结论</h3>
+<p>你的方案<strong>完全可行</strong>，且符合 “从实际数据出发” 的迭代思路，尤其适合内测阶段缺乏历史数据的场景。核心是通过 “统一的计数 key 命名 + 同步过期策略 + 定期清理冷数据” 解决细节问题，后续基于统计结果落地预热时，能更精准地命中真实热点，避免无效预热。</p>
+
+      </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BD%91%E7%BB%9C%E5%AE%89%E5%85%A8/" rel="tag"># 网络安全</a>
+              <a href="/tags/%E5%B7%A5%E7%A8%8B%E5%BC%80%E5%8F%91/" rel="tag"># 工程开发</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/09/16/gvar-var%E8%AF%A6%E8%A7%A3/" rel="next" title="gvar-var详解">
+                  gvar-var详解 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
 
 </div>
     </main>
