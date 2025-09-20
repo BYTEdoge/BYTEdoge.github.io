@@ -24,25 +24,28 @@
 
 <script class="next-config" data-name="main" type="application/json">{"hostname":"bytedoge.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
 
-    <meta name="description" content="技术学习笔记">
-<meta property="og:type" content="website">
-<meta property="og:title" content="zhyBlogs">
-<meta property="og:url" content="https://bytedoge.github.io/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">
+    <meta name="description" content="¶使用orm操作时返回对象的辨析： 1.只有查询类操作的返回结果可以通过Struct()进行数据转换，转换为实体类型 2.非查询类操作，插入，更新等操作，返回的类型只是一个标识是否执行成功的状态码">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用goframe进行orm操作时的技巧">
+<meta property="og:url" content="https://bytedoge.github.io/2025/09/20/%E4%BD%BF%E7%94%A8goframe%E8%BF%9B%E8%A1%8Corm%E6%93%8D%E4%BD%9C%E6%97%B6%E7%9A%84%E6%8A%80%E5%B7%A7/">
 <meta property="og:site_name" content="zhyBlogs">
-<meta property="og:description" content="技术学习笔记">
+<meta property="og:description" content="¶使用orm操作时返回对象的辨析： 1.只有查询类操作的返回结果可以通过Struct()进行数据转换，转换为实体类型 2.非查询类操作，插入，更新等操作，返回的类型只是一个标识是否执行成功的状态码">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2025-09-20T02:36:19.000Z">
+<meta property="article:modified_time" content="2025-09-20T03:33:53.120Z">
 <meta property="article:author" content="Zheng HanYang">
-<meta property="article:tag" content="技术学习笔记">
+<meta property="article:tag" content="goframe">
+<meta property="article:tag" content="orm">
 <meta name="twitter:card" content="summary">
 
 
-<link rel="canonical" href="https://bytedoge.github.io/categories/%E5%88%86%E5%B8%83%E5%BC%8F/">
+<link rel="canonical" href="https://bytedoge.github.io/2025/09/20/%E4%BD%BF%E7%94%A8goframe%E8%BF%9B%E8%A1%8Corm%E6%93%8D%E4%BD%9C%E6%97%B6%E7%9A%84%E6%8A%80%E5%B7%A7/">
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":false,"lang":"zh-CN","comments":"","permalink":"","path":"categories/分布式/index.html","title":""}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bytedoge.github.io/2025/09/20/%E4%BD%BF%E7%94%A8goframe%E8%BF%9B%E8%A1%8Corm%E6%93%8D%E4%BD%9C%E6%97%B6%E7%9A%84%E6%8A%80%E5%B7%A7/","path":"2025/09/20/使用goframe进行orm操作时的技巧/","title":"使用goframe进行orm操作时的技巧"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
-<title>分类: 分布式 | zhyBlogs</title>
+<title>使用goframe进行orm操作时的技巧 | zhyBlogs</title>
   
 
 
@@ -321,7 +324,7 @@
   
   <aside class="sidebar">
 
-    <div class="sidebar-inner sidebar-overview-active">
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
       <ul class="sidebar-nav">
         <li class="sidebar-nav-toc">
           文章目录
@@ -334,6 +337,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8orm%E6%93%8D%E4%BD%9C%E6%97%B6%E8%BF%94%E5%9B%9E%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%BE%A8%E6%9E%90%EF%BC%9A"><span class="nav-number">1.</span> <span class="nav-text">使用orm操作时返回对象的辨析：</span></a></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -381,68 +385,126 @@
 
       </div>
 
-      <div class="main-inner category posts-collapse">
+      <div class="main-inner post posts-expand">
 
 
   
-  
-  
-  <div class="post-block">
-    <div class="post-content">
-      <div class="collection-title">
-        <span class="collection-header">嗯..! 分类 "分布式" 下共有 2 篇文章 继续努力。</span>
-      </div>
 
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bytedoge.github.io/2025/09/20/%E4%BD%BF%E7%94%A8goframe%E8%BF%9B%E8%A1%8Corm%E6%93%8D%E4%BD%9C%E6%97%B6%E7%9A%84%E6%8A%80%E5%B7%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zheng HanYang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhyBlogs">
+      <meta itemprop="description" content="技术学习笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="使用goframe进行orm操作时的技巧 | zhyBlogs">
+      <meta itemprop="description" content="">
+    </span>
+        
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">
+            使用goframe进行orm操作时的技巧
+          </h1>
+
+          <div class="post-meta-container">
+            <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
       
-    <div class="collection-year">
-      <span class="collection-header">2025</span>
-    </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-09-16T10:06:07+08:00"
-              content="2025-09-16">
-          09-16
-        </time>
+      <time title="创建时间：2025-09-20 10:36:19 / 修改时间：11:33:53" itemprop="dateCreated datePublished" datetime="2025-09-20T10:36:19+08:00">2025-09-20</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/goframe/" itemprop="url" rel="index"><span itemprop="name">goframe</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>96</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>1 分钟</span>
+    </span>
+</div>
+
+          </div>
+        </header>
+
+    
+    
+    
+      <div class="post-body" itemprop="articleBody"><h2 id="使用orm操作时返回对象的辨析："><a class="header-anchor" href="#使用orm操作时返回对象的辨析：">¶</a>使用orm操作时返回对象的辨析：</h2>
+<p>1.只有查询类操作的返回结果可以通过Struct()进行数据转换，转换为实体类型</p>
+<p>2.非查询类操作，插入，更新等操作，返回的类型只是一个标识是否执行成功的状态码</p>
+
       </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/09/16/%E5%88%86%E5%B8%83%E5%BC%8F%E4%BB%A5%E5%8F%8A%E5%AE%89%E5%85%A8%E9%97%AE%E9%A2%98%E8%AF%A6%E8%A7%A3/" itemprop="url">
-            <span itemprop="name">分布式系统以及安全问题详解</span>
-          </a>
-      </div>
+    
+    
+    
 
-      
-    </header>
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/goframe/" rel="tag"># goframe</a>
+              <a href="/tags/orm/" rel="tag"># orm</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/09/17/%E5%8E%9F%E5%AD%90%E6%80%A7%E7%9A%84%E7%90%86%E8%A7%A3/" rel="next" title="原子性的理解">
+                  原子性的理解 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
   </article>
+</div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-      <div class="post-meta-container">
-        <time itemprop="dateCreated"
-              datetime="2025-09-02T11:35:33+08:00"
-              content="2025-09-02">
-          09-02
-        </time>
-      </div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2025/09/02/%E4%BB%A5%E7%A7%92%E6%9D%80%E4%B8%BA%E4%BE%8B%E7%9A%84%E5%88%86%E5%B8%83%E5%BC%8F%E7%9F%A5%E8%AF%86%E7%82%B9%E6%A6%82%E8%A7%88/" itemprop="url">
-            <span itemprop="name">以秒杀为例的分布式知识点概览</span>
-          </a>
-      </div>
 
-      
-    </header>
-  </article>
 
-    </div>
-  </div>
-  
-  
-  
+
 
 </div>
     </main>

@@ -4619,4 +4619,19 @@ VPP 需要定时执行操作（比如每小时统计一次区域能耗、每天�
         <tag>并发安全</tag>
       </tags>
   </entry>
+  <entry>
+    <title>使用goframe进行orm操作时的技巧</title>
+    <url>/2025/09/20/%E4%BD%BF%E7%94%A8goframe%E8%BF%9B%E8%A1%8Corm%E6%93%8D%E4%BD%9C%E6%97%B6%E7%9A%84%E6%8A%80%E5%B7%A7/</url>
+    <content><![CDATA[<h2 id="使用orm操作时返回对象的辨析："><a class="header-anchor" href="#使用orm操作时返回对象的辨析：">¶</a>使用orm操作时返回对象的辨析：</h2>
+<p>1.只有查询类操作的返回结果可以通过Struct()进行数据转换，转换为实体类型</p>
+<p>2.非查询类操作，插入，更新等操作，返回的类型只是一个标识是否执行成功的状态码</p>
+]]></content>
+      <categories>
+        <category>goframe</category>
+      </categories>
+      <tags>
+        <tag>goframe</tag>
+        <tag>orm</tag>
+      </tags>
+  </entry>
 </search>
