@@ -5023,4 +5023,109 @@ VPP 需要定时执行操作（比如每小时统计一次区域能耗、每天�
         <tag>数据库</tag>
       </tags>
   </entry>
+  <entry>
+    <title>gofr操作的相关关键字</title>
+    <url>/2025/09/24/gofr%E6%93%8D%E4%BD%9C%E7%9A%84%E7%9B%B8%E5%85%B3%E5%85%B3%E9%94%AE/</url>
+    <content><![CDATA[<h3 id="一、代码中关键关键字-组件的作用详解"><a class="header-anchor" href="#一、代码中关键关键字-组件的作用详解">¶</a>一、代码中关键关键字 / 组件的作用详解</h3>
+<p>以下是基于 GoFrame 并发代码中核心关键字和组件的详细说明，结合代码场景解释其作用：</p>
+<h4 id="1-协程与并发基础"><a class="header-anchor" href="#1-协程与并发基础">¶</a>1. 协程与并发基础</h4>
+<ul>
+<li>
+<p><code>go</code></p>
+<p>Go 语言的协程启动关键字，用于创建轻量级线程（goroutine）。</p>
+<p>在代码中，</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">go worker(...)</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">go resultProcessor(...)</span><br></pre></td></tr></table></figure>
+<p>等语句启动了多个并行执行的协程，实现任务的并发处理。</p>
+<p>相比操作系统线程，协程由 Go runtime 管理，内存占用极低（初始栈仅 2KB），可同时启动数万级协程。</p>
+</li>
+</ul>
+<h4 id="2-通道（数据通信）"><a class="header-anchor" href="#2-通道（数据通信）">¶</a>2. 通道（数据通信）</h4>
+<ul>
+<li>**<code>chan</code>**用于协程间安全通信的数据结构，实现 “通过通信共享内存，而非通过共享内存通信”。
+<ul>
+<li>代码中 <code>taskChan := make(chan DataTask, 100)</code> 创建了带缓冲的通道，缓冲大小 100 表示最多可暂存 100 个任务，避免协程阻塞。</li>
+<li>方向限定符 <code>&lt;-chan</code>（只读）和 <code>chan&lt;-</code>（只写）用于限制通道操作权限，增强代码安全性（如 <code>worker</code> 函数的 <code>taskChan &lt;-chan DataTask</code> 表示只能从该通道接收数据）。</li>
+</ul>
+</li>
+<li><strong>通道操作 <code>&lt;-</code></strong>
+<ul>
+<li>发送：<code>taskChan &lt;- task</code> 将任务写入通道，供工作协程读取；</li>
+<li>接收：<code>task, ok := &lt;-taskChan</code> 从通道读取任务，<code>ok</code> 用于判断通道是否已关闭。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-同步与等待"><a class="header-anchor" href="#3-同步与等待">¶</a>3. 同步与等待</h4>
+<ul>
+<li>
+<p><code>sync.WaitGroup</code></p>
+<p>用于等待一组协程完成的同步工具，核心方法：</p>
+<ul>
+<li>
+<p><code>wg.Add(1)</code>：注册一个待完成的协程；</p>
+</li>
+<li>
+<p><code>wg.Done()</code>：通知 WaitGroup 某个协程已完成（通常在 <code>defer</code> 中调用）；</p>
+</li>
+<li>
+<pre><code>wg.Wait()
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">阻塞当前协程，直到所有注册的协程都调用</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+Done()
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">在代码中，</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+sync.WaitGroup
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"></span><br><span class="line">    用于等待所有工作协程处理完任务后再退出程序。</span><br><span class="line"></span><br><span class="line">#### 4. 资源管理与清理</span><br><span class="line"></span><br><span class="line">- `defer`</span><br><span class="line"></span><br><span class="line">  用于延迟执行函数调用，确保在当前函数退出时（无论正常返回还是 panic）执行清理逻辑。</span><br><span class="line"></span><br><span class="line">  - 代码中 `defer wg.Done()` 确保工作协程退出前通知 WaitGroup；</span><br><span class="line">  - `defer ticker.Stop()` 确保定时器在结果处理器退出时停止，避免资源泄漏。</span><br><span class="line"></span><br><span class="line">#### 5. 上下文与退出控制</span><br><span class="line"></span><br><span class="line">- `context.Context`</span><br><span class="line"></span><br><span class="line">  </span><br><span class="line"></span><br><span class="line">  用于传递请求生命周期的上下文信息（如超时、取消信号），实现协程间的优雅退出。</span><br><span class="line"></span><br><span class="line">  - `ctx := gctx.New()` 创建基础上下文；</span><br><span class="line"></span><br><span class="line">  - ```</span><br><span class="line">    &lt;-ctx.Done()</span><br></pre></td></tr></table></figure>
+
+监听取消信号，当上下文被取消（如程序退出）时，所有依赖该上下文的协程可及时退出。
+
+在代码中，
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select</span><br></pre></td></tr></table></figure>
+
+语句结合
+
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">case &lt;-ctx.Done()</span><br></pre></td></tr></table></figure>
+
+实现了协程的安全退出逻辑。
+
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="6-流程控制"><a class="header-anchor" href="#6-流程控制">¶</a>6. 流程控制</h4>
+<ul>
+<li>
+<p><code>select</code></p>
+<p>用于同时监听多个通道操作，当其中一个通道可操作时执行对应逻辑，常用于协程中的多条件等待。</p>
+<p>代码中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">select</span><br></pre></td></tr></table></figure>
+<p>结合通道接收和</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ctx.Done()</span><br></pre></td></tr></table></figure>
+<p>实现了 “要么处理任务，要么响应退出信号” 的逻辑。</p>
+</li>
+</ul>
+<h4 id="7-GoFrame-框架组件"><a class="header-anchor" href="#7-GoFrame-框架组件">¶</a>7. GoFrame 框架组件</h4>
+<ul>
+<li>
+<p><code>gtimer</code></p>
+<p>GoFrame 的定时器组件，用于周期性执行任务。代码中</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">gtimer.New(...)</span><br></pre></td></tr></table></figure>
+<p>定期输出任务处理进度。</p>
+</li>
+<li>
+<p><code>g.Log</code></p>
+<p>GoFrame 的日志组件，用于并发安全的日志输出，避免多协程打印日志时的混乱。</p>
+</li>
+</ul>
+<h3 id="代码示例："><a class="header-anchor" href="#代码示例：">¶</a>代码示例：</h3>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;context&quot;</span></span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;time&quot;</span></span><br><span class="line">	</span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/frame/g&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/os/gctx&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/os/gtimer&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/util/gconv&quot;</span></span><br><span class="line">	<span class="string">&quot;sync&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 数据处理任务结构体</span></span><br><span class="line"><span class="keyword">type</span> DataTask <span class="keyword">struct</span> &#123;</span><br><span class="line">	ID     <span class="type">int</span></span><br><span class="line">	Data   <span class="type">string</span></span><br><span class="line">	Result <span class="type">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	ctx := gctx.New()</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 1. 创建通道</span></span><br><span class="line">	taskChan := <span class="built_in">make</span>(<span class="keyword">chan</span> DataTask, <span class="number">100</span>)   <span class="comment">// 任务通道</span></span><br><span class="line">	resultChan := <span class="built_in">make</span>(<span class="keyword">chan</span> DataTask, <span class="number">100</span>) <span class="comment">// 结果通道</span></span><br><span class="line">	doneChan := <span class="built_in">make</span>(<span class="keyword">chan</span> <span class="keyword">struct</span>&#123;&#125;)        <span class="comment">// 完成信号通道</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 2. 启动多个工作协程</span></span><br><span class="line">	<span class="keyword">const</span> workerCount = <span class="number">3</span></span><br><span class="line">	<span class="keyword">var</span> wg sync.WaitGroup</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 启动工作协程</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; workerCount; i++ &#123;</span><br><span class="line">		wg.Add(<span class="number">1</span>)</span><br><span class="line">		<span class="keyword">go</span> worker(ctx, i, taskChan, resultChan, &amp;wg)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 3. 启动结果处理协程</span></span><br><span class="line">	<span class="keyword">go</span> resultProcessor(ctx, resultChan, doneChan)</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 4. 生成任务</span></span><br><span class="line">	<span class="keyword">go</span> generateTasks(ctx, taskChan)</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 5. 等待所有任务完成并退出</span></span><br><span class="line">	&lt;-doneChan</span><br><span class="line">	g.Log().Info(ctx, <span class="string">&quot;所有任务处理完成&quot;</span>)</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 等待工作协程结束</span></span><br><span class="line">	wg.Wait()</span><br><span class="line">	g.Log().Info(ctx, <span class="string">&quot;所有工作协程已退出&quot;</span>)</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 关闭所有通道</span></span><br><span class="line">	<span class="built_in">close</span>(taskChan)</span><br><span class="line">	<span class="built_in">close</span>(resultChan)</span><br><span class="line">	<span class="built_in">close</span>(doneChan)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 工作协程：处理任务</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">worker</span><span class="params">(ctx context.Context, workerID <span class="type">int</span>, taskChan &lt;-<span class="keyword">chan</span> DataTask, resultChan <span class="keyword">chan</span>&lt;- DataTask, wg *sync.WaitGroup)</span></span> &#123;</span><br><span class="line">	<span class="comment">// defer确保在函数退出时通知WaitGroup</span></span><br><span class="line">	<span class="keyword">defer</span> wg.Done()</span><br><span class="line">	g.Log().Infof(ctx, <span class="string">&quot;工作协程 %d 启动&quot;</span>, workerID)</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 退出时的清理工作</span></span><br><span class="line">	<span class="keyword">defer</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">		g.Log().Infof(ctx, <span class="string">&quot;工作协程 %d 退出&quot;</span>, workerID)</span><br><span class="line">	&#125;()</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> task, ok := &lt;-taskChan:</span><br><span class="line">			<span class="keyword">if</span> !ok &#123;</span><br><span class="line">				<span class="comment">// 通道已关闭，退出</span></span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			g.Log().Infof(ctx, <span class="string">&quot;工作协程 %d 开始处理任务 %d: %s&quot;</span>, workerID, task.ID, task.Data)</span><br><span class="line">			</span><br><span class="line">			<span class="comment">// 模拟处理耗时</span></span><br><span class="line">			time.Sleep(time.Millisecond * <span class="number">500</span>)</span><br><span class="line">			</span><br><span class="line">			<span class="comment">// 处理数据</span></span><br><span class="line">			task.Result = fmt.Sprintf(<span class="string">&quot;processed: %s (by worker %d)&quot;</span>, task.Data, workerID)</span><br><span class="line">			</span><br><span class="line">			<span class="comment">// 发送结果</span></span><br><span class="line">			resultChan &lt;- task</span><br><span class="line">			</span><br><span class="line">		<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">			<span class="comment">// 上下文取消，退出</span></span><br><span class="line">			g.Log().Infof(ctx, <span class="string">&quot;工作协程 %d 收到退出信号&quot;</span>, workerID)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 结果处理协程：处理并汇总结果</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">resultProcessor</span><span class="params">(ctx context.Context, resultChan &lt;-<span class="keyword">chan</span> DataTask, doneChan <span class="keyword">chan</span>&lt;- <span class="keyword">struct</span>&#123;&#125;)</span></span> &#123;</span><br><span class="line">	resultCount := <span class="number">0</span></span><br><span class="line">	totalTasks := <span class="number">10</span> <span class="comment">// 预期总任务数</span></span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 使用定时器定期输出进度</span></span><br><span class="line">	ticker := gtimer.New(time.Second*<span class="number">2</span>, <span class="function"><span class="keyword">func</span><span class="params">(ctx context.Context)</span></span> &#123;</span><br><span class="line">		g.Log().Infof(ctx, <span class="string">&quot;处理进度: %d/%d&quot;</span>, resultCount, totalTasks)</span><br><span class="line">	&#125;)</span><br><span class="line">	<span class="keyword">defer</span> ticker.Stop() <span class="comment">// 确保定时器在函数退出时停止</span></span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span> &#123;</span><br><span class="line">		<span class="keyword">select</span> &#123;</span><br><span class="line">		<span class="keyword">case</span> result, ok := &lt;-resultChan:</span><br><span class="line">			<span class="keyword">if</span> !ok &#123;</span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">			resultCount++</span><br><span class="line">			g.Log().Infof(ctx, <span class="string">&quot;收到任务 %d 结果: %s&quot;</span>, result.ID, result.Result)</span><br><span class="line">			</span><br><span class="line">			<span class="comment">// 所有任务处理完成</span></span><br><span class="line">			<span class="keyword">if</span> resultCount &gt;= totalTasks &#123;</span><br><span class="line">				g.Log().Infof(ctx, <span class="string">&quot;所有 %d 个任务已处理完毕&quot;</span>, totalTasks)</span><br><span class="line">				doneChan &lt;- <span class="keyword">struct</span>&#123;&#125;&#123;&#125;</span><br><span class="line">				<span class="keyword">return</span></span><br><span class="line">			&#125;</span><br><span class="line">			</span><br><span class="line">		<span class="keyword">case</span> &lt;-ctx.Done():</span><br><span class="line">			g.Log().Info(ctx, <span class="string">&quot;结果处理器收到退出信号&quot;</span>)</span><br><span class="line">			<span class="keyword">return</span></span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 生成任务</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">generateTasks</span><span class="params">(ctx context.Context, taskChan <span class="keyword">chan</span>&lt;- DataTask)</span></span> &#123;</span><br><span class="line">	<span class="keyword">defer</span> g.Log().Info(ctx, <span class="string">&quot;任务生成器退出&quot;</span>)</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 生成10个任务</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		task := DataTask&#123;</span><br><span class="line">			ID:   i + <span class="number">1</span>,</span><br><span class="line">			Data: <span class="string">&quot;原始数据 &quot;</span> + gconv.String(i+<span class="number">1</span>),</span><br><span class="line">		&#125;</span><br><span class="line">		taskChan &lt;- task</span><br><span class="line">		g.Log().Infof(ctx, <span class="string">&quot;生成任务 %d&quot;</span>, task.ID)</span><br><span class="line">		</span><br><span class="line">		<span class="comment">// 间隔一段时间生成任务</span></span><br><span class="line">		time.Sleep(time.Millisecond * <span class="number">200</span>)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>goframe</category>
+      </categories>
+      <tags>
+        <tag>goframe</tag>
+        <tag>并发</tag>
+      </tags>
+  </entry>
 </search>
