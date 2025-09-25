@@ -5128,4 +5128,52 @@ sync.WaitGroup
         <tag>并发</tag>
       </tags>
   </entry>
+  <entry>
+    <title>go协程相关理解</title>
+    <url>/2025/09/25/go%E5%8D%8F%E7%A8%8B%E7%9B%B8%E5%85%B3%E7%90%86%E8%A7%A3/</url>
+    <content><![CDATA[<h3 id="1-关于-go-func-与协程（goroutine）的创建"><a class="header-anchor" href="#1-关于-go-func-与协程（goroutine）的创建">¶</a>1. 关于 <code>go func</code> 与协程（goroutine）的创建</h3>
+<p>你的理解是对的：<code>go func()</code> 确实会创建一个新的 goroutine（协程），每次调用都会产生一个独立的协程。这些协程由 Go 运行时的调度器管理，在逻辑上是 “并发执行” 的（可能在多核 CPU 上并行，也可能在单核心上通过时间片切换实现并发）。因此，<strong>不能假设多个 goroutine 之间的执行顺序是串行的</strong>，它们的执行进度完全由调度器决定，编写代码时必须通过同步机制（如通道、WaitGroup 等）显式控制依赖关系。</p>
+<h3 id="2-关于通道（channel）的特性"><a class="header-anchor" href="#2-关于通道（channel）的特性">¶</a>2. 关于通道（channel）的特性</h3>
+<p>你的部分理解需要修正：</p>
+<ul>
+<li><strong>无缓存通道</strong>：关闭后仍然可以读取数据，直到通道中所有数据被读完。当通道关闭且数据已读完时，再次读取会返回 “零值 + false”（第二个返回值表示是否读取成功）。</li>
+<li><strong>有缓存通道</strong>：关闭后同样可以读取缓存中的所有数据，读完后再次读取也会返回 “零值 + false”。</li>
+</ul>
+<p><strong>总结</strong>：无论是有缓存还是无缓存通道，关闭后都可以读取剩余数据，只是读完后再读会返回失败状态。你的 “无缓存通道关闭后无法读取” 的理解是错误的。</p>
+<h3 id="3-关闭通道与读取协程的执行顺序"><a class="header-anchor" href="#3-关闭通道与读取协程的执行顺序">¶</a>3. 关闭通道与读取协程的执行顺序</h3>
+<p>关闭通道和协程读取通道的操作是<strong>并发执行</strong>的，具体谁先谁后无法确定，完全取决于 Go 调度器的调度。可能的情况：</p>
+<ul>
+<li>若协程先读取到数据（通道中存在数据），则读取成功，之后主程序关闭通道，协程后续读取会根据通道是否有剩余数据返回对应结果。</li>
+<li>若主程序先关闭通道，协程读取时：
+<ul>
+<li>若通道中还有未读数据（无论是否有缓存），会先读取数据（返回 “数据 + true”）；</li>
+<li>若通道中已无数据，会返回 “零值 + false”。</li>
+</ul>
+</li>
+</ul>
+<p><strong>关键</strong>：若需要确保 “协程读完所有数据后再关闭通道”，必须通过同步机制（如额外的信号通道、WaitGroup）显式控制顺序，不能依赖调度器的默认行为。</p>
+<h3 id="4-goroutine-与主程序的执行顺序"><a class="header-anchor" href="#4-goroutine-与主程序的执行顺序">¶</a>4. goroutine 与主程序的执行顺序</h3>
+<p><code>go func()</code> 启动的 goroutine 与主程序（或其他非 goroutine 代码）的执行顺序是<strong>不确定的</strong>：主程序不会等待 goroutine 执行完毕，而是会继续向下执行。例如：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&quot;fmt&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">        fmt.Println(<span class="string">&quot;goroutine 执行&quot;</span>)</span><br><span class="line">    &#125;()</span><br><span class="line">    fmt.Println(<span class="string">&quot;主程序执行&quot;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>上述代码可能输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">主程序执行</span><br></pre></td></tr></table></figure>
+<p>（因为主程序可能在 goroutine 打印前就已经退出）。</p>
+<p><strong>编写逻辑</strong>：必须通过同步机制（如 <code>sync.WaitGroup</code> 等待所有 goroutine 完成，或用通道传递完成信号）确保主程序等待 goroutine 执行完毕，避免 goroutine 还未执行就被主程序退出终止。</p>
+<h3 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h3>
+<ol>
+<li><code>go func()</code> 每次调用都会创建新 goroutine，并发执行，不能假设串行顺序。</li>
+<li>通道关闭后仍可读取剩余数据，直到读完后返回失败。</li>
+<li>关闭通道与读取操作的顺序不确定，需通过同步机制控制。</li>
+<li>goroutine 与主程序执行顺序不确定，必须用同步手段（如 WaitGroup、通道）协调。</li>
+</ol>
+<p>Go 并发的核心是 “显式同步”，避免依赖调度器的隐式行为，这是编写正确并发代码的关键。</p>
+]]></content>
+      <categories>
+        <category>go</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+        <tag>协程</tag>
+      </tags>
+  </entry>
 </search>
