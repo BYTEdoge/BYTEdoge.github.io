@@ -5265,4 +5265,147 @@ sync.WaitGroup
         <tag>通道</tag>
       </tags>
   </entry>
+  <entry>
+    <title>电网接口插件项目的token认证原理</title>
+    <url>/2025/09/29/%E7%94%B5%E7%BD%91%E6%8E%A5%E5%8F%A3%E6%8F%92%E9%A1%B9%E7%9B%AE%E7%9A%84token%E8%AE%A4%E8%AF%81%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h1>电网接口插件项目的token认证原理</h1>
+<h2 id="一、技术实现原理与流程"><a class="header-anchor" href="#一、技术实现原理与流程">¶</a>一、技术实现原理与流程</h2>
+<h3 id="1-Token-认证基本原理"><a class="header-anchor" href="#1-Token-认证基本原理">¶</a>1. Token 认证基本原理</h3>
+<p>Token 认证是一种无状态的身份验证机制，主要流程如下：</p>
+<ol>
+<li><strong>用户登录</strong>：用户提供凭证（用户名/密码）进行身份验证</li>
+<li><strong>Token 生成</strong>：服务端验证成功后，生成包含用户信息的 token</li>
+<li><strong>Token 存储</strong>：将 token 存储在缓存系统中（内存或 Redis）</li>
+<li><strong>Token 返回</strong>：将 token 返回给客户端</li>
+<li><strong>后续请求</strong>：客户端在后续请求中携带 token</li>
+<li><strong>Token 验证</strong>：服务端验证 token 的有效性和权限</li>
+</ol>
+<h3 id="2-gftoken-组件工作原理"><a class="header-anchor" href="#2-gftoken-组件工作原理">¶</a>2. gftoken 组件工作原理</h3>
+<p>gftoken 是一个基于 GoFrame 框架的 token 认证组件，其核心工作原理：</p>
+<ol>
+<li>
+<p><strong>Token 生成</strong>：</p>
+<ul>
+<li>使用用户 ID 和时间戳等信息构造 token 数据</li>
+<li>使用配置的加密密钥对数据进行加密</li>
+<li>生成的 token 为 Base64 编码的字符串</li>
+</ul>
+</li>
+<li>
+<p><strong>Token 存储</strong>：</p>
+<ul>
+<li>根据配置的缓存适配器（内存/Redis）存储 token</li>
+<li>存储的键名格式为：<code>&#123;缓存前缀&#125; + &#123;token标识符&#125;</code></li>
+<li>设置 token 的过期时间</li>
+</ul>
+</li>
+<li>
+<p><strong>Token 验证流程</strong>：</p>
+<ul>
+<li>从请求头中提取 Authorization 字段的 token</li>
+<li>解密 token 获取用户信息</li>
+<li>在缓存中查找对应的 token 记录</li>
+<li>验证 token 是否有效（未过期、未被撤销）</li>
+</ul>
+</li>
+</ol>
+<h3 id="3-多系统共享-Token-的技术实现"><a class="header-anchor" href="#3-多系统共享-Token-的技术实现">¶</a>3. 多系统共享 Token 的技术实现</h3>
+<p>当两个独立系统需要共享 token 时，关键在于：</p>
+<ol>
+<li>
+<p><strong>共享存储</strong>：</p>
+<ul>
+<li>两个系统必须使用<mark>相同的</mark> Redis 实例</li>
+<li>Redis 配置（地址、端口、数据库编号）必须一致</li>
+</ul>
+</li>
+<li>
+<p><strong>一致的缓存键</strong>：</p>
+<ul>
+<li><mark>缓存前缀</mark>必须完全一致</li>
+<li>token 的标识符生成规则必须一致</li>
+</ul>
+</li>
+<li>
+<p><strong>相同的加密机制</strong>：</p>
+<ul>
+<li>加密密钥必须完全一致</li>
+<li>加密算法必须相同</li>
+</ul>
+</li>
+</ol>
+<h2 id="二、代码示例（使用占位符替代敏感信息）"><a class="header-anchor" href="#二、代码示例（使用占位符替代敏感信息）">¶</a>二、代码示例（使用占位符替代敏感信息）</h2>
+<h3 id="1-配置文件示例"><a class="header-anchor" href="#1-配置文件示例">¶</a>1. 配置文件示例</h3>
+<p><strong>系统 A 的配置文件 (config.yaml)</strong>:</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 缓存配置</span></span><br><span class="line"><span class="attr">cache:</span></span><br><span class="line">  <span class="attr">prefix:</span> <span class="string">&quot;example_prefix:&quot;</span>  <span class="comment"># 缓存前缀，两系统必须一致</span></span><br><span class="line">  <span class="attr">adapter:</span> <span class="string">&quot;redis&quot;</span>           <span class="comment"># 缓存驱动方式：memory|redis|file</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Redis 配置</span></span><br><span class="line"><span class="attr">redis:</span></span><br><span class="line">  <span class="attr">default:</span></span><br><span class="line">    <span class="attr">mode:</span> <span class="string">&quot;single&quot;</span></span><br><span class="line">    <span class="attr">address:</span> <span class="string">&quot;redis://example_host:6379&quot;</span>  <span class="comment"># Redis 地址</span></span><br><span class="line">    <span class="attr">db:</span> <span class="number">0</span>                                 <span class="comment"># 数据库编号</span></span><br><span class="line">    <span class="attr">user:</span> <span class="string">&quot;example_user&quot;</span>                  <span class="comment"># 用户名</span></span><br><span class="line">    <span class="attr">pass:</span> <span class="string">&quot;example_password&quot;</span>              <span class="comment"># 密码</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Token 配置</span></span><br><span class="line"><span class="attr">gfToken:</span></span><br><span class="line">  <span class="attr">timeOut:</span> <span class="number">10800</span>                          <span class="comment"># token超时时间（秒）</span></span><br><span class="line">  <span class="attr">maxRefresh:</span> <span class="number">5400</span>                        <span class="comment"># token自动刷新时间（秒）</span></span><br><span class="line">  <span class="attr">multiLogin:</span> <span class="literal">true</span>                        <span class="comment"># 是否允许一个账号多人同时登录</span></span><br><span class="line">  <span class="attr">encryptKey:</span> <span class="string">&quot;your_32_byte_encrypt_key_example&quot;</span>  <span class="comment"># 加密密钥 (32位)</span></span><br><span class="line">  <span class="attr">excludePaths:</span>                           <span class="comment"># 排除不做登录验证的路由</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;/api/v1/login&quot;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">&quot;/api/v1/captcha&quot;</span></span><br></pre></td></tr></table></figure>
+<p><strong>系统 B 的配置文件 (config.yaml)</strong>:</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 缓存配置 - 与系统 A 保持一致</span></span><br><span class="line"><span class="attr">cache:</span></span><br><span class="line">  <span class="attr">prefix:</span> <span class="string">&quot;example_prefix:&quot;</span>  <span class="comment"># 必须与系统 A 一致</span></span><br><span class="line">  <span class="attr">adapter:</span> <span class="string">&quot;redis&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Redis 配置 - 与系统 A 保持一致</span></span><br><span class="line"><span class="attr">redis:</span></span><br><span class="line">  <span class="attr">default:</span></span><br><span class="line">    <span class="attr">mode:</span> <span class="string">&quot;single&quot;</span></span><br><span class="line">    <span class="attr">address:</span> <span class="string">&quot;redis://example_host:6379&quot;</span>  <span class="comment"># 必须与系统 A 一致</span></span><br><span class="line">    <span class="attr">db:</span> <span class="number">0</span>                                 <span class="comment"># 必须与系统 A 一致</span></span><br><span class="line">    <span class="attr">user:</span> <span class="string">&quot;example_user&quot;</span></span><br><span class="line">    <span class="attr">pass:</span> <span class="string">&quot;example_password&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Token 配置 - 与系统 A 保持一致</span></span><br><span class="line"><span class="attr">gfToken:</span></span><br><span class="line">  <span class="attr">encryptKey:</span> <span class="string">&quot;your_32_byte_encrypt_key_example&quot;</span>  <span class="comment"># 必须与系统 A 一致</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-系统-A-中的-Token-生成代码"><a class="header-anchor" href="#2-系统-A-中的-Token-生成代码">¶</a>2. 系统 A 中的 Token 生成代码</h3>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> system</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;context&quot;</span></span><br><span class="line">	<span class="string">&quot;example/pkg/gftoken&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/frame/g&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 生成 Token 的选项</span></span><br><span class="line"><span class="keyword">type</span> TokenOptions <span class="keyword">struct</span> &#123;</span><br><span class="line">	Timeout      <span class="type">int</span></span><br><span class="line">	MaxRefresh   <span class="type">int</span></span><br><span class="line">	MultiLogin   <span class="type">bool</span></span><br><span class="line">	ExcludePaths []<span class="type">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化 Token 组件</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">InitGfToken</span><span class="params">(ctx context.Context)</span></span> *gftoken.GfToken &#123;</span><br><span class="line">	<span class="comment">// 从配置文件读取选项</span></span><br><span class="line">	options := TokenOptions&#123;</span><br><span class="line">		Timeout:      g.Cfg().MustGet(ctx, <span class="string">&quot;gfToken.timeOut&quot;</span>, <span class="number">10800</span>).Int(),</span><br><span class="line">		MaxRefresh:   g.Cfg().MustGet(ctx, <span class="string">&quot;gfToken.maxRefresh&quot;</span>, <span class="number">5400</span>).Int(),</span><br><span class="line">		MultiLogin:   g.Cfg().MustGet(ctx, <span class="string">&quot;gfToken.multiLogin&quot;</span>, <span class="literal">false</span>).Bool(),</span><br><span class="line">		ExcludePaths: g.Cfg().MustGet(ctx, <span class="string">&quot;gfToken.excludePaths&quot;</span>).Strings(),</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 从配置获取缓存前缀</span></span><br><span class="line">	prefix := g.Cfg().MustGet(ctx, <span class="string">&quot;cache.prefix&quot;</span>, <span class="string">&quot;example_prefix:&quot;</span>).String()</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 从配置获取缓存模式</span></span><br><span class="line">	cacheAdapter := g.Cfg().MustGet(ctx, <span class="string">&quot;cache.adapter&quot;</span>, <span class="string">&quot;memory&quot;</span>).String()</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 根据缓存模式选择存储方式</span></span><br><span class="line">	<span class="keyword">var</span> cacheOption gftoken.OptionFunc</span><br><span class="line">	<span class="keyword">if</span> cacheAdapter == <span class="string">&quot;redis&quot;</span> &#123;</span><br><span class="line">		cacheOption = gftoken.WithGRedis()</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		cacheOption = gftoken.WithGCache()</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 从配置获取加密密钥</span></span><br><span class="line">	encryptKey := g.Cfg().MustGet(ctx, <span class="string">&quot;gfToken.encryptKey&quot;</span>, <span class="string">&quot;your_32_byte_encrypt_key_example&quot;</span>).String()</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 初始化 gfToken</span></span><br><span class="line">	gfToken := gftoken.NewGfToken(</span><br><span class="line">		gftoken.WithEncryptKey([]<span class="type">byte</span>(encryptKey)),</span><br><span class="line">		gftoken.WithCacheKey(prefix),</span><br><span class="line">		gftoken.WithTimeout(options.Timeout),</span><br><span class="line">		gftoken.WithMaxRefresh(options.MaxRefresh),</span><br><span class="line">		gftoken.WithMultiLogin(options.MultiLogin),</span><br><span class="line">		gftoken.WithExcludePaths(options.ExcludePaths),</span><br><span class="line">		cacheOption,</span><br><span class="line">	)</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> gfToken</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 用户登录并生成 Token</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Login</span><span class="params">(ctx context.Context, username, password <span class="type">string</span>)</span></span> (<span class="type">string</span>, <span class="type">error</span>) &#123;</span><br><span class="line">	<span class="comment">// 验证用户名密码（示例代码，实际应查询数据库）</span></span><br><span class="line">	<span class="keyword">if</span> username != <span class="string">&quot;admin&quot;</span> || password != <span class="string">&quot;password123&quot;</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;&quot;</span>, errors.New(<span class="string">&quot;用户名或密码错误&quot;</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 获取 gfToken 实例</span></span><br><span class="line">	gfToken := InitGfToken(ctx)</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 生成 token（用户ID为1）</span></span><br><span class="line">	token, err := gfToken.GenerateToken(ctx, <span class="string">&quot;1&quot;</span>, <span class="string">&quot;&quot;</span>)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="string">&quot;&quot;</span>, err</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> token, <span class="literal">nil</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-系统-B-中的-Token-验证代码"><a class="header-anchor" href="#3-系统-B-中的-Token-验证代码">¶</a>3. 系统 B 中的 Token 验证代码</h3>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> router</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">	<span class="string">&quot;context&quot;</span></span><br><span class="line">	<span class="string">&quot;fmt&quot;</span></span><br><span class="line">	<span class="string">&quot;example/pkg/gftoken&quot;</span></span><br><span class="line">	<span class="string">&quot;strings&quot;</span></span><br><span class="line"></span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/database/gredis&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/frame/g&quot;</span></span><br><span class="line">	<span class="string">&quot;github.com/gogf/gf/v2/net/ghttp&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 初始化路由和中间件</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">Init</span><span class="params">(server *ghttp.Server)</span></span> &#123;</span><br><span class="line">	ctx := context.Background()</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// API 路由组</span></span><br><span class="line">	apiGroup := server.Group(<span class="string">&quot;api/v1&quot;</span>)</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 添加响应处理中间件</span></span><br><span class="line">	apiGroup.Middleware(ghttp.MiddlewareHandlerResponse)</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 添加调试中间件</span></span><br><span class="line">	apiGroup.Middleware(<span class="function"><span class="keyword">func</span><span class="params">(r *ghttp.Request)</span></span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;=== Token验证开始 ===\n&quot;</span>)</span><br><span class="line">		fmt.Printf(<span class="string">&quot;请求路径: %s\n&quot;</span>, r.URL.Path)</span><br><span class="line">		fmt.Printf(<span class="string">&quot;请求方法: %s\n&quot;</span>, r.Method)</span><br><span class="line"></span><br><span class="line">		authHeader := r.Header.Get(<span class="string">&quot;Authorization&quot;</span>)</span><br><span class="line">		fmt.Printf(<span class="string">&quot;Authorization头: %s\n&quot;</span>, authHeader)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> authHeader != <span class="string">&quot;&quot;</span> &amp;&amp; strings.HasPrefix(authHeader, <span class="string">&quot;Bearer &quot;</span>) &#123;</span><br><span class="line">			token := strings.TrimPrefix(authHeader, <span class="string">&quot;Bearer &quot;</span>)</span><br><span class="line">			fmt.Printf(<span class="string">&quot;提取的token: %s\n&quot;</span>, token)</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		r.Middleware.Next()</span><br><span class="line"></span><br><span class="line">		fmt.Printf(<span class="string">&quot;=== Token验证结束 ===\n&quot;</span>)</span><br><span class="line">	&#125;)</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 初始化 Redis 客户端</span></span><br><span class="line">	<span class="keyword">var</span> redisConfig gredis.Config</span><br><span class="line">	<span class="keyword">if</span> err := g.Cfg().MustGet(ctx, <span class="string">&quot;redis.default&quot;</span>).Scan(&amp;redisConfig); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;读取Redis配置失败: %v\n&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	redisClient, err := gredis.New(&amp;redisConfig)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;创建Redis客户端失败: %v\n&quot;</span>, err)</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 获取加密密钥</span></span><br><span class="line">	encryptKey := g.Cfg().MustGet(ctx, <span class="string">&quot;gfToken.encryptKey&quot;</span>, <span class="string">&quot;your_32_byte_encrypt_key_example&quot;</span>).String()</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 获取缓存前缀</span></span><br><span class="line">	prefix := g.Cfg().MustGet(ctx, <span class="string">&quot;cache.prefix&quot;</span>, <span class="string">&quot;example_prefix:&quot;</span>).String()</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 初始化 gftoken</span></span><br><span class="line">	gfToken := gftoken.NewGfToken(</span><br><span class="line">		gftoken.WithEncryptKey([]<span class="type">byte</span>(encryptKey)),</span><br><span class="line">		gftoken.WithCacheKey(prefix),</span><br><span class="line">		gftoken.WithGRedis(redisClient),</span><br><span class="line">	)</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 调试 Redis 中的 token</span></span><br><span class="line">	<span class="keyword">if</span> redisClient != <span class="literal">nil</span> &#123;</span><br><span class="line">		searchPattern := prefix + <span class="string">&quot;*&quot;</span></span><br><span class="line">		keys, err := redisClient.Do(ctx, <span class="string">&quot;KEYS&quot;</span>, searchPattern)</span><br><span class="line">		<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">			fmt.Printf(<span class="string">&quot;Redis查询 %s keys失败: %v\n&quot;</span>, searchPattern, err)</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			result := keys.Strings()</span><br><span class="line">			fmt.Printf(<span class="string">&quot;Redis中 %s 相关keys数量: %d\n&quot;</span>, searchPattern, <span class="built_in">len</span>(result))</span><br><span class="line">			<span class="keyword">for</span> i, key := <span class="keyword">range</span> result &#123;</span><br><span class="line">				<span class="keyword">if</span> i &lt; <span class="number">10</span> &#123; <span class="comment">// 只显示前10个</span></span><br><span class="line">					fmt.Printf(<span class="string">&quot;Redis key: %s\n&quot;</span>, key)</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 注册 token 中间件</span></span><br><span class="line">	gfToken.Middleware(apiGroup)</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 绑定控制器</span></span><br><span class="line">	apiGroup.Bind(controllers...)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="三、两个系统间-Token-共享的关键配置点"><a class="header-anchor" href="#三、两个系统间-Token-共享的关键配置点">¶</a>三、两个系统间 Token 共享的关键配置点</h2>
+<p>要实现两个系统间的 token 共享，必须确保以下配置点完全一致：</p>
+<ol>
+<li>
+<p><strong>Redis 连接配置</strong>：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">redis:</span></span><br><span class="line">  <span class="attr">default:</span></span><br><span class="line">    <span class="attr">address:</span> <span class="string">&quot;redis://example_host:6379&quot;</span>  <span class="comment"># 地址必须一致</span></span><br><span class="line">    <span class="attr">db:</span> <span class="number">0</span>                                 <span class="comment"># 数据库编号必须一致</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>缓存前缀</strong>：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">cache:</span></span><br><span class="line">  <span class="attr">prefix:</span> <span class="string">&quot;example_prefix:&quot;</span>  <span class="comment"># 前缀必须完全一致</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>加密密钥</strong>：</p>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">gfToken:</span></span><br><span class="line">  <span class="attr">encryptKey:</span> <span class="string">&quot;your_32_byte_encrypt_key_example&quot;</span>  <span class="comment"># 密钥必须完全一致</span></span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>Token 格式</strong>：两个系统必须使用相同的 token 格式和解析方式</p>
+</li>
+</ol>
+<h2 id="四、密钥更新的安全最佳实践"><a class="header-anchor" href="#四、密钥更新的安全最佳实践">¶</a>四、密钥更新的安全最佳实践</h2>
+<ol>
+<li>
+<p><strong>定期轮换密钥</strong>：</p>
+<ul>
+<li>建议每 90 天更换一次加密密钥</li>
+<li>更新流程应自动化，减少人为错误</li>
+</ul>
+</li>
+<li>
+<p><strong>密钥更新步骤</strong>：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">1. 生成新密钥</span><br><span class="line">2. 更新系统 A 的配置</span><br><span class="line">3. 重启系统 A</span><br><span class="line">4. 使所有现有 token 失效（可选）</span><br><span class="line">5. 更新系统 B 的配置</span><br><span class="line">6. 重启系统 B</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>密钥管理</strong>：</p>
+<ul>
+<li>使用密钥管理系统存储密钥，而非硬编码</li>
+<li>配置文件中的密钥应加密或使用环境变量</li>
+</ul>
+</li>
+<li>
+<p><strong>无缝过渡策略</strong>：</p>
+<ul>
+<li>实现双密钥支持，允许新旧密钥共存一段时间</li>
+<li>代码示例：</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 支持新旧两种密钥的验证</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">verifyToken</span><span class="params">(token <span class="type">string</span>)</span></span> <span class="type">bool</span> &#123;</span><br><span class="line">    <span class="comment">// 先尝试用新密钥验证</span></span><br><span class="line">    <span class="keyword">if</span> verifyWithKey(token, newEncryptKey) &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 如果失败，尝试用旧密钥验证</span></span><br><span class="line">    <span class="keyword">return</span> verifyWithKey(token, oldEncryptKey)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>监控与审计</strong>：</p>
+<ul>
+<li>记录所有密钥更改操作</li>
+<li>监控密钥使用情况和异常访问</li>
+</ul>
+</li>
+</ol>
+<p>通过以上实现原理和代码示例，可以成功实现两个系统间的 token 共享认证，确保用户只需在一个系统登录，即可访问另一个系统的受保护资源。</p>
+]]></content>
+      <categories>
+        <category>分布式</category>
+      </categories>
+      <tags>
+        <tag>分布式</tag>
+      </tags>
+  </entry>
 </search>
