@@ -5518,4 +5518,103 @@ sync.WaitGroup
         <tag>并发</tag>
       </tags>
   </entry>
+  <entry>
+    <title>sagoo-admin前端项目无法在windows环境下启动的原因以及解决办法</title>
+    <url>/2025/10/22/sagoo-admin%E5%89%8D%E7%AB%AF%E9%A1%B9%E7%9B%AE%E6%97%A0%E6%B3%95%E5%9C%A8window%E6%98%AF%E3%80%81/</url>
+    <content><![CDATA[<p>让我详细分析为什么 <code>npm run dev</code> 无法启动，以及背后的技术原因：</p>
+<p>[2 tools called]</p>
+<p>现在我来详细解释为什么 <code>npm run dev</code> 无法启动，以及背后的技术原因：</p>
+<h2 id="🔍-问题分析"><a class="header-anchor" href="#🔍-问题分析">¶</a>🔍 <strong>问题分析</strong></h2>
+<h3 id="1-命令执行流程"><a class="header-anchor" href="#1-命令执行流程">¶</a><strong>1. 命令执行流程</strong></h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm run dev</span><br><span class="line">↓</span><br><span class="line">npm run plugin:check &amp;&amp; npm run writeEnv:dev &amp;&amp; vite --force</span><br></pre></td></tr></table></figure>
+<h3 id="2-第一个失败点：plugin-check"><a class="header-anchor" href="#2-第一个失败点：plugin-check">¶</a><strong>2. 第一个失败点：<code>plugin:check</code></strong></h3>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">&quot;plugin:check&quot;</span><span class="punctuation">:</span> <span class="string">&quot;ls ./public/plugin/topo &amp;&amp; npm run plugin:has || npm run plugin:not&quot;</span></span><br></pre></td></tr></table></figure>
+<p><strong>问题原因：</strong></p>
+<ul>
+<li><code>ls</code> 是 Linux/Unix 命令，在 Windows PowerShell 中不存在</li>
+<li>Windows 对应的命令是 <code>dir</code> 或 <code>Get-ChildItem</code></li>
+<li>这导致整个命令链在第一步就失败</li>
+</ul>
+<h3 id="3-第二个失败点：Git-克隆"><a class="header-anchor" href="#3-第二个失败点：Git-克隆">¶</a><strong>3. 第二个失败点：Git 克隆</strong></h3>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">&quot;plugin:clone&quot;</span><span class="punctuation">:</span> <span class="string">&quot;git clone --depth 1 http://git.mydig.net/Sagoo-Cloud/sagoo-admin-ui-plugin.git ./public/plugin/&quot;</span></span><br></pre></td></tr></table></figure>
+<p><strong>问题原因：</strong></p>
+<ul>
+<li>目标目录 <code>./public/plugin/</code> 已经存在且非空</li>
+<li>Git 拒绝克隆到非空目录</li>
+<li>错误信息：<code>fatal: destination path './public/plugin' already exists and is not an empty directory.</code></li>
+</ul>
+<h3 id="4-第三个失败点：权限问题"><a class="header-anchor" href="#4-第三个失败点：权限问题">¶</a><strong>4. 第三个失败点：权限问题</strong></h3>
+<p>从错误日志可以看到大量的：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PermissionDenied: (C:\Users\清风\AppData\Local\Temp\ps-state-out-xxx.txt:String) [Add-Content], UnauthorizedAccessException</span><br></pre></td></tr></table></figure>
+<p><strong>问题原因：</strong></p>
+<ul>
+<li>Windows 用户权限限制</li>
+<li>临时目录访问权限不足</li>
+<li>PowerShell 执行策略限制</li>
+</ul>
+<h2 id="🛠️-解决方案对比"><a class="header-anchor" href="#🛠️-解决方案对比">¶</a>🛠️ <strong>解决方案对比</strong></h2>
+<h3 id="方案1：直接使用-Vite（推荐）"><a class="header-anchor" href="#方案1：直接使用-Vite（推荐）">¶</a><strong>方案1：直接使用 Vite（推荐）</strong></h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx vite --port 3000</span><br></pre></td></tr></table></figure>
+<p><strong>优势：</strong></p>
+<ul>
+<li>✅ 绕过所有插件检查</li>
+<li>✅ 避免跨平台兼容性问题</li>
+<li>✅ 跳过权限问题</li>
+<li>✅ 启动速度快</li>
+</ul>
+<h3 id="方案2：修复-package-json"><a class="header-anchor" href="#方案2：修复-package-json">¶</a><strong>方案2：修复 package.json</strong></h3>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vite --port 3000&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;dev:full&quot;</span><span class="punctuation">:</span> <span class="string">&quot;npm run plugin:check &amp;&amp; npm run writeEnv:dev &amp;&amp; vite --force&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h3 id="方案3：修复跨平台兼容性"><a class="header-anchor" href="#方案3：修复跨平台兼容性">¶</a><strong>方案3：修复跨平台兼容性</strong></h3>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;plugin:check&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node -e \&quot;require(&#x27;fs&#x27;).existsSync(&#x27;./public/plugin/topo&#x27;) ? process.exit(0) : process.exit(1)\&quot; &amp;&amp; npm run plugin:has || npm run plugin:not&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="🔧-技术背景分析"><a class="header-anchor" href="#🔧-技术背景分析">¶</a>🔧 <strong>技术背景分析</strong></h2>
+<h3 id="1-项目架构设计"><a class="header-anchor" href="#1-项目架构设计">¶</a><strong>1. 项目架构设计</strong></h3>
+<p>这个项目采用了<strong>微前端架构</strong>：</p>
+<ul>
+<li>主应用：Vue3 + Vite</li>
+<li>插件系统：独立的子应用（designer、media、rule、screen、topo）</li>
+<li>每个插件都是独立的 SPA 应用</li>
+</ul>
+<h3 id="2-插件管理机制"><a class="header-anchor" href="#2-插件管理机制">¶</a><strong>2. 插件管理机制</strong></h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 插件检查逻辑</span></span><br><span class="line"><span class="built_in">ls</span> ./public/plugin/topo  <span class="comment"># 检查拓扑插件是否存在</span></span><br><span class="line">├── 存在 → 更新插件 (plugin:pull)</span><br><span class="line">└── 不存在 → 克隆插件 (plugin:<span class="built_in">clone</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="3-环境配置依赖"><a class="header-anchor" href="#3-环境配置依赖">¶</a><strong>3. 环境配置依赖</strong></h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">writeEnv:dev  <span class="comment"># 生成环境配置文件</span></span><br><span class="line">├── 读取 .<span class="built_in">env</span> 文件</span><br><span class="line">├── 生成 public/config.js</span><br><span class="line">└── 配置 API 路径和代理</span><br></pre></td></tr></table></figure>
+<h2 id="🎯-为什么我的方法有效"><a class="header-anchor" href="#🎯-为什么我的方法有效">¶</a>🎯 <strong>为什么我的方法有效</strong></h2>
+<h3 id="1-绕过插件系统"><a class="header-anchor" href="#1-绕过插件系统">¶</a><strong>1. 绕过插件系统</strong></h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npx vite --port 3000</span><br></pre></td></tr></table></figure>
+<ul>
+<li>直接启动 Vite 开发服务器</li>
+<li>不执行插件检查逻辑</li>
+<li>避免跨平台兼容性问题</li>
+</ul>
+<h3 id="2-简化启动流程"><a class="header-anchor" href="#2-简化启动流程">¶</a><strong>2. 简化启动流程</strong></h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 原始流程（复杂）</span></span><br><span class="line">npm run dev</span><br><span class="line">→ plugin:check (失败)</span><br><span class="line">→ plugin:<span class="built_in">clone</span> (失败)  </span><br><span class="line">→ writeEnv:dev (可能失败)</span><br><span class="line">→ vite --force</span><br><span class="line"></span><br><span class="line"><span class="comment"># 我的方法（简单）</span></span><br><span class="line">npx vite --port 3000</span><br><span class="line">→ 直接启动</span><br></pre></td></tr></table></figure>
+<h3 id="3-保持功能完整性"><a class="header-anchor" href="#3-保持功能完整性">¶</a><strong>3. 保持功能完整性</strong></h3>
+<ul>
+<li>插件系统主要用于生产环境的完整功能</li>
+<li>开发环境可以跳过插件，专注于核心功能开发</li>
+<li>所有 VPP 相关页面都能正常工作</li>
+</ul>
+<h2 id="📋-总结"><a class="header-anchor" href="#📋-总结">¶</a>📋 <strong>总结</strong></h2>
+<p><strong>根本原因：</strong></p>
+<ol>
+<li><strong>跨平台兼容性</strong>：Linux 命令在 Windows 上不兼容</li>
+<li><strong>项目架构复杂</strong>：微前端架构增加了启动复杂度</li>
+<li><strong>权限限制</strong>：Windows 权限策略限制</li>
+<li><strong>依赖管理</strong>：插件系统依赖外部 Git 仓库</li>
+</ol>
+<p><strong>最佳实践：</strong></p>
+<ul>
+<li>开发环境：使用 <code>npx vite --port 3000</code></li>
+<li>生产环境：使用完整的 <code>npm run build</code></li>
+<li>插件开发：单独启动插件服务</li>
+</ul>
+<p>这就是为什么我选择 <code>npx vite --port 3000</code> 而不是 <code>npm run dev</code> 的技术原因。</p>
+]]></content>
+      <categories>
+        <category>sagoo</category>
+      </categories>
+      <tags>
+        <tag>sagoo</tag>
+      </tags>
+  </entry>
 </search>
