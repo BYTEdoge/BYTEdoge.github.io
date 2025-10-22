@@ -5617,4 +5617,254 @@ sync.WaitGroup
         <tag>sagoo</tag>
       </tags>
   </entry>
+  <entry>
+    <title>vite开发服务器</title>
+    <url>/2025/10/22/vite%E5%BC%80%E5%8F%91%E6%9C%8D%E5%8A%A1%E5%99%A8/</url>
+    <content><![CDATA[<p>好的，我们来详细、清晰地解释一下 <strong>Vite 开发服务器</strong>。</p>
+<p>简单来说，<strong>Vite 开发服务器是现代前端项目的“超级加速器”和“实时预览器”</strong>。它在你本地开发时运行，提供了远超传统工具（如 Webpack Dev Server）的启动速度和热更新体验。</p>
+<p>下面我们从几个方面来深入理解它：</p>
+<h3 id="1-核心定位：是什么？"><a class="header-anchor" href="#1-核心定位：是什么？">¶</a>1. 核心定位：是什么？</h3>
+<p>Vite 开发服务器是 Vite 工具链的核心组成部分，主要负责：</p>
+<ul>
+<li><strong>提供一个本地 HTTP 服务器</strong>，让你可以通过 <code>http://localhost:3000</code> 这样的地址在浏览器中访问你的项目。</li>
+<li><strong>处理代码的转换和提供服务</strong>，让你能直接使用现代的前端语法（如 ES modules, JSX, TypeScript, Vue SFC 等）。</li>
+<li><strong>实现极速的热模块更新（HMR）</strong>，当你修改代码后，浏览器能无刷新地、几乎瞬时地更新变化。</li>
+</ul>
+<hr>
+<h3 id="2-核心原理：为什么这么快？"><a class="header-anchor" href="#2-核心原理：为什么这么快？">¶</a>2. 核心原理：为什么这么快？</h3>
+<p>Vite 开发服务器的速度秘诀在于它利用了<strong>现代浏览器的原生 ES 模块（ESM）</strong> 能力，并采用了“按需编译”的策略。</p>
+<h4 id="传统构建工具（如-Webpack）的方式："><a class="header-anchor" href="#传统构建工具（如-Webpack）的方式：">¶</a>传统构建工具（如 Webpack）的方式：</h4>
+<p>在启动开发服务器之前，<strong>必须完整地打包整个项目</strong>。它会将所有模块（你的代码、第三方库）分析、合并、转换，最终生成一或多个大的 bundle 文件。对于大型项目，这个“打包”过程非常耗时，导致启动服务器很慢。</p>
+<h4 id="Vite-的方式："><a class="header-anchor" href="#Vite-的方式：">¶</a>Vite 的方式：</h4>
+<ol>
+<li>
+<p><strong>快速启动</strong>：</p>
+<ul>
+<li>Vite 将你的代码分为两大类：<strong>依赖</strong>（<code>node_modules</code> 里的库）和<strong>源码</strong>（你的业务代码）。</li>
+<li><strong>对于依赖</strong>：Vite 使用 <strong>Esbuild</strong>（用 Go 编写，比 JS 打包器快 10-100 倍）进行预构建，并转换为 ESM 格式。这个过程只在第一次启动时或依赖改变时进行一次。</li>
+<li><strong>对于源码</strong>：Vite <strong>不会提前打包</strong>。它只是启动一个服务器。当浏览器请求某个模块时（例如 <code>import App from './App.vue‘</code>），Vite <strong>才按需</strong> 对这个模块进行转换，然后返回给浏览器。</li>
+</ul>
+</li>
+<li>
+<p><strong>极速 HMR</strong>：</p>
+<ul>
+<li>当某个模块被修改时，Vite 只需要精确地让<strong>这个模块及其依赖链</strong>失效，并重新请求。</li>
+<li>由于利用了 ESM，HMR 是在原生 ESM 之上执行的。Vite 只需要告诉浏览器：“请替换掉这个模块”，浏览器就会自动发起新的请求，Vite 服务器转换后返回。这个过程非常轻量和快速。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="3-主要特性与功能"><a class="header-anchor" href="#3-主要特性与功能">¶</a>3. 主要特性与功能</h3>
+<ol>
+<li>
+<p><strong>原生 ES 模块 (ESM)</strong></p>
+<ul>
+<li>这是 Vite 的基石。它通过 <code>type=&quot;module&quot;</code> 的 <code>&lt;script&gt;</code> 标签，让浏览器直接接管模块解析和加载的工作，服务器只负责按需转换。</li>
+</ul>
+</li>
+<li>
+<p><strong>按需编译</strong></p>
+<ul>
+<li>你只会在浏览器请求时看到编译错误，而不是在启动时。这避免了因一个错误而阻塞整个应用启动的问题。</li>
+</ul>
+</li>
+<li>
+<p><strong>内置丰富的支持</strong></p>
+<ul>
+<li>Vite 开发服务器开箱即用地支持 <code>.ts</code>, <code>.jsx</code>, <code>.tsx</code>, <code>.vue</code>, <code>.sass</code> 等文件格式的转换，无需复杂配置。</li>
+</ul>
+</li>
+<li>
+<p><strong>热模块替换 (HMR)</strong></p>
+<ul>
+<li>提供了非常稳定和快速的 HMR API，对 Vue、React 等框架有第一优先级的支持。</li>
+</ul>
+</li>
+<li>
+<p><strong>依赖预构建</strong></p>
+<ul>
+<li>将 CommonJS 或 UMD 格式的第三方库转换为 ESM，解决大量内部导入导致的请求瀑布流问题，并优化性能。</li>
+</ul>
+</li>
+<li>
+<p><strong>灵活的配置</strong></p>
+<ul>
+<li>可以通过 <code>vite.config.js</code> 文件轻松配置代理、端口、HTTPS 等服务器选项。</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="4-一个简单的流程示例"><a class="header-anchor" href="#4-一个简单的流程示例">¶</a>4. 一个简单的流程示例</h3>
+<p>假设你的项目结构如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">my-project/</span><br><span class="line">├── node_modules/</span><br><span class="line">├── src/</span><br><span class="line">│   ├── main.js</span><br><span class="line">│   └── App.vue</span><br><span class="line">└── index.html</span><br></pre></td></tr></table></figure>
+<ol>
+<li>你在终端运行 <code>vite</code>（或 <code>npm run dev</code>）。</li>
+<li>Vite 开发服务器瞬间启动。</li>
+<li>你打开 <code>http://localhost:3000</code>。</li>
+<li>浏览器请求 <code>index.html</code>。</li>
+<li><code>index.html</code> 中有一行 <code>&lt;script type=&quot;module&quot; src=&quot;/src/main.js&quot;&gt;&lt;/script&gt;</code>。</li>
+<li>浏览器看到这个，会向服务器请求 <code>/src/main.js</code>。</li>
+<li>Vite 服务器收到请求，发现 <code>main.js</code> 里有一行 <code>import App from './App.vue‘</code>。</li>
+<li>Vite 服务器会立即将 <code>App.vue</code> 文件（一个单文件组件）<strong>实时编译</strong>成浏览器能理解的 JavaScript 和 CSS，然后返回。</li>
+<li>浏览器接收到所有模块，应用成功渲染。</li>
+</ol>
+<p>当你修改 <code>App.vue</code> 的样式时，Vite 的 HMR 系统会触发，只发送一个关于 <code>App.vue</code> 模块更新的信号，浏览器无缝地更新了样式，页面状态（例如输入框里的文字）得以保留。</p>
+<hr>
+<h3 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h3>
+<p><strong>Vite 开发服务器</strong> 是一个利用现代浏览器标准和先进工具（如 Esbuild）构建的、旨在提供极致开发体验的本地服务器。它的核心优势在于：</p>
+<ul>
+<li><strong>闪电般的启动速度</strong>：基于原生 ESM 和按需编译。</li>
+<li><strong>瞬时的热更新</strong>：精确的 HMR，保持应用状态。</li>
+<li><strong>开箱即用的丰富功能</strong>：支持多种前端语言和框架。</li>
+</ul>
+<p>它是 Vite 这个名字（法语“快速”）的由来，彻底改变了前端开发的“等待”体验。</p>
+<p>好的，我来详细说明如何在前端项目中引入、配置和使用 Vite。</p>
+<h2 id="1-创建新项目并引入-Vite"><a class="header-anchor" href="#1-创建新项目并引入-Vite">¶</a>1. 创建新项目并引入 Vite</h2>
+<h3 id="方法一：使用官方脚手架（推荐）"><a class="header-anchor" href="#方法一：使用官方脚手架（推荐）">¶</a>方法一：使用官方脚手架（推荐）</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 使用 npm</span></span><br><span class="line">npm create vite@latest my-vue-app -- --template vue</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 yarn</span></span><br><span class="line">yarn create vite my-react-app --template react</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用 pnpm</span></span><br><span class="line">pnpm create vite my-vanilla-app --template vanilla</span><br></pre></td></tr></table></figure>
+<h3 id="方法二：在现有项目中安装-Vite"><a class="header-anchor" href="#方法二：在现有项目中安装-Vite">¶</a>方法二：在现有项目中安装 Vite</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 进入项目目录</span></span><br><span class="line"><span class="built_in">cd</span> existing-project</span><br><span class="line"></span><br><span class="line"><span class="comment"># 安装 Vite</span></span><br><span class="line">npm install -D vite</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">yarn add -D vite</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">pnpm add -D vite</span><br></pre></td></tr></table></figure>
+<h2 id="2-项目结构"><a class="header-anchor" href="#2-项目结构">¶</a>2. 项目结构</h2>
+<p>典型的 Vite 项目结构：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">my-project/</span><br><span class="line">├── node_modules/</span><br><span class="line">├── src/</span><br><span class="line">│   ├── main.js</span><br><span class="line">│   ├── App.vue (或 App.jsx)</span><br><span class="line">│   ├── components/</span><br><span class="line">│   └── style.css</span><br><span class="line">├── index.html</span><br><span class="line">├── package.json</span><br><span class="line">├── vite.config.js</span><br><span class="line">└── public/</span><br><span class="line">    └── favicon.ico</span><br></pre></td></tr></table></figure>
+<h2 id="3-配置文件-vite-config-js"><a class="header-anchor" href="#3-配置文件-vite-config-js">¶</a>3. 配置文件 (vite.config.js)</h2>
+<h3 id="基本配置"><a class="header-anchor" href="#基本配置">¶</a>基本配置</h3>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// vite.config.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span></span><br><span class="line"><span class="keyword">import</span> vue <span class="keyword">from</span> <span class="string">&#x27;@vitejs/plugin-vue&#x27;</span> <span class="comment">// 如果是 Vue 项目</span></span><br><span class="line"><span class="keyword">import</span> react <span class="keyword">from</span> <span class="string">&#x27;@vitejs/plugin-react&#x27;</span> <span class="comment">// 如果是 React 项目</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// https://vitejs.dev/config/</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    <span class="title function_">vue</span>(), <span class="comment">// Vue 插件</span></span><br><span class="line">    <span class="comment">// react(), // React 插件</span></span><br><span class="line">  ],</span><br><span class="line">  <span class="attr">server</span>: &#123;</span><br><span class="line">    <span class="attr">port</span>: <span class="number">3000</span>, <span class="comment">// 开发服务器端口</span></span><br><span class="line">    <span class="attr">open</span>: <span class="literal">true</span>, <span class="comment">// 自动打开浏览器</span></span><br><span class="line">    <span class="attr">proxy</span>: &#123;</span><br><span class="line">      <span class="comment">// 代理配置</span></span><br><span class="line">      <span class="string">&#x27;/api&#x27;</span>: &#123;</span><br><span class="line">        <span class="attr">target</span>: <span class="string">&#x27;http://localhost:8080&#x27;</span>,</span><br><span class="line">        <span class="attr">changeOrigin</span>: <span class="literal">true</span>,</span><br><span class="line">        <span class="attr">rewrite</span>: <span class="function">(<span class="params">path</span>) =&gt;</span> path.<span class="title function_">replace</span>(<span class="regexp">/^\/api/</span>, <span class="string">&#x27;&#x27;</span>)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">build</span>: &#123;</span><br><span class="line">    <span class="attr">outDir</span>: <span class="string">&#x27;dist&#x27;</span>, <span class="comment">// 构建输出目录</span></span><br><span class="line">    <span class="attr">sourcemap</span>: <span class="literal">true</span> <span class="comment">// 生成 sourcemap</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">resolve</span>: &#123;</span><br><span class="line">    <span class="attr">alias</span>: &#123;</span><br><span class="line">      <span class="comment">// 路径别名</span></span><br><span class="line">      <span class="string">&#x27;@&#x27;</span>: <span class="string">&#x27;/src&#x27;</span>,</span><br><span class="line">      <span class="string">&#x27;@components&#x27;</span>: <span class="string">&#x27;/src/components&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="框架特定配置示例"><a class="header-anchor" href="#框架特定配置示例">¶</a>框架特定配置示例</h3>
+<p><strong>Vue 项目配置：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span></span><br><span class="line"><span class="keyword">import</span> vue <span class="keyword">from</span> <span class="string">&#x27;@vitejs/plugin-vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="title function_">vue</span>()],</span><br><span class="line">  <span class="attr">server</span>: &#123;</span><br><span class="line">    <span class="attr">port</span>: <span class="number">3000</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p><strong>React 项目配置：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span></span><br><span class="line"><span class="keyword">import</span> react <span class="keyword">from</span> <span class="string">&#x27;@vitejs/plugin-react&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="title function_">react</span>()],</span><br><span class="line">  <span class="attr">server</span>: &#123;</span><br><span class="line">    <span class="attr">port</span>: <span class="number">3000</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h2 id="4-package-json-脚本配置"><a class="header-anchor" href="#4-package-json-脚本配置">¶</a>4. package.json 脚本配置</h2>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;my-vite-project&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;module&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vite&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vite build&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;preview&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vite preview&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;preview:host&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vite preview --host&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;vite&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^5.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@vitejs/plugin-vue&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^4.0.0&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<h2 id="5-入口文件-index-html"><a class="header-anchor" href="#5-入口文件-index-html">¶</a>5. 入口文件 (index.html)</h2>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;!DOCTYPE <span class="keyword">html</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">html</span> <span class="attr">lang</span>=<span class="string">&quot;en&quot;</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">head</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">charset</span>=<span class="string">&quot;UTF-8&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">link</span> <span class="attr">rel</span>=<span class="string">&quot;icon&quot;</span> <span class="attr">type</span>=<span class="string">&quot;image/svg+xml&quot;</span> <span class="attr">href</span>=<span class="string">&quot;/vite.svg&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">meta</span> <span class="attr">name</span>=<span class="string">&quot;viewport&quot;</span> <span class="attr">content</span>=<span class="string">&quot;width=device-width, initial-scale=1.0&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">title</span>&gt;</span>Vite App<span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">head</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">body</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">id</span>=<span class="string">&quot;app&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!-- 注意：这里直接引入 src 目录下的 JS 文件 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">script</span> <span class="attr">type</span>=<span class="string">&quot;module&quot;</span> <span class="attr">src</span>=<span class="string">&quot;/src/main.js&quot;</span>&gt;</span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">body</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">html</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="6-主要-JavaScript-入口文件"><a class="header-anchor" href="#6-主要-JavaScript-入口文件">¶</a>6. 主要 JavaScript 入口文件</h2>
+<h3 id="Vue-项目-src-main-js"><a class="header-anchor" href="#Vue-项目-src-main-js">¶</a>Vue 项目 (src/main.js)</h3>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; createApp &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./style.css&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App.vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">createApp</span>(<span class="title class_">App</span>).<span class="title function_">mount</span>(<span class="string">&#x27;#app&#x27;</span>)</span><br></pre></td></tr></table></figure>
+<h3 id="React-项目-src-main-jsx"><a class="header-anchor" href="#React-项目-src-main-jsx">¶</a>React 项目 (src/main.jsx)</h3>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">React</span> <span class="keyword">from</span> <span class="string">&#x27;react&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">ReactDOM</span> <span class="keyword">from</span> <span class="string">&#x27;react-dom/client&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">App</span> <span class="keyword">from</span> <span class="string">&#x27;./App.jsx&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./index.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">ReactDOM</span>.<span class="title function_">createRoot</span>(<span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;root&#x27;</span>)).<span class="title function_">render</span>(</span><br><span class="line">  <span class="language-xml"><span class="tag">&lt;<span class="name">React.StrictMode</span>&gt;</span></span></span><br><span class="line"><span class="language-xml">    <span class="tag">&lt;<span class="name">App</span> /&gt;</span></span></span><br><span class="line"><span class="language-xml">  <span class="tag">&lt;/<span class="name">React.StrictMode</span>&gt;</span></span>,</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<h2 id="7-使用-Vite-命令"><a class="header-anchor" href="#7-使用-Vite-命令">¶</a>7. 使用 Vite 命令</h2>
+<h3 id="开发服务器"><a class="header-anchor" href="#开发服务器">¶</a>开发服务器</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 启动开发服务器</span></span><br><span class="line">npm run dev</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">yarn dev</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">pnpm dev</span><br><span class="line"></span><br><span class="line"><span class="comment"># 指定端口启动</span></span><br><span class="line">npx vite --port 8080</span><br><span class="line"></span><br><span class="line"><span class="comment"># 监听所有网络接口</span></span><br><span class="line">npx vite --host</span><br></pre></td></tr></table></figure>
+<h3 id="构建生产版本"><a class="header-anchor" href="#构建生产版本">¶</a>构建生产版本</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 构建生产版本</span></span><br><span class="line">npm run build</span><br><span class="line"><span class="comment"># 构建产物会在 dist 目录</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 预览构建结果</span></span><br><span class="line">npm run preview</span><br><span class="line"><span class="comment"># 这会在本地启动一个服务器来预览构建后的效果</span></span><br></pre></td></tr></table></figure>
+<h2 id="8-环境变量配置"><a class="header-anchor" href="#8-环境变量配置">¶</a>8. 环境变量配置</h2>
+<h3 id="创建环境文件"><a class="header-anchor" href="#创建环境文件">¶</a>创建环境文件</h3>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">.env                # 所有情况下都会加载</span><br><span class="line">.env.local          # 所有情况下都会加载，但会被 git 忽略</span><br><span class="line">.env.[mode]         # 只在指定模式下加载</span><br><span class="line">.env.[mode].local   # 只在指定模式下加载，但会被 git 忽略</span><br></pre></td></tr></table></figure>
+<h3 id="环境变量使用"><a class="header-anchor" href="#环境变量使用">¶</a>环境变量使用</h3>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// .env</span></span><br><span class="line"><span class="variable constant_">VITE_API_URL</span>=<span class="attr">http</span>:<span class="comment">//localhost:3000/api</span></span><br><span class="line"><span class="variable constant_">VITE_APP_TITLE</span>=<span class="title class_">My</span> <span class="title class_">App</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 在代码中使用</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">import</span>.<span class="property">meta</span>.<span class="property">env</span>.<span class="property">VITE_API_URL</span>) <span class="comment">// http://localhost:3000/api</span></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="keyword">import</span>.<span class="property">meta</span>.<span class="property">env</span>.<span class="property">VITE_APP_TITLE</span>) <span class="comment">// My App</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 生产环境构建时设置不同环境</span></span><br><span class="line">npm run build -- --mode production</span><br></pre></td></tr></table></figure>
+<h2 id="9-CSS-和静态资源处理"><a class="header-anchor" href="#9-CSS-和静态资源处理">¶</a>9. CSS 和静态资源处理</h2>
+<h3 id="CSS-导入"><a class="header-anchor" href="#CSS-导入">¶</a>CSS 导入</h3>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在 JS 文件中直接导入 CSS</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./style.css&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;@/assets/global.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 支持 CSS Modules</span></span><br><span class="line"><span class="keyword">import</span> styles <span class="keyword">from</span> <span class="string">&#x27;./Component.module.css&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// 支持 Sass/Less</span></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;./style.scss&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="静态资源引用"><a class="header-anchor" href="#静态资源引用">¶</a>静态资源引用</h3>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 在 JS 中引用图片</span></span><br><span class="line"><span class="keyword">import</span> logoUrl <span class="keyword">from</span> <span class="string">&#x27;./logo.png&#x27;</span></span><br><span class="line"><span class="variable language_">document</span>.<span class="title function_">getElementById</span>(<span class="string">&#x27;hero-img&#x27;</span>).<span class="property">src</span> = logoUrl</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在 CSS 中引用图片</span></span><br><span class="line">.<span class="property">hero</span> &#123;</span><br><span class="line">  background-<span class="attr">image</span>: <span class="title function_">url</span>(<span class="string">&#x27;./background.jpg&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在 HTML 中引用 public 目录下的资源</span></span><br><span class="line">&lt;img src=<span class="string">&quot;/favicon.ico&quot;</span> alt=<span class="string">&quot;Favicon&quot;</span>&gt;</span><br></pre></td></tr></table></figure>
+<h2 id="10-常用插件安装和使用"><a class="header-anchor" href="#10-常用插件安装和使用">¶</a>10. 常用插件安装和使用</h2>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Vue 支持</span></span><br><span class="line">npm install -D @vitejs/plugin-vue</span><br><span class="line"></span><br><span class="line"><span class="comment"># React 支持</span></span><br><span class="line">npm install -D @vitejs/plugin-react</span><br><span class="line"></span><br><span class="line"><span class="comment"># TypeScript 支持（通常内置，无需额外安装）</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Sass 支持</span></span><br><span class="line">npm install -D sass</span><br><span class="line"></span><br><span class="line"><span class="comment"># 路径别名解析</span></span><br><span class="line">npm install -D @rollup/plugin-alias</span><br><span class="line"></span><br><span class="line"><span class="comment"># 环境变量类型提示</span></span><br><span class="line">npm install -D vite-plugin-environment</span><br></pre></td></tr></table></figure>
+<h2 id="11-完整的工作流程示例"><a class="header-anchor" href="#11-完整的工作流程示例">¶</a>11. 完整的工作流程示例</h2>
+<ol>
+<li><strong>创建项目：</strong></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm create vite@latest my-app -- --template vue</span><br><span class="line"><span class="built_in">cd</span> my-app</span><br><span class="line">npm install</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><strong>启动开发服务器：</strong></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm run dev</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>
+<p><strong>开发时修改代码</strong> - 浏览器会自动热更新</p>
+</li>
+<li>
+<p><strong>构建生产版本：</strong></p>
+</li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm run build</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li><strong>预览构建结果：</strong></li>
+</ol>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">npm run preview</span><br></pre></td></tr></table></figure>
+<h2 id="12-常见问题和解决方案"><a class="header-anchor" href="#12-常见问题和解决方案">¶</a>12. 常见问题和解决方案</h2>
+<h3 id="路径别名配置"><a class="header-anchor" href="#路径别名配置">¶</a>路径别名配置</h3>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// vite.config.js</span></span><br><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span></span><br><span class="line"><span class="keyword">import</span> path <span class="keyword">from</span> <span class="string">&#x27;path&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">resolve</span>: &#123;</span><br><span class="line">    <span class="attr">alias</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;@&#x27;</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;./src&#x27;</span>),</span><br><span class="line">      <span class="string">&#x27;@components&#x27;</span>: path.<span class="title function_">resolve</span>(__dirname, <span class="string">&#x27;./src/components&#x27;</span>)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="comment">// 在代码中使用</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">MyComponent</span> <span class="keyword">from</span> <span class="string">&#x27;@/components/MyComponent.vue&#x27;</span></span><br></pre></td></tr></table></figure>
+<h3 id="处理-CommonJS-模块"><a class="header-anchor" href="#处理-CommonJS-模块">¶</a>处理 CommonJS 模块</h3>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 如果遇到 CommonJS 模块，可以在 vite.config.js 中配置</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">optimizeDeps</span>: &#123;</span><br><span class="line">    <span class="attr">include</span>: [<span class="string">&#x27;some-commonjs-package&#x27;</span>]</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>这样你就有了一个完整的 Vite 使用指南，涵盖了从项目创建到开发、构建的整个流程。<br>
+这是一个很好的观察，但需要更精确地理解它们之间的关系。让我来详细解释：</p>
+<h2 id="关系定位：工具链整合而非语法融合"><a class="header-anchor" href="#关系定位：工具链整合而非语法融合">¶</a>关系定位：<strong>工具链整合</strong>而非语法融合</h2>
+<p><strong>Vite 和 Vue 3 是深度协同但彼此独立的工具</strong>：</p>
+<ul>
+<li><strong>Vue 3</strong>：前端框架，定义组件语法、响应式系统、生命周期等</li>
+<li><strong>Vite</strong>：构建工具，处理开发服务器、打包优化、模块转换等</li>
+</ul>
+<p>它们的关系更像是 <strong>&quot;完美搭档&quot;</strong> 而非 <strong>&quot;融为一体&quot;</strong>。</p>
+<hr>
+<h2 id="实际使用中的-融合感-来自哪里？"><a class="header-anchor" href="#实际使用中的-融合感-来自哪里？">¶</a>实际使用中的&quot;融合感&quot;来自哪里？</h2>
+<h3 id="1-官方推荐和默认配置"><a class="header-anchor" href="#1-官方推荐和默认配置">¶</a>1. 官方推荐和默认配置</h3>
+<p><strong>创建项目时的无缝体验：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 这个命令让你感觉它们是一体的</span></span><br><span class="line">npm create vue@latest</span><br><span class="line"><span class="comment"># 或</span></span><br><span class="line">npm create vite@latest my-vue-app -- --template vue</span><br></pre></td></tr></table></figure>
+<p><strong>生成的配置文件已经优化好：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// vite.config.js - 开箱即用</span></span><br><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span></span><br><span class="line"><span class="keyword">import</span> vue <span class="keyword">from</span> <span class="string">&#x27;@vitejs/plugin-vue&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Vue 3 项目专用配置</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="title function_">vue</span>()], <span class="comment">// Vue 插件已集成</span></span><br><span class="line">  <span class="attr">server</span>: &#123; <span class="attr">port</span>: <span class="number">3000</span> &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="2-开发体验的无缝衔接"><a class="header-anchor" href="#2-开发体验的无缝衔接">¶</a>2. 开发体验的无缝衔接</h3>
+<p><strong>开发命令统一：</strong></p>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vite&quot;</span><span class="punctuation">,</span>        <span class="comment">// 启动开发服务器</span></span><br><span class="line">    <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vite build&quot;</span><span class="punctuation">,</span> <span class="comment">// 构建生产版本</span></span><br><span class="line">    <span class="attr">&quot;preview&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vite preview&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+<p><strong>热更新完美配合：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;&#123;&#123; count &#125;&#125;&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">import &#123; ref &#125; from &#x27;vue&#x27;</span><br><span class="line">const count = ref(0)</span><br><span class="line">// 修改这里 → 浏览器即时更新，状态保持</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="3-语法特性的深度优化"><a class="header-anchor" href="#3-语法特性的深度优化">¶</a>3. 语法特性的深度优化</h3>
+<p><strong>Vite 对 Vue 3 特性的专门支持：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;!-- 单文件组件 --&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">// &lt;script setup&gt; 语法得到完美支持</span><br><span class="line">import &#123; ref &#125; from &#x27;vue&#x27;</span><br><span class="line">const msg = ref(&#x27;Hello Vite + Vue 3!&#x27;)</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">/* scoped CSS 被正确处理 */</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+<p><strong>对 Composition API 的优化：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// Vite 的 tree-shaking 能更好地处理 Composition API</span></span><br><span class="line"><span class="keyword">import</span> &#123; ref, computed, onMounted &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="comment">// 只打包实际使用的 API，减少体积</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="但它们仍然是独立的"><a class="header-anchor" href="#但它们仍然是独立的">¶</a>但它们仍然是独立的</h2>
+<h3 id="配置层面的分离感"><a class="header-anchor" href="#配置层面的分离感">¶</a>配置层面的分离感</h3>
+<p><strong>你仍然需要显式配置 Vite：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// vite.config.js - 明显的配置边界</span></span><br><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span></span><br><span class="line"><span class="keyword">import</span> vue <span class="keyword">from</span> <span class="string">&#x27;@vitejs/plugin-vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> someOtherPlugin <span class="keyword">from</span> <span class="string">&#x27;some-other-plugin&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    <span class="title function_">vue</span>(), <span class="comment">// 必须显式添加 Vue 插件</span></span><br><span class="line">    <span class="title function_">someOtherPlugin</span>()</span><br><span class="line">  ],</span><br><span class="line">  <span class="comment">// Vite 特有的配置项</span></span><br><span class="line">  <span class="attr">build</span>: &#123;</span><br><span class="line">    <span class="attr">rollupOptions</span>: &#123;</span><br><span class="line">      <span class="attr">external</span>: [<span class="string">&#x27;some-package&#x27;</span>]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="comment">// 这些配置与 Vue 3 语法无关</span></span><br><span class="line">  <span class="attr">server</span>: &#123;</span><br><span class="line">    <span class="attr">proxy</span>: &#123;</span><br><span class="line">      <span class="string">&#x27;/api&#x27;</span>: <span class="string">&#x27;http://localhost:3001&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<h3 id="可以独立使用"><a class="header-anchor" href="#可以独立使用">¶</a>可以独立使用</h3>
+<p><strong>Vue 3 可以用其他构建工具：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// webpack.config.js - Vue 3 也可以用 Webpack</span></span><br><span class="line"><span class="keyword">const</span> &#123; <span class="title class_">VueLoaderPlugin</span> &#125; = <span class="built_in">require</span>(<span class="string">&#x27;vue-loader&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">module</span>: &#123;</span><br><span class="line">    <span class="attr">rules</span>: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="attr">test</span>: <span class="regexp">/\.vue$/</span>,</span><br><span class="line">        <span class="attr">loader</span>: <span class="string">&#x27;vue-loader&#x27;</span></span><br><span class="line">      &#125;</span><br><span class="line">    ]</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">plugins</span>: [</span><br><span class="line">    <span class="keyword">new</span> <span class="title class_">VueLoaderPlugin</span>()</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>Vite 可以构建其他框架项目：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// vite.config.js for React</span></span><br><span class="line"><span class="keyword">import</span> &#123; defineConfig &#125; <span class="keyword">from</span> <span class="string">&#x27;vite&#x27;</span></span><br><span class="line"><span class="keyword">import</span> react <span class="keyword">from</span> <span class="string">&#x27;@vitejs/plugin-react&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="title function_">react</span>()], <span class="comment">// 不是 vue()!</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="为什么会产生-已经融入-的感觉？"><a class="header-anchor" href="#为什么会产生-已经融入-的感觉？">¶</a>为什么会产生&quot;已经融入&quot;的感觉？</h2>
+<h3 id="1-官方生态的强力推动"><a class="header-anchor" href="#1-官方生态的强力推动">¶</a>1. 官方生态的强力推动</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Vue 官方推荐的创建方式就是 Vite</span></span><br><span class="line">npm create vue@latest</span><br><span class="line"><span class="comment"># ↑ 这个命令背后就是基于 Vite 的模板</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-开发体验的高度统一"><a class="header-anchor" href="#2-开发体验的高度统一">¶</a>2. 开发体验的高度统一</h3>
+<p><strong>传统分离感：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 过去：明确知道在用不同工具</span></span><br><span class="line">vue create my-app        <span class="comment"># Vue CLI</span></span><br><span class="line">npm run serve           <span class="comment"># 开发</span></span><br><span class="line">npm run build          <span class="comment"># 构建</span></span><br></pre></td></tr></table></figure>
+<p><strong>现代统一感：</strong></p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 现在：感觉是一个整体</span></span><br><span class="line">npm create vue@latest   <span class="comment"># 创建</span></span><br><span class="line">npm install            <span class="comment"># 安装</span></span><br><span class="line">npm run dev           <span class="comment"># 开发 → Vite</span></span><br><span class="line">npm run build         <span class="comment"># 构建 → Vite</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-配置复杂度的隐藏"><a class="header-anchor" href="#3-配置复杂度的隐藏">¶</a>3. 配置复杂度的隐藏</h3>
+<p><strong>过去的复杂配置：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// vue.config.js - 需要理解 Webpack</span></span><br><span class="line"><span class="variable language_">module</span>.<span class="property">exports</span> = &#123;</span><br><span class="line">  <span class="attr">chainWebpack</span>: <span class="function"><span class="params">config</span> =&gt;</span> &#123;</span><br><span class="line">    config.<span class="title function_">plugin</span>(<span class="string">&#x27;html&#x27;</span>).<span class="title function_">tap</span>(<span class="function"><span class="params">args</span> =&gt;</span> &#123;</span><br><span class="line">      args[<span class="number">0</span>].<span class="property">title</span> = <span class="string">&#x27;My App&#x27;</span></span><br><span class="line">      <span class="keyword">return</span> args</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>现在的简洁配置：</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// vite.config.js - 更直观</span></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="title function_">defineConfig</span>(&#123;</span><br><span class="line">  <span class="attr">plugins</span>: [<span class="title function_">vue</span>()],</span><br><span class="line">  <span class="comment">// 大部分情况不需要额外配置</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="实际项目中的认知边界"><a class="header-anchor" href="#实际项目中的认知边界">¶</a>实际项目中的认知边界</h2>
+<h3 id="Vue-3-负责的部分（语法层面）："><a class="header-anchor" href="#Vue-3-负责的部分（语法层面）：">¶</a>Vue 3 负责的部分（语法层面）：</h3>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;!-- 模板语法 --&gt;</span><br><span class="line">  &lt;div&gt;&#123;&#123; message &#125;&#125;&lt;/div&gt;</span><br><span class="line">&lt;/template&gt;</span><br><span class="line"></span><br><span class="line">&lt;script setup&gt;</span><br><span class="line">// Composition API</span><br><span class="line">import &#123; ref, onMounted &#125; from &#x27;vue&#x27;</span><br><span class="line">const message = ref(&#x27;Hello&#x27;)</span><br><span class="line">&lt;/script&gt;</span><br><span class="line"></span><br><span class="line">&lt;style scoped&gt;</span><br><span class="line">/* 组件样式 */</span><br><span class="line">&lt;/style&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="Vite-负责的部分（工具层面）："><a class="header-anchor" href="#Vite-负责的部分（工具层面）：">¶</a>Vite 负责的部分（工具层面）：</h3>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 处理：</span></span><br><span class="line"><span class="comment">// - .vue 文件转换</span></span><br><span class="line"><span class="comment">// - TypeScript 编译  </span></span><br><span class="line"><span class="comment">// - Sass/Less 预处理</span></span><br><span class="line"><span class="comment">// - 静态资源处理</span></span><br><span class="line"><span class="comment">// - 热更新</span></span><br><span class="line"><span class="comment">// - 代码分割</span></span><br><span class="line"><span class="comment">// - 生产构建优化</span></span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="总结-2"><a class="header-anchor" href="#总结-2">¶</a>总结</h2>
+<p><strong>是否可以认为 Vite 的使用方法已经融入 Vue 3 的语法中？</strong></p>
+<p><strong>更准确的说法是：</strong></p>
+<p>✅ <strong>在开发体验上</strong>，它们提供了无缝的整合，让你感觉像是在使用一个统一的工具</p>
+<p>✅ <strong>在项目创建和配置上</strong>，官方模板已经做了最佳实践的预设</p>
+<p>✅ <strong>在生态推荐上</strong>，Vue 3 强烈推荐使用 Vite 作为构建工具</p>
+<p>❌ <strong>但在技术本质上</strong>，它们仍是独立的：Vue 3 是框架，Vite 是工具</p>
+<p><strong>类比理解：</strong></p>
+<ul>
+<li><strong>Vue 3</strong> 像是汽车的 <strong>发动机和底盘</strong>（核心功能）</li>
+<li><strong>Vite</strong> 像是汽车的 <strong>生产流水线和维修工具</strong>（开发制造）</li>
+<li>它们共同为你提供完整的 <strong>驾驶体验</strong>（开发体验）</li>
+</ul>
+<p>所以，虽然在使用 Vue 3 时你会自然而然地使用 Vite，但它们的关系是 <strong>深度优化的合作伙伴</strong>，而非语法层面的融合。这种分离实际上是一种良好的架构设计，保持了各自的独立性和可替换性。</p>
+]]></content>
+      <categories>
+        <category>前端</category>
+      </categories>
+      <tags>
+        <tag>前端构建工具</tag>
+      </tags>
+  </entry>
 </search>
