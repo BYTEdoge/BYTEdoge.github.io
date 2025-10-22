@@ -6371,4 +6371,107 @@ sync.WaitGroup
         <tag>AI</tag>
       </tags>
   </entry>
+  <entry>
+    <title>分布式锁的粒度问题</title>
+    <url>/2025/10/22/%E5%88%86%E5%B8%83%E5%BC%8F%E9%94%81%E7%9A%84%E7%B2%92%E5%BA%A6%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<p>分布式锁的粒度（Granularity）是分布式系统中一个非常重要的概念，它指的是<strong>锁所保护的资源或数据范围的大小</strong>。</p>
+<p>简单来说，就像现实生活中的锁：</p>
+<ul>
+<li><strong>粗粒度锁</strong>：像锁住整个大楼的大门</li>
+<li><strong>细粒度锁</strong>：像锁住大楼里每个办公室的门</li>
+</ul>
+<h2 id="粒度级别的详细说明"><a class="header-anchor" href="#粒度级别的详细说明">¶</a>粒度级别的详细说明</h2>
+<h3 id="1-粗粒度锁（Coarse-Grained-Lock）"><a class="header-anchor" href="#1-粗粒度锁（Coarse-Grained-Lock）">¶</a>1. 粗粒度锁（Coarse-Grained Lock）</h3>
+<p><strong>特点</strong>：一把锁保护大量资源</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 例子：整个系统级别锁</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrderSystem</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">DistributedLock</span> <span class="variable">globalLock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RedisLock</span>(<span class="string">&quot;ORDER_SYSTEM_LOCK&quot;</span>);</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">processOrder</span><span class="params">()</span> &#123;</span><br><span class="line">        globalLock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 任何订单操作都需要这把锁</span></span><br><span class="line">            <span class="comment">// 保护所有订单数据</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            globalLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="2-细粒度锁（Fine-Grained-Lock）"><a class="header-anchor" href="#2-细粒度锁（Fine-Grained-Lock）">¶</a>2. 细粒度锁（Fine-Grained Lock）</h3>
+<p><strong>特点</strong>：针对特定资源加锁</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 例子：按订单ID加锁</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">OrderService</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">updateOrder</span><span class="params">(String orderId)</span> &#123;</span><br><span class="line">        <span class="type">DistributedLock</span> <span class="variable">orderLock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RedisLock</span>(<span class="string">&quot;ORDER_LOCK:&quot;</span> + orderId);</span><br><span class="line">        orderLock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 只保护这个特定订单的操作</span></span><br><span class="line">            <span class="comment">// 其他订单可以并发处理</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            orderLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-中等粒度锁（Medium-Grained-Lock）"><a class="header-anchor" href="#3-中等粒度锁（Medium-Grained-Lock）">¶</a>3. 中等粒度锁（Medium-Grained Lock）</h3>
+<p>介于两者之间</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 例子：按用户级别加锁</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">UserService</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">processUserOrder</span><span class="params">(Long userId)</span> &#123;</span><br><span class="line">        <span class="type">DistributedLock</span> <span class="variable">userLock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RedisLock</span>(<span class="string">&quot;USER_LOCK:&quot;</span> + userId);</span><br><span class="line">        userLock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 保护该用户的所有相关操作</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            userLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="粒度选择的权衡"><a class="header-anchor" href="#粒度选择的权衡">¶</a>粒度选择的权衡</h2>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>粗粒度锁</th>
+<th>细粒度锁</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>并发性能</strong></td>
+<td>❌ 低（串行化严重）</td>
+<td>✅ 高（并发度高）</td>
+</tr>
+<tr>
+<td><strong>系统吞吐量</strong></td>
+<td>❌ 低</td>
+<td>✅ 高</td>
+</tr>
+<tr>
+<td><strong>实现复杂度</strong></td>
+<td>✅ 简单</td>
+<td>❌ 复杂</td>
+</tr>
+<tr>
+<td><strong>死锁风险</strong></td>
+<td>✅ 低（锁数量少）</td>
+<td>❌ 高（锁数量多）</td>
+</tr>
+<tr>
+<td><strong>资源争用</strong></td>
+<td>❌ 高</td>
+<td>✅ 低</td>
+</tr>
+<tr>
+<td><strong>内存开销</strong></td>
+<td>✅ 低</td>
+<td>❌ 高</td>
+</tr>
+</tbody>
+</table>
+<h2 id="实际应用场景"><a class="header-anchor" href="#实际应用场景">¶</a>实际应用场景</h2>
+<h3 id="适合粗粒度锁的场景"><a class="header-anchor" href="#适合粗粒度锁的场景">¶</a>适合粗粒度锁的场景</h3>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 系统初始化、全局配置更新、全量数据迁移</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">SystemManager</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">systemMaintenance</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="type">DistributedLock</span> <span class="variable">maintenanceLock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RedisLock</span>(<span class="string">&quot;SYSTEM_MAINTENANCE&quot;</span>);</span><br><span class="line">        maintenanceLock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 执行系统维护操作，需要独占整个系统</span></span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            maintenanceLock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="适合细粒度锁的场景"><a class="header-anchor" href="#适合细粒度锁的场景">¶</a>适合细粒度锁的场景</h3>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 电商库存扣减、银行账户转账</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">InventoryService</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">deductStock</span><span class="params">(Long itemId, Integer quantity)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">lockKey</span> <span class="operator">=</span> <span class="string">&quot;INVENTORY_LOCK:&quot;</span> + itemId;</span><br><span class="line">        <span class="type">DistributedLock</span> <span class="variable">lock</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">RedisLock</span>(lockKey);</span><br><span class="line">        </span><br><span class="line">        lock.lock();</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="comment">// 只锁定这个具体商品的库存</span></span><br><span class="line">            <span class="comment">// 其他商品可以正常交易</span></span><br><span class="line">            <span class="type">Item</span> <span class="variable">item</span> <span class="operator">=</span> itemRepository.findById(itemId);</span><br><span class="line">            <span class="keyword">if</span> (item.getStock() &gt;= quantity) &#123;</span><br><span class="line">                item.setStock(item.getStock() - quantity);</span><br><span class="line">                itemRepository.update(item);</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            lock.unlock();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="最佳实践建议"><a class="header-anchor" href="#最佳实践建议">¶</a>最佳实践建议</h2>
+<ol>
+<li>
+<p><strong>从业务需求出发</strong>：</p>
+<ul>
+<li>如果业务允许一定程度的数据不一致，考虑更细的粒度</li>
+<li>如果需要强一致性，可能需要较粗的粒度</li>
+</ul>
+</li>
+<li>
+<p><strong>渐进式优化</strong>：</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 先使用中等粒度，根据性能监控再决定是否细化</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">PaymentService</span> &#123;</span><br><span class="line">    <span class="comment">// 版本1：用户粒度</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">processPayment</span><span class="params">(Long userId, String orderId)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">lockKey</span> <span class="operator">=</span> <span class="string">&quot;PAYMENT_USER:&quot;</span> + userId;</span><br><span class="line">        <span class="comment">// ... </span></span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">// 版本2：如果需要更高并发，细化到订单粒度</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">processPaymentV2</span><span class="params">(Long userId, String orderId)</span> &#123;</span><br><span class="line">        <span class="type">String</span> <span class="variable">lockKey</span> <span class="operator">=</span> <span class="string">&quot;PAYMENT_ORDER:&quot;</span> + orderId;</span><br><span class="line">        <span class="comment">// ...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li>
+<p><strong>避免过度细化</strong>：</p>
+<ul>
+<li>太细的粒度会增加系统复杂度</li>
+<li>可能引入死锁问题</li>
+<li>增加锁管理的开销</li>
+</ul>
+</li>
+</ol>
+<h2 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h2>
+<p><strong>分布式锁的粒度本质是在并发性能与系统复杂度之间的权衡</strong>：</p>
+<ul>
+<li><strong>粗粒度</strong>：简单可靠，但性能差</li>
+<li><strong>细粒度</strong>：性能好，但复杂度高</li>
+</ul>
+<p>选择合适粒度的关键是深入理解业务场景、数据访问模式和性能要求，通过监控和测试找到最适合的平衡点。</p>
+]]></content>
+      <categories>
+        <category>分布式锁</category>
+      </categories>
+      <tags>
+        <tag>分布式锁</tag>
+      </tags>
+  </entry>
 </search>
