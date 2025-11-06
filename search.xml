@@ -6716,4 +6716,25 @@ sync.WaitGroup
         <tag>工作能力</tag>
       </tags>
   </entry>
+  <entry>
+    <title>项目实现测试技巧</title>
+    <url>/2025/11/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E7%8E%B0%E6%B5%8B%E8%AF%95%E6%8A%80%E5%B7%A7/</url>
+    <content><![CDATA[<h1>项目实现过程中的测试技巧</h1>
+<h3 id="1-运用日志功能"><a class="header-anchor" href="#1-运用日志功能">¶</a>1.运用日志功能</h3>
+<p>在使用代码开发工具进行项目搭建时，相关的日志输出直接输出在终端上会有几个问题：</p>
+<ol>
+<li>输出空间有限，终端的输出空间和内存是相关联的，有上限</li>
+<li>修改输出上限较麻烦</li>
+<li>遇到大量事件同时触发时，会出现终端信息快速滚动无法及时定位</li>
+</ol>
+<p>因此，需要实现将所需要检查的内容输出到规定的日志文件中。以huadian-dcsc项目为例，我这里将项目调用dopost发送的方法都连接了一个日志存储工具，每次系统调用dopost方法时，都会将请求头，请求体，明文数据，加密后的数据，目标服务器返回数据以及发送数据的时间进行统一输出填写到对应的日志文件中。</p>
+]]></content>
+      <categories>
+        <category>工程开发</category>
+      </categories>
+      <tags>
+        <tag>工程</tag>
+        <tag>测试</tag>
+      </tags>
+  </entry>
 </search>
