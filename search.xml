@@ -6737,4 +6737,277 @@ sync.WaitGroup
         <tag>测试</tag>
       </tags>
   </entry>
+  <entry>
+    <title>本地服务网络迁移设置问题</title>
+    <url>/2025/11/12/%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E7%BD%91%E7%BB%9C%E8%BF%81%E7%A7%BB%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h1>首先是相关的网络硬件设备的关系</h1>
+<h4 id="1-光猫-Optical-Network-Terminal-Modem"><a class="header-anchor" href="#1-光猫-Optical-Network-Terminal-Modem">¶</a>1. 光猫 (Optical Network Terminal / Modem)</h4>
+<ul>
+<li><strong>核心功能</strong>：<strong>信号转换</strong>。
+<ul>
+<li>它将光纤中传输的<strong>光信号</strong>转换成网线中传输的<strong>数字信号（以太网信号）</strong>，反之亦然。</li>
+</ul>
+</li>
+<li><strong>角色定位</strong>：您家庭网络与互联网服务提供商（ISP）网络之间的<strong>边界和桥梁</strong>。</li>
+<li><strong>工作层级</strong>：主要工作在物理层和数据链路层。</li>
+<li><strong>IP地址</strong>：
+<ul>
+<li><strong>WAN侧</strong>：从ISP获取一个IP地址。在您的情况下，这是一个<strong>公网静态IP</strong>。这是您家在互联网上的“门牌号”。</li>
+<li><strong>LAN侧</strong>：它自身也是一个网关，通常拥有一个私网IP地址（如 <code>192.168.0.1</code>或<code>192.168.1.1</code>），并为其下连接的设备（如您的路由器）分配私网IP地址。</li>
+</ul>
+</li>
+<li><strong>常见模式</strong>：
+<ul>
+<li><strong>桥接模式</strong>：此时光猫只做纯粹的信号转换，将网络“透传”给后面的路由器，由路由器进行拨号、获取公网IP和管理内网。这是最推荐的方式。</li>
+<li><strong>路由模式</strong>：此时光猫不仅完成信号转换，还充当了路由器和网关的角色（就像您当前的设置）。它自己拨号，获取IP，并创建第一个内网。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-路由器-Router"><a class="header-anchor" href="#2-路由器-Router">¶</a>2. 路由器 (Router)</h4>
+<ul>
+<li><strong>核心功能</strong>：<strong>网络寻路与转发</strong>。
+<ul>
+<li>它连接两个或多个不同的网络（比如您的家庭私网和互联网公网），并根据IP地址决定数据包该往哪里走。</li>
+</ul>
+</li>
+<li><strong>角色定位</strong>：不同网络之间的<strong>交通警察和翻译官</strong>。</li>
+<li><strong>工作层级</strong>：主要工作在网络层。</li>
+<li><strong>关键技术</strong>：
+<ul>
+<li><strong>NAT</strong>：这是关键！它将您内网多个设备的私网IP（如 <code>192.168.1.x</code>）<strong>“翻译”</strong> 成一个对外的公网IP（在您案例中，是路由器的WAN口IP <code>192.168.0.10</code>，而这个IP最终又被光猫的NAT翻译成公网ip）。这使得您多台设备可以共用同一个公网IP上网。</li>
+<li><strong>DHCP</strong>：通常路由器会为连接它的设备（手机、电脑、服务器）自动分配私网IP地址。</li>
+<li><strong>端口转发</strong>：将来自外部的、访问特定端口的数据，精准地转发给内网中指定的某台设备。</li>
+</ul>
+</li>
+<li><strong>IP地址</strong>：
+<ul>
+<li><strong>WAN口</strong>：从一个上层网络设备（这里是光猫）获取IP。在您案例中，是动态获取的 <code>192.168.0.10</code>。</li>
+<li><strong>LAN口</strong>：它自己有一个固定的私网IP（如 <code>192.168.1.1</code>），并创建了一个新的内网网段（如 <code>192.168.1.x</code>）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-网关-Gateway"><a class="header-anchor" href="#3-网关-Gateway">¶</a>3. 网关 (Gateway)</h4>
+<ul>
+<li><strong>核心功能</strong>：<strong>网络的出口</strong>。
+<ul>
+<li>网关是一个逻辑概念，指一个网络通向其他网络的“大门”。对于网络内的设备来说，<strong>“网关”就是它们要把数据包发往外部世界时，第一个要投递的地址</strong>。</li>
+</ul>
+</li>
+<li><strong>角色定位</strong>：<strong>默认的下一跳地址</strong>。</li>
+<li><strong>实体</strong>：网关通常不是一个独立的物理设备，而是由路由器或具有路由功能的光猫来扮演这个角色。
+<ul>
+<li>在您的服务器看来，它的网关就是<strong>路由器的LAN口IP</strong>（例如 <code>192.168.1.1</code>）。</li>
+<li>在您的路由器看来，它的网关就是<strong>光猫的LAN口IP</strong>（例如 <code>192.168.0.1</code>）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="联系总结"><a class="header-anchor" href="#联系总结">¶</a>联系总结</h4>
+<ul>
+<li><strong>光猫</strong>让物理信号得以接入。</li>
+<li><strong>路由器</strong>在信号之上建立逻辑网络并管理数据流向。</li>
+<li><strong>网关</strong>是路由功能的具体体现，是数据流出网络的第一个节点。</li>
+<li>在典型的家庭网络中，<strong>光猫和路由器可能合二为一</strong>（一体机）。在您的设置中，它们是分开的，形成了“光猫（路由模式） -&gt; 路由器 -&gt; 服务器”的双层网络结构。</li>
+</ul>
+<h1>相关服务的功能</h1>
+<h4 id="1-NAT-网络地址转换"><a class="header-anchor" href="#1-NAT-网络地址转换">¶</a>1. NAT - 网络地址转换</h4>
+<p><strong>核心要解决的问题：</strong> IPv4地址枯竭。不可能为互联网上每台设备都分配一个公网IP。</p>
+<p><strong>基本思想：</strong> &quot;共用门牌号&quot;。让一个局域网内的所有设备共用<strong>一个</strong>对外的公网IP地址。</p>
+<p><strong>工作原理：</strong><br>
+NAT设备（通常是您的路由器）扮演了一个&quot;翻译官&quot;和&quot;前台总机&quot;的角色。</p>
+<ul>
+<li><strong>出方向（内网设备访问外网）:</strong>
+<ol>
+<li>内网设备（如您的手机，IP <code>192.168.1.101</code>）想要访问谷歌（<code>8.8.8.8</code>）。</li>
+<li>数据包到达路由器，源IP是 <code>192.168.1.101</code>，源端口是随机的一个高端口（如 <code>54321</code>）。</li>
+<li><strong>路由器执行NAT：</strong> 它将这个数据包的<strong>源IP</strong>替换成自己的<strong>公网IP（WAN口IP）</strong>，同时将<strong>源端口</strong>替换成一个<strong>新的随机端口</strong>（如 <code>60001</code>）。</li>
+<li>路由器在自己的<strong>NAT转换表</strong>中记录一条映射关系：<code>(内网IP:内网端口) &lt;-&gt; (公网IP:新端口)</code>，即 <code>(192.168.1.101:54321) &lt;-&gt; (123.183.148.254:60001)</code>。</li>
+<li>修改后的数据包被发往互联网。</li>
+</ol>
+</li>
+<li><strong>入方向（外网响应内网设备）:</strong>
+<ol>
+<li>谷歌的响应数据包到达您的路由器，目标地址是 <code>公网ip:60001</code>。</li>
+<li>路由器查询自己的NAT转换表，发现端口 <code>60001</code> 对应着内网的 <code>192.168.1.101:54321</code>。</li>
+<li><strong>路由器执行反向NAT：</strong> 它将数据包的<strong>目标IP</strong>改回 <code>192.168.1.101</code>，<strong>目标端口</strong>改回 <code>54321</code>。</li>
+<li>修改后的数据包被转发给内网的正确设备。</li>
+</ol>
+</li>
+</ul>
+<p><strong>在您场景中的应用：</strong><br>
+您设置的<strong>端口转发</strong> 是一种特殊的、预设的静态NAT规则。它告诉路由器：&quot;无论谁，只要访问我公网IP的 <code>12354</code> 端口，就直接转发给内网的 <code>192.168.1.100</code> 的指定端口，无需查询动态NAT表。&quot;</p>
+<hr>
+<h4 id="2-DHCP-动态主机配置协议"><a class="header-anchor" href="#2-DHCP-动态主机配置协议">¶</a>2. DHCP - 动态主机配置协议</h4>
+<p><strong>核心要解决的问题：</strong> 手动为网络中的每一台设备配置IP地址、子网掩码、网关、DNS等参数极其繁琐且容易出错。</p>
+<p><strong>基本思想：</strong> &quot;自动配置服务&quot;。让设备一接入网络，就能自动获取所有必要的网络配置信息。</p>
+<p><strong>工作过程（DORA四步曲）:</strong><br>
+这个过程在您设备开机或连接WiFi时瞬间完成。</p>
+<ol>
+<li><strong>D - Discover（发现）:</strong>
+<ul>
+<li>新接入的设备（DHCP客户端）在本地网络中以广播形式发送一个 <strong>DHCP发现包</strong>，大喊：&quot;有没有DHCP服务器啊？我需要一个IP地址！&quot;</li>
+</ul>
+</li>
+<li><strong>O - Offer（提供）:</strong>
+<ul>
+<li>网络中的DHCP服务器（通常是路由器）听到广播后，从自己的IP地址池中挑选一个空闲的IP，然后向客户端发送一个 <strong>DHCP提供包</strong>，说：&quot;我用这个IP地址给你，你要不要？&quot;</li>
+</ul>
+</li>
+<li><strong>R - Request（请求）:</strong>
+<ul>
+<li>客户端可能会收到多个提供（如果网络中有多个DHCP服务器），它会选择其中一个，然后再次广播一个 <strong>DHCP请求包</strong>，宣布：&quot;我接受这个IP地址！&quot;</li>
+</ul>
+</li>
+<li><strong>A - Acknowledgment（确认）:</strong>
+<ul>
+<li>被选中的DHCP服务器最终发送一个 <strong>DHCP确认包</strong>，正式将该IP地址分配给客户端，并附上租期、子网掩码、默认网关、DNS服务器等完整信息。</li>
+</ul>
+</li>
+</ol>
+<p><strong>在您场景中的应用：</strong></p>
+<ul>
+<li>您的路由器从光猫那里通过DHCP获取了 <code>192.168.0.10</code> 这个IP。</li>
+<li>您的服务器从路由器那里通过DHCP获取了 <code>192.168.1.100</code> 这个IP。</li>
+</ul>
+<h1>数据在网络上传输的过程</h1>
+<h3 id="核心原理：协议栈与封装"><a class="header-anchor" href="#核心原理：协议栈与封装">¶</a>核心原理：协议栈与封装</h3>
+<p>想象一下寄一封国际信件：</p>
+<ol>
+<li>您用<strong>中文</strong>写下内容（应用层）。</li>
+<li>把信纸放进信封，用<strong>英文</strong>写上收件人姓名和街道地址（传输层/网络层）。</li>
+<li>再把信封放进一个大邮包，邮包上用<strong>邮政系统通用代码</strong>写上目的国家/城市/邮编（数据链路层）。</li>
+<li>邮包被装上飞机（物理层）。</li>
+</ol>
+<p>尽管全程运输的都是&quot;同一个物理实体&quot;，但不同环节的人根据不同的&quot;格式约定&quot;（语言/代码）来读取和处理信息。</p>
+<p>网络通信也是如此，它遵循一个标准的模型（如TCP/IP模型）。</p>
+<h3 id="数据格式的识别：逐层解封装"><a class="header-anchor" href="#数据格式的识别：逐层解封装">¶</a>数据格式的识别：逐层解封装</h3>
+<p>接收端的网卡和操作系统会执行一个与发送端完全相反的、自底向上的过程，称为<strong>解封装</strong>。每一层都只理解和处理自己那一层的&quot;信封&quot;，然后将其内部数据传递给上一层。</p>
+<p>以下是每一层如何识别和处理数据的详细过程：</p>
+<h4 id="1-物理层：从信号到比特"><a class="header-anchor" href="#1-物理层：从信号到比特">¶</a>1. 物理层：从信号到比特</h4>
+<ul>
+<li><strong>输入</strong>：电信号（网线）、光脉冲（光纤）、电磁波（Wi-Fi）。</li>
+<li><strong>处理</strong>：网卡根据物理介质的编码方案（如曼彻斯特编码、NRZ等）将模拟信号<strong>解码</strong>成数字的<strong>比特流</strong>（0和1）。</li>
+<li><strong>关键</strong>：这一步只关心<strong>时序、电压/光强</strong>，将连续的信号流转换成离散的比特流。它不关心比特的含义。</li>
+</ul>
+<h4 id="2-数据链路层（如以太网）：从比特到帧"><a class="header-anchor" href="#2-数据链路层（如以太网）：从比特到帧">¶</a>2. 数据链路层（如以太网）：从比特到帧</h4>
+<ul>
+<li><strong>目标</strong>：识别一个<strong>完整的数据块（帧）</strong> 的开始和结束，并交给正确的上层协议。</li>
+<li><strong>输入</strong>：物理层上传的原始比特流。</li>
+<li><strong>如何识别帧？</strong>
+<ul>
+<li><strong>前导码和帧起始定界符</strong>：以太网帧以一段固定的<code>101010...</code>序列开始，最后以<code>10101011</code>结束。这就像&quot;注意，下面开始是一封信！&quot;的喊话，让接收方进行时钟同步，并精确地找到帧的开始位置。</li>
+</ul>
+</li>
+<li><strong>如何解析帧内容？</strong>
+<ul>
+<li>帧有非常严格的格式。接收方&quot;知道&quot;：
+<ol>
+<li>紧接在定界符后面的是<strong>14字节的帧头</strong>。</li>
+<li>这14字节中，<strong>前6个字节是目标MAC地址</strong>，<strong>接着6个字节是源MAC地址</strong>，<strong>最后2个字节是类型字段</strong>。</li>
+</ol>
+</li>
+<li>接收方读取目标MAC地址，如果与自己的MAC地址或不匹配（且不是广播/组播），则直接丢弃该帧。</li>
+<li>如果地址匹配，它读取<strong>类型字段</strong>。这个2字节的代码告诉操作系统帧内部封装的是什么数据。
+<ul>
+<li><code>0x0800</code> -&gt; 这是<strong>IPv4</strong>数据包，交给网络层的IP协议处理。</li>
+<li><code>0x86DD</code> -&gt; 这是<strong>IPv6</strong>数据包。</li>
+<li><code>0x0806</code> -&gt; 这是<strong>ARP</strong>请求/应答。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>如何知道帧结束了？</strong>
+<ul>
+<li>以太网帧有最小和最大长度限制。接收方还会计算<strong>帧校验序列</strong>，与帧尾的FCS进行比较，如果出错则丢弃。这标志着帧的可靠结束。</li>
+</ul>
+</li>
+<li><strong>输出</strong>：剥离帧头和帧尾，将中间的&quot;数据&quot;部分（现在称为<strong>IP数据包</strong>）根据&quot;类型字段&quot;的指示，传递给对应的网络层协议（如IP协议）。</li>
+</ul>
+<h4 id="3-网络层（IP）：从帧到包"><a class="header-anchor" href="#3-网络层（IP）：从帧到包">¶</a>3. 网络层（IP）：从帧到包</h4>
+<ul>
+<li><strong>目标</strong>：将数据包路由到最终目的地。</li>
+<li><strong>输入</strong>：数据链路层上交的IP数据包（仍然是一串二进制）。</li>
+<li><strong>如何解析？</strong>
+<ul>
+<li>IP头也有固定格式。接收方&quot;知道&quot;IP头的第一个字节的前4位是<strong>版本</strong>。
+<ul>
+<li>如果这4位是<code>0100</code>（十进制4），它就是<strong>IPv4</strong>包，按IPv4头格式解析。</li>
+<li>如果这4位是<code>0110</code>（十进制6），它就是<strong>IPv6</strong>包，按IPv6头格式解析。</li>
+</ul>
+</li>
+<li>IPv4头中有一个固定的<strong>头长度</strong>字段（IHL），告诉接收方IP头有多长（通常是20字节）。</li>
+<li>接收方读取<strong>目标IP地址</strong>。如果这个地址与自己的IP地址不匹配（且设备不是路由器），它可能会丢弃该包。</li>
+<li>它读取<strong>协议字段</strong>。这个1字节的代码告诉操作系统数据包内部封装的是什么。
+<ul>
+<li><code>6</code> -&gt; 这是<strong>TCP</strong>段，交给传输层的TCP协议处理。</li>
+<li><code>17</code> -&gt; 这是<strong>UDP</strong>数据报。</li>
+<li><code>1</code> -&gt; 这是<strong>ICMP</strong>包（Ping命令用的）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>输出</strong>：剥离IP头，将内部的&quot;数据&quot;部分（现在称为<strong>TCP段</strong>或<strong>UDP数据报</strong>）根据&quot;协议字段&quot;的指示，传递给对应的传输层协议。</li>
+</ul>
+<h4 id="4-传输层（TCP-UDP）：从包到段"><a class="header-anchor" href="#4-传输层（TCP-UDP）：从包到段">¶</a>4. 传输层（TCP/UDP）：从包到段</h4>
+<ul>
+<li><strong>目标</strong>：将数据交给正确的应用程序。</li>
+<li><strong>输入</strong>：网络层上交的TCP段或UDP数据报。</li>
+<li><strong>如何解析？</strong>
+<ul>
+<li>TCP/UDP头也有固定格式。接收方读取<strong>目标端口号</strong>。</li>
+<li><strong>端口号就是一个&quot;应用程序的地址&quot;</strong>。操作系统维护着一个表，记录着哪些程序在监听哪些端口。
+<ul>
+<li>例如，<code>80</code>端口通常对应Web服务器，<code>53</code>端口对应DNS服务。</li>
+</ul>
+</li>
+<li>当数据到达时，操作系统查看目标端口号（如<code>12354</code>），发现这个端口被您部署的服务器进程监听者，于是就将这个数据段交给该进程。</li>
+</ul>
+</li>
+<li><strong>输出</strong>：剥离TCP/UDP头，将最终的&quot;应用数据&quot;交给指定的应用程序。</li>
+</ul>
+<h4 id="5-应用层：从段到有意义的数据"><a class="header-anchor" href="#5-应用层：从段到有意义的数据">¶</a>5. 应用层：从段到有意义的数据</h4>
+<ul>
+<li><strong>输入</strong>：传输层上交的原始二进制数据。</li>
+<li><strong>如何解析？</strong>
+<ul>
+<li>应用程序根据<strong>应用层协议</strong>（如HTTP、FTP、DNS、SMTP）来解析这些数据。</li>
+<li>这些协议定义了严格的语法。例如，HTTP协议规定，请求的第一行必须是 <code>方法 SP URI SP HTTP版本 CRLF</code>。</li>
+<li>应用程序的代码被编写来&quot;理解&quot;这种语法。它会逐字节读取，寻找空格、换行符等分隔符，从而解析出&quot;这是一个GET请求&quot;，&quot;请求的资源是<code>/index.html</code>&quot;等信息。</li>
+</ul>
+</li>
+</ul>
+<h3 id="总结：为什么能识别？"><a class="header-anchor" href="#总结：为什么能识别？">¶</a>总结：为什么能识别？</h3>
+<ol>
+<li><strong>严格的分层</strong>：每一层只关心自己层的格式，处理完后交给上一层，职责分明。</li>
+<li><strong>固定的格式规范（协议）</strong>：每一层的&quot;信封&quot;都有国际标准定义的<strong>固定格式</strong>。接收方严格按照这个已知的格式去&quot;丈量&quot;和&quot;解读&quot;二进制流。
+<ul>
+<li>&quot;前6字节是MAC地址&quot;</li>
+<li>&quot;第23-24字节是类型字段&quot;</li>
+<li>&quot;IP头的第10字节是协议字段&quot;</li>
+</ul>
+</li>
+<li><strong>自描述的字段</strong>：数据本身包含了如何解读后续数据的线索，如IP版本字段、TCP端口号、HTTP方法等。</li>
+<li><strong>共同的&quot;语言&quot;</strong>：通信的双方必须事先约定好使用相同的协议栈（如TCP/IP），否则就是&quot;鸡同鸭讲&quot;，无法理解。</li>
+</ol>
+<p>最终，通过这一系列精密、标准化的&quot;拆信封&quot;过程，您服务器上的应用程序最终收到的，就是一段它能够理解和处理的、有意义的应用数据，而这一切的起点，仅仅是网线里的一串0和1。</p>
+<h1>具体的路由转发的设置</h1>
+<h2 id="1-首先查看服务器对应的网关（也就是上一层的路由器）的ip地址"><a class="header-anchor" href="#1-首先查看服务器对应的网关（也就是上一层的路由器）的ip地址">¶</a>1.首先查看服务器对应的网关（也就是上一层的路由器）的ip地址</h2>
+<img src="img/路由ip地址.png">
+<h2 id="2-在路由器的上一层网关（光猫或者是其他路由器）配置NAT服务"><a class="header-anchor" href="#2-在路由器的上一层网关（光猫或者是其他路由器）配置NAT服务">¶</a>2.在路由器的上一层网关（光猫或者是其他路由器）配置NAT服务</h2>
+<img src="img/NAT配置页面">
+<h2 id="3-整体数据的流程"><a class="header-anchor" href="#3-整体数据的流程">¶</a>3.整体数据的流程</h2>
+<img src="img/数据流程.png">
+<h1>重新设置后沙果服务出现的问题以及解决的办法</h1>
+<h2 id="1-emqx服务器出现问题"><a class="header-anchor" href="#1-emqx服务器出现问题">¶</a>1.emqx服务器出现问题</h2>
+<p>设备无法连接服务器，mqttx无法连接服务器。</p>
+<p>如何解决：直接将后端的sagooiot服务重启。（./opt/sagoo/sagooiot/bin/curl.sh start）</p>
+]]></content>
+      <categories>
+        <category>网络</category>
+      </categories>
+      <tags>
+        <tag>网络</tag>
+        <tag>服务</tag>
+        <tag>路由</tag>
+      </tags>
+  </entry>
 </search>

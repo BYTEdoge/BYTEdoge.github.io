@@ -1,0 +1,2091 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#4285F4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#4285F4" media="(prefers-color-scheme: dark)"><meta name="generator" content="Hexo 7.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#4285F4">
+
+<link rel="stylesheet" href="/css/main.css">
+<link rel="stylesheet" href="/css/custom.css">
+
+<!-- SHA-256 library for password hashing -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.0/css/all.min.css" integrity="sha256-VHqXKFhhMxcpubYf9xiWdCiojEbY9NexQ4jh8AxbvcM=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"bytedoge.github.io","root":"/","images":"/images","scheme":"Mist","darkmode":true,"version":"8.24.1","exturl":false,"sidebar":{"position":"right","width_expanded":320,"width_dual_column":240,"display":"hide","padding":18,"offset":12},"hljswrap":true,"codeblock":{"theme":{"light":"default","dark":"stackoverflow-dark"},"prism":{"light":"prism","dark":"prism-dark"},"copy_button":{"enable":false,"style":null},"fold":{"enable":false,"height":500},"language":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"duration":200,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"top_n_per_article":1,"unescape":true,"preload":false,"trigger":"auto"}}</script><script src="/js/config.js" defer></script>
+
+    <meta name="description" content="首先是相关的网络硬件设备的关系 ¶1. 光猫 (Optical Network Terminal &#x2F; Modem)  核心功能：信号转换。  它将光纤中传输的光信号转换成网线中传输的数字信号（以太网信号），反之亦然。   角色定位：您家庭网络与互联网服务提供商（ISP）网络之间的边界和桥梁。 工作层级：主要工作在物理层和数据链路层。 IP地址：  WAN侧：从ISP获取一个IP地址。在您的情况下，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="本地服务网络迁移设置问题">
+<meta property="og:url" content="https://bytedoge.github.io/2025/11/12/%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E7%BD%91%E7%BB%9C%E8%BF%81%E7%A7%BB%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98/">
+<meta property="og:site_name" content="zhyBlogs">
+<meta property="og:description" content="首先是相关的网络硬件设备的关系 ¶1. 光猫 (Optical Network Terminal &#x2F; Modem)  核心功能：信号转换。  它将光纤中传输的光信号转换成网线中传输的数字信号（以太网信号），反之亦然。   角色定位：您家庭网络与互联网服务提供商（ISP）网络之间的边界和桥梁。 工作层级：主要工作在物理层和数据链路层。 IP地址：  WAN侧：从ISP获取一个IP地址。在您的情况下，">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://bytedoge.github.io/2025/11/12/%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E7%BD%91%E7%BB%9C%E8%BF%81%E7%A7%BB%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98/img/%E8%B7%AF%E7%94%B1ip%E5%9C%B0%E5%9D%80.png">
+<meta property="og:image" content="https://bytedoge.github.io/2025/11/12/%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E7%BD%91%E7%BB%9C%E8%BF%81%E7%A7%BB%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98/img/NAT%E9%85%8D%E7%BD%AE%E9%A1%B5%E9%9D%A2">
+<meta property="og:image" content="https://bytedoge.github.io/2025/11/12/%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E7%BD%91%E7%BB%9C%E8%BF%81%E7%A7%BB%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98/img/%E6%95%B0%E6%8D%AE%E6%B5%81%E7%A8%8B.png">
+<meta property="article:published_time" content="2025-11-12T05:37:15.000Z">
+<meta property="article:modified_time" content="2025-11-12T06:43:09.398Z">
+<meta property="article:author" content="Zheng HanYang">
+<meta property="article:tag" content="网络">
+<meta property="article:tag" content="服务">
+<meta property="article:tag" content="路由">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://bytedoge.github.io/2025/11/12/%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E7%BD%91%E7%BB%9C%E8%BF%81%E7%A7%BB%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98/img/%E8%B7%AF%E7%94%B1ip%E5%9C%B0%E5%9D%80.png">
+
+
+<link rel="canonical" href="https://bytedoge.github.io/2025/11/12/%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E7%BD%91%E7%BB%9C%E8%BF%81%E7%A7%BB%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98/">
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"zh-CN","comments":true,"permalink":"https://bytedoge.github.io/2025/11/12/%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E7%BD%91%E7%BB%9C%E8%BF%81%E7%A7%BB%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98/","path":"2025/11/12/本地服务网络迁移设置问题/","title":"本地服务网络迁移设置问题"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>本地服务网络迁移设置问题 | zhyBlogs</title>
+  
+
+
+
+
+
+
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous" defer></script>
+<script src="/js/utils.js" defer></script><script src="/js/motion.js" defer></script><script src="/js/sidebar.js" defer></script><script src="/js/time-theme.js" defer></script><script src="/js/next-boot.js" defer></script><script src="/js/remove-header.js" defer></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/hexo-generator-searchdb/1.5.0/search.js" integrity="sha256-xFC6PJ82SL9b3WkGjFavNiA9gm5z6UBxWPiu4CYjptg=" crossorigin="anonymous" defer></script>
+<script src="/js/third-party/search/local-search.js" defer></script>
+
+
+
+
+
+
+
+  
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+  
+  <!-- 立即应用主题色的脚本 -->
+  <script>
+    (function() {
+      // 在页面头部就执行，确保在HTML渲染之前应用主题色
+      const currentHour = new Date().getHours();
+      let themeColor = '#8CC8FF'; // 默认天蓝色
+      
+      // 根据当前时间设置主题色
+      if (currentHour >= 14 && currentHour < 16) {
+        themeColor = '#8CC8FF'; // 天蓝色
+      } else if (currentHour >= 16 && currentHour < 18) {
+        themeColor = '#FFAA50'; // 琥珀橙
+      } else if (currentHour >= 18 && currentHour < 20) {
+        themeColor = '#D278C8'; // 玫紫
+      } else if (currentHour >= 20 && currentHour < 22) {
+        themeColor = '#1E3250'; // 藏青
+      } else if (currentHour >= 22 || currentHour < 2) {
+        themeColor = '#323741'; // 黛灰
+      } else if (currentHour >= 2 && currentHour < 4) {
+        themeColor = '#4A90E2'; // 靛蓝
+      } else if (currentHour >= 4 && currentHour < 6) {
+        themeColor = '#F5F5DC'; // 鱼肚白
+      } else if (currentHour >= 6 && currentHour < 8) {
+        themeColor = '#FFA58C'; // 橘粉
+      } else if (currentHour >= 8 && currentHour < 10) {
+        themeColor = '#FFD700'; // 鹅黄
+      } else if (currentHour >= 10 && currentHour < 12) {
+        themeColor = '#FFD700'; // 浅金
+      } else if (currentHour >= 12 && currentHour < 14) {
+        themeColor = '#FF8296'; // 绯红
+      }
+      
+      // 设置CSS变量
+      document.documentElement.style.setProperty('--current-theme-color', themeColor);
+      
+      // 创建CSS样式并立即应用
+      const style = document.createElement('style');
+      style.textContent = `
+        :root {
+          --current-theme-color: ${themeColor} !important;
+        }
+        #main-lock-icon {
+          stroke: ${themeColor} !important;
+        }
+        #main-title {
+          color: ${themeColor} !important;
+        }
+        #password-icon {
+          color: ${themeColor} !important;
+        }
+        #captcha-icon {
+          color: ${themeColor} !important;
+        }
+        #login-button {
+          background: ${themeColor} !important;
+          border-color: ${themeColor} !important;
+        }
+        #login-button:hover {
+          background: ${themeColor} !important;
+          border-color: ${themeColor} !important;
+        }
+        #login-button:active {
+          background: ${themeColor} !important;
+          border-color: ${themeColor} !important;
+        }
+      `;
+      document.head.appendChild(style);
+      
+      console.log('头部脚本应用主题色:', themeColor, '当前时间:', currentHour);
+    })();
+  </script>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <!-- Login page container - 默认隐藏，只有在确认未登录时才显示 -->
+  <div id="login-page" style="display: none; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; text-align: center; background: transparent; position: fixed; width: 100%; z-index: 9999;">
+    <!-- 磨砂玻璃背景层 -->
+    <div id="frosted-bg" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); z-index: -1;"></div>
+    
+    <!-- 圆形漂浮元素容器 -->
+    <div id="bubbles-container" style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; z-index: -2;"></div>
+    <div style="max-width: 400px; padding: 2.5rem; background: rgba(255, 255, 255, 0.97); border-radius: 16px; box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25); backdrop-filter: blur(15px); transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);">
+      <!-- 响应式样式 - 针对手机屏幕 -->
+      <style>
+        /* 强制应用主题色，防止被其他样式覆盖 */
+        #main-lock-icon {
+          stroke: var(--current-theme-color, #8CC8FF) !important;
+        }
+        #main-title {
+          color: var(--current-theme-color, #8CC8FF) !important;
+        }
+        #password-icon {
+          color: var(--current-theme-color, #8CC8FF) !important;
+        }
+        #captcha-icon {
+          color: var(--current-theme-color, #8CC8FF) !important;
+        }
+        #login-button {
+          background: var(--current-theme-color, #8CC8FF) !important;
+          border-color: var(--current-theme-color, #8CC8FF) !important;
+        }
+        #login-button:hover {
+          background: var(--current-theme-color, #8CC8FF) !important;
+          border-color: var(--current-theme-color, #8CC8FF) !important;
+        }
+        #login-button:active {
+          background: var(--current-theme-color, #8CC8FF) !important;
+          border-color: var(--current-theme-color, #8CC8FF) !important;
+        }
+        
+        @media (max-width: 480px) {
+          #login-page > div:nth-child(3) {
+            max-width: 90%;
+            padding: 1.8rem;
+            margin: 0 5%;
+          }
+          #login-page canvas {
+            width: 100px !important;
+            height: 36px !important;
+          }
+          #login-page h2 {
+            font-size: 1.5rem !important;
+          }
+          #login-page .login-input {
+            font-size: 14px !important;
+            padding: 0.75rem 2.2rem !important;
+          }
+          #login-page button {
+            font-size: 14px !important;
+            padding: 0.75rem !important;
+          }
+        }
+      </style>
+      <div style="margin-bottom: 2rem;">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--current-theme-color, #8CC8FF)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: block; margin: 0 auto;" id="main-lock-icon">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+        </svg>
+      </div>
+      <h2 style="margin-bottom: 2rem; color: var(--current-theme-color, #8CC8FF); font-size: 1.75rem; font-weight: 600;" id="main-title">zhyBlogs</h2>
+      <div style="margin-bottom: 1.5rem; position: relative; width: 100%;">
+        <div style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--current-theme-color, #8CC8FF);" id="password-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <input type="password" id="pass-input" placeholder="请输入密码" class="login-input" style="width: 100%; padding: 0.85rem 2.5rem; margin-bottom: 0; border: 2px solid transparent; border-radius: 8px; font-size: 16px; transition: all 0.3s ease; background: #f8f9fa; box-sizing: border-box;">
+      </div>
+      
+      <!-- 验证码输入区域 -->
+      <div style="margin-bottom: 1.5rem; position: relative; width: 100%;">
+        <div style="display: flex; gap: 12px; align-items: center;">
+          <div style="flex: 1; position: relative;">
+            <div style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--current-theme-color, #8CC8FF);" id="captcha-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+            </div>
+            <input type="text" id="captcha-input" placeholder="请输入验证码" class="login-input" style="width: 100%; padding: 0.85rem 2.5rem; margin-bottom: 0; border: 2px solid transparent; border-radius: 8px; font-size: 16px; transition: all 0.3s ease; background: #f8f9fa; box-sizing: border-box;">
+          </div>
+          <canvas id="captcha-canvas" width="120" height="40" style="border: 2px solid transparent; border-radius: 8px; cursor: pointer; background: white;"></canvas>
+        </div>
+      </div>
+      
+      <button onclick="enhancedCheckPassword()" style="width: 100%; padding: 0.85rem; background: var(--current-theme-color, #8CC8FF); color: white; border: none; border-radius: 8px; font-size: 16px; font-weight: 500; cursor: pointer; transition: all 0.3s ease; text-transform: uppercase; letter-spacing: 0.5px; box-sizing: border-box;" id="login-button">登录</button>
+      <p id="error-msg" style="color: #EA4335; margin-top: 1rem; font-size: 0.9rem;"></p>
+    </div>
+  </div>
+
+  <!-- Blog content container (hidden by default) -->
+  <div id="blog-content" style="display: none;">
+    <main class="main">
+      <div class="column">
+        <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">zhyBlogs</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">技术学习笔记</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="搜索" role="button">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+      <div class="search-header">
+        <span class="search-icon">
+          <i class="fa fa-search"></i>
+        </span>
+        <div class="search-input-container">
+          <input autocomplete="off" autocapitalize="off" maxlength="80"
+                placeholder="搜索..." spellcheck="false"
+                type="search" class="search-input">
+        </div>
+        <span class="popup-btn-close" role="button">
+          <i class="fa fa-times-circle"></i>
+        </span>
+      </div>
+      <div class="search-result-container">
+        <div class="search-result-icon">
+          <i class="fa fa-spinner fa-pulse fa-5x"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</header>
+          
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">1.</span> <span class="nav-text">首先是相关的网络硬件设备的关系</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E5%85%89%E7%8C%AB-Optical-Network-Terminal-Modem"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">1. 光猫 (Optical Network Terminal &#x2F; Modem)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E8%B7%AF%E7%94%B1%E5%99%A8-Router"><span class="nav-number">1.0.0.2.</span> <span class="nav-text">2. 路由器 (Router)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%BD%91%E5%85%B3-Gateway"><span class="nav-number">1.0.0.3.</span> <span class="nav-text">3. 网关 (Gateway)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%81%94%E7%B3%BB%E6%80%BB%E7%BB%93"><span class="nav-number">1.0.0.4.</span> <span class="nav-text">联系总结</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">2.</span> <span class="nav-text">相关服务的功能</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-NAT-%E7%BD%91%E7%BB%9C%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2"><span class="nav-number">2.0.0.1.</span> <span class="nav-text">1. NAT - 网络地址转换</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-DHCP-%E5%8A%A8%E6%80%81%E4%B8%BB%E6%9C%BA%E9%85%8D%E7%BD%AE%E5%8D%8F%E8%AE%AE"><span class="nav-number">2.0.0.2.</span> <span class="nav-text">2. DHCP - 动态主机配置协议</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">3.</span> <span class="nav-text">数据在网络上传输的过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E5%8E%9F%E7%90%86%EF%BC%9A%E5%8D%8F%E8%AE%AE%E6%A0%88%E4%B8%8E%E5%B0%81%E8%A3%85"><span class="nav-number">3.0.1.</span> <span class="nav-text">核心原理：协议栈与封装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%A0%BC%E5%BC%8F%E7%9A%84%E8%AF%86%E5%88%AB%EF%BC%9A%E9%80%90%E5%B1%82%E8%A7%A3%E5%B0%81%E8%A3%85"><span class="nav-number">3.0.2.</span> <span class="nav-text">数据格式的识别：逐层解封装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1-%E7%89%A9%E7%90%86%E5%B1%82%EF%BC%9A%E4%BB%8E%E4%BF%A1%E5%8F%B7%E5%88%B0%E6%AF%94%E7%89%B9"><span class="nav-number">3.0.2.1.</span> <span class="nav-text">1. 物理层：从信号到比特</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2-%E6%95%B0%E6%8D%AE%E9%93%BE%E8%B7%AF%E5%B1%82%EF%BC%88%E5%A6%82%E4%BB%A5%E5%A4%AA%E7%BD%91%EF%BC%89%EF%BC%9A%E4%BB%8E%E6%AF%94%E7%89%B9%E5%88%B0%E5%B8%A7"><span class="nav-number">3.0.2.2.</span> <span class="nav-text">2. 数据链路层（如以太网）：从比特到帧</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3-%E7%BD%91%E7%BB%9C%E5%B1%82%EF%BC%88IP%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%B8%A7%E5%88%B0%E5%8C%85"><span class="nav-number">3.0.2.3.</span> <span class="nav-text">3. 网络层（IP）：从帧到包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4-%E4%BC%A0%E8%BE%93%E5%B1%82%EF%BC%88TCP-UDP%EF%BC%89%EF%BC%9A%E4%BB%8E%E5%8C%85%E5%88%B0%E6%AE%B5"><span class="nav-number">3.0.2.4.</span> <span class="nav-text">4. 传输层（TCP&#x2F;UDP）：从包到段</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5-%E5%BA%94%E7%94%A8%E5%B1%82%EF%BC%9A%E4%BB%8E%E6%AE%B5%E5%88%B0%E6%9C%89%E6%84%8F%E4%B9%89%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-number">3.0.2.5.</span> <span class="nav-text">5. 应用层：从段到有意义的数据</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A%E4%B8%BA%E4%BB%80%E4%B9%88%E8%83%BD%E8%AF%86%E5%88%AB%EF%BC%9F"><span class="nav-number">3.0.3.</span> <span class="nav-text">总结：为什么能识别？</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">4.</span> <span class="nav-text">具体的路由转发的设置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E9%A6%96%E5%85%88%E6%9F%A5%E7%9C%8B%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AF%B9%E5%BA%94%E7%9A%84%E7%BD%91%E5%85%B3%EF%BC%88%E4%B9%9F%E5%B0%B1%E6%98%AF%E4%B8%8A%E4%B8%80%E5%B1%82%E7%9A%84%E8%B7%AF%E7%94%B1%E5%99%A8%EF%BC%89%E7%9A%84ip%E5%9C%B0%E5%9D%80"><span class="nav-number">4.1.</span> <span class="nav-text">1.首先查看服务器对应的网关（也就是上一层的路由器）的ip地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E5%9C%A8%E8%B7%AF%E7%94%B1%E5%99%A8%E7%9A%84%E4%B8%8A%E4%B8%80%E5%B1%82%E7%BD%91%E5%85%B3%EF%BC%88%E5%85%89%E7%8C%AB%E6%88%96%E8%80%85%E6%98%AF%E5%85%B6%E4%BB%96%E8%B7%AF%E7%94%B1%E5%99%A8%EF%BC%89%E9%85%8D%E7%BD%AENAT%E6%9C%8D%E5%8A%A1"><span class="nav-number">4.2.</span> <span class="nav-text">2.在路由器的上一层网关（光猫或者是其他路由器）配置NAT服务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E6%95%B4%E4%BD%93%E6%95%B0%E6%8D%AE%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="nav-number">4.3.</span> <span class="nav-text">3.整体数据的流程</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link"><span class="nav-number">5.</span> <span class="nav-text">重新设置后沙果服务出现的问题以及解决的办法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-emqx%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%87%BA%E7%8E%B0%E9%97%AE%E9%A2%98"><span class="nav-number">5.1.</span> <span class="nav-text">1.emqx服务器出现问题</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Zheng HanYang</p>
+  <div class="site-description" itemprop="description">技术学习笔记</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">54</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">45</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/BYTEdoge" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;BYTEdoge" rel="noopener me" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:2933532144@qq.com" title="E-Mail → mailto:2933532144@qq.com" rel="noopener me" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+      </div>
+
+      <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://bytedoge.github.io/2025/11/12/%E6%9C%AC%E5%9C%B0%E6%9C%8D%E5%8A%A1%E7%BD%91%E7%BB%9C%E8%BF%81%E7%A7%BB%E8%AE%BE%E7%BD%AE%E9%97%AE%E9%A2%98/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Zheng HanYang">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="zhyBlogs">
+      <meta itemprop="description" content="技术学习笔记">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="本地服务网络迁移设置问题 | zhyBlogs">
+      <meta itemprop="description" content="">
+    </span>
+        
+        <header class="post-header">
+          <h1 class="post-title" itemprop="name headline">
+            本地服务网络迁移设置问题
+          </h1>
+
+          <div class="post-meta-container">
+            <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+      
+
+      <time title="创建时间：2025-11-12 13:37:15 / 修改时间：14:43:09" itemprop="dateCreated datePublished" datetime="2025-11-12T13:37:15+08:00">2025-11-12</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index"><span itemprop="name">网络</span></a>
+        </span>
+    </span>
+
+  
+    <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv">
+      <span class="post-meta-item-icon">
+        <i class="far fa-eye"></i>
+      </span>
+      <span class="post-meta-item-text">阅读次数：</span>
+      <span id="busuanzi_value_page_pv"></span>
+    </span>
+    <span class="post-meta-break"></span>
+    <span class="post-meta-item" title="本文字数">
+      <span class="post-meta-item-icon">
+        <i class="far fa-file-word"></i>
+      </span>
+      <span class="post-meta-item-text">本文字数：</span>
+      <span>5.3k</span>
+    </span>
+    <span class="post-meta-item" title="阅读时长">
+      <span class="post-meta-item-icon">
+        <i class="far fa-clock"></i>
+      </span>
+      <span class="post-meta-item-text">阅读时长 &asymp;</span>
+      <span>4 分钟</span>
+    </span>
+</div>
+
+          </div>
+        </header>
+
+    
+    
+    
+      <div class="post-body" itemprop="articleBody"><h1>首先是相关的网络硬件设备的关系</h1>
+<h4 id="1-光猫-Optical-Network-Terminal-Modem"><a class="header-anchor" href="#1-光猫-Optical-Network-Terminal-Modem">¶</a>1. 光猫 (Optical Network Terminal / Modem)</h4>
+<ul>
+<li><strong>核心功能</strong>：<strong>信号转换</strong>。
+<ul>
+<li>它将光纤中传输的<strong>光信号</strong>转换成网线中传输的<strong>数字信号（以太网信号）</strong>，反之亦然。</li>
+</ul>
+</li>
+<li><strong>角色定位</strong>：您家庭网络与互联网服务提供商（ISP）网络之间的<strong>边界和桥梁</strong>。</li>
+<li><strong>工作层级</strong>：主要工作在物理层和数据链路层。</li>
+<li><strong>IP地址</strong>：
+<ul>
+<li><strong>WAN侧</strong>：从ISP获取一个IP地址。在您的情况下，这是一个<strong>公网静态IP</strong>。这是您家在互联网上的“门牌号”。</li>
+<li><strong>LAN侧</strong>：它自身也是一个网关，通常拥有一个私网IP地址（如 <code>192.168.0.1</code>或<code>192.168.1.1</code>），并为其下连接的设备（如您的路由器）分配私网IP地址。</li>
+</ul>
+</li>
+<li><strong>常见模式</strong>：
+<ul>
+<li><strong>桥接模式</strong>：此时光猫只做纯粹的信号转换，将网络“透传”给后面的路由器，由路由器进行拨号、获取公网IP和管理内网。这是最推荐的方式。</li>
+<li><strong>路由模式</strong>：此时光猫不仅完成信号转换，还充当了路由器和网关的角色（就像您当前的设置）。它自己拨号，获取IP，并创建第一个内网。</li>
+</ul>
+</li>
+</ul>
+<h4 id="2-路由器-Router"><a class="header-anchor" href="#2-路由器-Router">¶</a>2. 路由器 (Router)</h4>
+<ul>
+<li><strong>核心功能</strong>：<strong>网络寻路与转发</strong>。
+<ul>
+<li>它连接两个或多个不同的网络（比如您的家庭私网和互联网公网），并根据IP地址决定数据包该往哪里走。</li>
+</ul>
+</li>
+<li><strong>角色定位</strong>：不同网络之间的<strong>交通警察和翻译官</strong>。</li>
+<li><strong>工作层级</strong>：主要工作在网络层。</li>
+<li><strong>关键技术</strong>：
+<ul>
+<li><strong>NAT</strong>：这是关键！它将您内网多个设备的私网IP（如 <code>192.168.1.x</code>）<strong>“翻译”</strong> 成一个对外的公网IP（在您案例中，是路由器的WAN口IP <code>192.168.0.10</code>，而这个IP最终又被光猫的NAT翻译成公网ip）。这使得您多台设备可以共用同一个公网IP上网。</li>
+<li><strong>DHCP</strong>：通常路由器会为连接它的设备（手机、电脑、服务器）自动分配私网IP地址。</li>
+<li><strong>端口转发</strong>：将来自外部的、访问特定端口的数据，精准地转发给内网中指定的某台设备。</li>
+</ul>
+</li>
+<li><strong>IP地址</strong>：
+<ul>
+<li><strong>WAN口</strong>：从一个上层网络设备（这里是光猫）获取IP。在您案例中，是动态获取的 <code>192.168.0.10</code>。</li>
+<li><strong>LAN口</strong>：它自己有一个固定的私网IP（如 <code>192.168.1.1</code>），并创建了一个新的内网网段（如 <code>192.168.1.x</code>）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="3-网关-Gateway"><a class="header-anchor" href="#3-网关-Gateway">¶</a>3. 网关 (Gateway)</h4>
+<ul>
+<li><strong>核心功能</strong>：<strong>网络的出口</strong>。
+<ul>
+<li>网关是一个逻辑概念，指一个网络通向其他网络的“大门”。对于网络内的设备来说，<strong>“网关”就是它们要把数据包发往外部世界时，第一个要投递的地址</strong>。</li>
+</ul>
+</li>
+<li><strong>角色定位</strong>：<strong>默认的下一跳地址</strong>。</li>
+<li><strong>实体</strong>：网关通常不是一个独立的物理设备，而是由路由器或具有路由功能的光猫来扮演这个角色。
+<ul>
+<li>在您的服务器看来，它的网关就是<strong>路由器的LAN口IP</strong>（例如 <code>192.168.1.1</code>）。</li>
+<li>在您的路由器看来，它的网关就是<strong>光猫的LAN口IP</strong>（例如 <code>192.168.0.1</code>）。</li>
+</ul>
+</li>
+</ul>
+<h4 id="联系总结"><a class="header-anchor" href="#联系总结">¶</a>联系总结</h4>
+<ul>
+<li><strong>光猫</strong>让物理信号得以接入。</li>
+<li><strong>路由器</strong>在信号之上建立逻辑网络并管理数据流向。</li>
+<li><strong>网关</strong>是路由功能的具体体现，是数据流出网络的第一个节点。</li>
+<li>在典型的家庭网络中，<strong>光猫和路由器可能合二为一</strong>（一体机）。在您的设置中，它们是分开的，形成了“光猫（路由模式） -&gt; 路由器 -&gt; 服务器”的双层网络结构。</li>
+</ul>
+<h1>相关服务的功能</h1>
+<h4 id="1-NAT-网络地址转换"><a class="header-anchor" href="#1-NAT-网络地址转换">¶</a>1. NAT - 网络地址转换</h4>
+<p><strong>核心要解决的问题：</strong> IPv4地址枯竭。不可能为互联网上每台设备都分配一个公网IP。</p>
+<p><strong>基本思想：</strong> &quot;共用门牌号&quot;。让一个局域网内的所有设备共用<strong>一个</strong>对外的公网IP地址。</p>
+<p><strong>工作原理：</strong><br>
+NAT设备（通常是您的路由器）扮演了一个&quot;翻译官&quot;和&quot;前台总机&quot;的角色。</p>
+<ul>
+<li><strong>出方向（内网设备访问外网）:</strong>
+<ol>
+<li>内网设备（如您的手机，IP <code>192.168.1.101</code>）想要访问谷歌（<code>8.8.8.8</code>）。</li>
+<li>数据包到达路由器，源IP是 <code>192.168.1.101</code>，源端口是随机的一个高端口（如 <code>54321</code>）。</li>
+<li><strong>路由器执行NAT：</strong> 它将这个数据包的<strong>源IP</strong>替换成自己的<strong>公网IP（WAN口IP）</strong>，同时将<strong>源端口</strong>替换成一个<strong>新的随机端口</strong>（如 <code>60001</code>）。</li>
+<li>路由器在自己的<strong>NAT转换表</strong>中记录一条映射关系：<code>(内网IP:内网端口) &lt;-&gt; (公网IP:新端口)</code>，即 <code>(192.168.1.101:54321) &lt;-&gt; (123.183.148.254:60001)</code>。</li>
+<li>修改后的数据包被发往互联网。</li>
+</ol>
+</li>
+<li><strong>入方向（外网响应内网设备）:</strong>
+<ol>
+<li>谷歌的响应数据包到达您的路由器，目标地址是 <code>公网ip:60001</code>。</li>
+<li>路由器查询自己的NAT转换表，发现端口 <code>60001</code> 对应着内网的 <code>192.168.1.101:54321</code>。</li>
+<li><strong>路由器执行反向NAT：</strong> 它将数据包的<strong>目标IP</strong>改回 <code>192.168.1.101</code>，<strong>目标端口</strong>改回 <code>54321</code>。</li>
+<li>修改后的数据包被转发给内网的正确设备。</li>
+</ol>
+</li>
+</ul>
+<p><strong>在您场景中的应用：</strong><br>
+您设置的<strong>端口转发</strong> 是一种特殊的、预设的静态NAT规则。它告诉路由器：&quot;无论谁，只要访问我公网IP的 <code>12354</code> 端口，就直接转发给内网的 <code>192.168.1.100</code> 的指定端口，无需查询动态NAT表。&quot;</p>
+<hr>
+<h4 id="2-DHCP-动态主机配置协议"><a class="header-anchor" href="#2-DHCP-动态主机配置协议">¶</a>2. DHCP - 动态主机配置协议</h4>
+<p><strong>核心要解决的问题：</strong> 手动为网络中的每一台设备配置IP地址、子网掩码、网关、DNS等参数极其繁琐且容易出错。</p>
+<p><strong>基本思想：</strong> &quot;自动配置服务&quot;。让设备一接入网络，就能自动获取所有必要的网络配置信息。</p>
+<p><strong>工作过程（DORA四步曲）:</strong><br>
+这个过程在您设备开机或连接WiFi时瞬间完成。</p>
+<ol>
+<li><strong>D - Discover（发现）:</strong>
+<ul>
+<li>新接入的设备（DHCP客户端）在本地网络中以广播形式发送一个 <strong>DHCP发现包</strong>，大喊：&quot;有没有DHCP服务器啊？我需要一个IP地址！&quot;</li>
+</ul>
+</li>
+<li><strong>O - Offer（提供）:</strong>
+<ul>
+<li>网络中的DHCP服务器（通常是路由器）听到广播后，从自己的IP地址池中挑选一个空闲的IP，然后向客户端发送一个 <strong>DHCP提供包</strong>，说：&quot;我用这个IP地址给你，你要不要？&quot;</li>
+</ul>
+</li>
+<li><strong>R - Request（请求）:</strong>
+<ul>
+<li>客户端可能会收到多个提供（如果网络中有多个DHCP服务器），它会选择其中一个，然后再次广播一个 <strong>DHCP请求包</strong>，宣布：&quot;我接受这个IP地址！&quot;</li>
+</ul>
+</li>
+<li><strong>A - Acknowledgment（确认）:</strong>
+<ul>
+<li>被选中的DHCP服务器最终发送一个 <strong>DHCP确认包</strong>，正式将该IP地址分配给客户端，并附上租期、子网掩码、默认网关、DNS服务器等完整信息。</li>
+</ul>
+</li>
+</ol>
+<p><strong>在您场景中的应用：</strong></p>
+<ul>
+<li>您的路由器从光猫那里通过DHCP获取了 <code>192.168.0.10</code> 这个IP。</li>
+<li>您的服务器从路由器那里通过DHCP获取了 <code>192.168.1.100</code> 这个IP。</li>
+</ul>
+<h1>数据在网络上传输的过程</h1>
+<h3 id="核心原理：协议栈与封装"><a class="header-anchor" href="#核心原理：协议栈与封装">¶</a>核心原理：协议栈与封装</h3>
+<p>想象一下寄一封国际信件：</p>
+<ol>
+<li>您用<strong>中文</strong>写下内容（应用层）。</li>
+<li>把信纸放进信封，用<strong>英文</strong>写上收件人姓名和街道地址（传输层/网络层）。</li>
+<li>再把信封放进一个大邮包，邮包上用<strong>邮政系统通用代码</strong>写上目的国家/城市/邮编（数据链路层）。</li>
+<li>邮包被装上飞机（物理层）。</li>
+</ol>
+<p>尽管全程运输的都是&quot;同一个物理实体&quot;，但不同环节的人根据不同的&quot;格式约定&quot;（语言/代码）来读取和处理信息。</p>
+<p>网络通信也是如此，它遵循一个标准的模型（如TCP/IP模型）。</p>
+<h3 id="数据格式的识别：逐层解封装"><a class="header-anchor" href="#数据格式的识别：逐层解封装">¶</a>数据格式的识别：逐层解封装</h3>
+<p>接收端的网卡和操作系统会执行一个与发送端完全相反的、自底向上的过程，称为<strong>解封装</strong>。每一层都只理解和处理自己那一层的&quot;信封&quot;，然后将其内部数据传递给上一层。</p>
+<p>以下是每一层如何识别和处理数据的详细过程：</p>
+<h4 id="1-物理层：从信号到比特"><a class="header-anchor" href="#1-物理层：从信号到比特">¶</a>1. 物理层：从信号到比特</h4>
+<ul>
+<li><strong>输入</strong>：电信号（网线）、光脉冲（光纤）、电磁波（Wi-Fi）。</li>
+<li><strong>处理</strong>：网卡根据物理介质的编码方案（如曼彻斯特编码、NRZ等）将模拟信号<strong>解码</strong>成数字的<strong>比特流</strong>（0和1）。</li>
+<li><strong>关键</strong>：这一步只关心<strong>时序、电压/光强</strong>，将连续的信号流转换成离散的比特流。它不关心比特的含义。</li>
+</ul>
+<h4 id="2-数据链路层（如以太网）：从比特到帧"><a class="header-anchor" href="#2-数据链路层（如以太网）：从比特到帧">¶</a>2. 数据链路层（如以太网）：从比特到帧</h4>
+<ul>
+<li><strong>目标</strong>：识别一个<strong>完整的数据块（帧）</strong> 的开始和结束，并交给正确的上层协议。</li>
+<li><strong>输入</strong>：物理层上传的原始比特流。</li>
+<li><strong>如何识别帧？</strong>
+<ul>
+<li><strong>前导码和帧起始定界符</strong>：以太网帧以一段固定的<code>101010...</code>序列开始，最后以<code>10101011</code>结束。这就像&quot;注意，下面开始是一封信！&quot;的喊话，让接收方进行时钟同步，并精确地找到帧的开始位置。</li>
+</ul>
+</li>
+<li><strong>如何解析帧内容？</strong>
+<ul>
+<li>帧有非常严格的格式。接收方&quot;知道&quot;：
+<ol>
+<li>紧接在定界符后面的是<strong>14字节的帧头</strong>。</li>
+<li>这14字节中，<strong>前6个字节是目标MAC地址</strong>，<strong>接着6个字节是源MAC地址</strong>，<strong>最后2个字节是类型字段</strong>。</li>
+</ol>
+</li>
+<li>接收方读取目标MAC地址，如果与自己的MAC地址或不匹配（且不是广播/组播），则直接丢弃该帧。</li>
+<li>如果地址匹配，它读取<strong>类型字段</strong>。这个2字节的代码告诉操作系统帧内部封装的是什么数据。
+<ul>
+<li><code>0x0800</code> -&gt; 这是<strong>IPv4</strong>数据包，交给网络层的IP协议处理。</li>
+<li><code>0x86DD</code> -&gt; 这是<strong>IPv6</strong>数据包。</li>
+<li><code>0x0806</code> -&gt; 这是<strong>ARP</strong>请求/应答。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>如何知道帧结束了？</strong>
+<ul>
+<li>以太网帧有最小和最大长度限制。接收方还会计算<strong>帧校验序列</strong>，与帧尾的FCS进行比较，如果出错则丢弃。这标志着帧的可靠结束。</li>
+</ul>
+</li>
+<li><strong>输出</strong>：剥离帧头和帧尾，将中间的&quot;数据&quot;部分（现在称为<strong>IP数据包</strong>）根据&quot;类型字段&quot;的指示，传递给对应的网络层协议（如IP协议）。</li>
+</ul>
+<h4 id="3-网络层（IP）：从帧到包"><a class="header-anchor" href="#3-网络层（IP）：从帧到包">¶</a>3. 网络层（IP）：从帧到包</h4>
+<ul>
+<li><strong>目标</strong>：将数据包路由到最终目的地。</li>
+<li><strong>输入</strong>：数据链路层上交的IP数据包（仍然是一串二进制）。</li>
+<li><strong>如何解析？</strong>
+<ul>
+<li>IP头也有固定格式。接收方&quot;知道&quot;IP头的第一个字节的前4位是<strong>版本</strong>。
+<ul>
+<li>如果这4位是<code>0100</code>（十进制4），它就是<strong>IPv4</strong>包，按IPv4头格式解析。</li>
+<li>如果这4位是<code>0110</code>（十进制6），它就是<strong>IPv6</strong>包，按IPv6头格式解析。</li>
+</ul>
+</li>
+<li>IPv4头中有一个固定的<strong>头长度</strong>字段（IHL），告诉接收方IP头有多长（通常是20字节）。</li>
+<li>接收方读取<strong>目标IP地址</strong>。如果这个地址与自己的IP地址不匹配（且设备不是路由器），它可能会丢弃该包。</li>
+<li>它读取<strong>协议字段</strong>。这个1字节的代码告诉操作系统数据包内部封装的是什么。
+<ul>
+<li><code>6</code> -&gt; 这是<strong>TCP</strong>段，交给传输层的TCP协议处理。</li>
+<li><code>17</code> -&gt; 这是<strong>UDP</strong>数据报。</li>
+<li><code>1</code> -&gt; 这是<strong>ICMP</strong>包（Ping命令用的）。</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><strong>输出</strong>：剥离IP头，将内部的&quot;数据&quot;部分（现在称为<strong>TCP段</strong>或<strong>UDP数据报</strong>）根据&quot;协议字段&quot;的指示，传递给对应的传输层协议。</li>
+</ul>
+<h4 id="4-传输层（TCP-UDP）：从包到段"><a class="header-anchor" href="#4-传输层（TCP-UDP）：从包到段">¶</a>4. 传输层（TCP/UDP）：从包到段</h4>
+<ul>
+<li><strong>目标</strong>：将数据交给正确的应用程序。</li>
+<li><strong>输入</strong>：网络层上交的TCP段或UDP数据报。</li>
+<li><strong>如何解析？</strong>
+<ul>
+<li>TCP/UDP头也有固定格式。接收方读取<strong>目标端口号</strong>。</li>
+<li><strong>端口号就是一个&quot;应用程序的地址&quot;</strong>。操作系统维护着一个表，记录着哪些程序在监听哪些端口。
+<ul>
+<li>例如，<code>80</code>端口通常对应Web服务器，<code>53</code>端口对应DNS服务。</li>
+</ul>
+</li>
+<li>当数据到达时，操作系统查看目标端口号（如<code>12354</code>），发现这个端口被您部署的服务器进程监听者，于是就将这个数据段交给该进程。</li>
+</ul>
+</li>
+<li><strong>输出</strong>：剥离TCP/UDP头，将最终的&quot;应用数据&quot;交给指定的应用程序。</li>
+</ul>
+<h4 id="5-应用层：从段到有意义的数据"><a class="header-anchor" href="#5-应用层：从段到有意义的数据">¶</a>5. 应用层：从段到有意义的数据</h4>
+<ul>
+<li><strong>输入</strong>：传输层上交的原始二进制数据。</li>
+<li><strong>如何解析？</strong>
+<ul>
+<li>应用程序根据<strong>应用层协议</strong>（如HTTP、FTP、DNS、SMTP）来解析这些数据。</li>
+<li>这些协议定义了严格的语法。例如，HTTP协议规定，请求的第一行必须是 <code>方法 SP URI SP HTTP版本 CRLF</code>。</li>
+<li>应用程序的代码被编写来&quot;理解&quot;这种语法。它会逐字节读取，寻找空格、换行符等分隔符，从而解析出&quot;这是一个GET请求&quot;，&quot;请求的资源是<code>/index.html</code>&quot;等信息。</li>
+</ul>
+</li>
+</ul>
+<h3 id="总结：为什么能识别？"><a class="header-anchor" href="#总结：为什么能识别？">¶</a>总结：为什么能识别？</h3>
+<ol>
+<li><strong>严格的分层</strong>：每一层只关心自己层的格式，处理完后交给上一层，职责分明。</li>
+<li><strong>固定的格式规范（协议）</strong>：每一层的&quot;信封&quot;都有国际标准定义的<strong>固定格式</strong>。接收方严格按照这个已知的格式去&quot;丈量&quot;和&quot;解读&quot;二进制流。
+<ul>
+<li>&quot;前6字节是MAC地址&quot;</li>
+<li>&quot;第23-24字节是类型字段&quot;</li>
+<li>&quot;IP头的第10字节是协议字段&quot;</li>
+</ul>
+</li>
+<li><strong>自描述的字段</strong>：数据本身包含了如何解读后续数据的线索，如IP版本字段、TCP端口号、HTTP方法等。</li>
+<li><strong>共同的&quot;语言&quot;</strong>：通信的双方必须事先约定好使用相同的协议栈（如TCP/IP），否则就是&quot;鸡同鸭讲&quot;，无法理解。</li>
+</ol>
+<p>最终，通过这一系列精密、标准化的&quot;拆信封&quot;过程，您服务器上的应用程序最终收到的，就是一段它能够理解和处理的、有意义的应用数据，而这一切的起点，仅仅是网线里的一串0和1。</p>
+<h1>具体的路由转发的设置</h1>
+<h2 id="1-首先查看服务器对应的网关（也就是上一层的路由器）的ip地址"><a class="header-anchor" href="#1-首先查看服务器对应的网关（也就是上一层的路由器）的ip地址">¶</a>1.首先查看服务器对应的网关（也就是上一层的路由器）的ip地址</h2>
+<img src="img/路由ip地址.png">
+<h2 id="2-在路由器的上一层网关（光猫或者是其他路由器）配置NAT服务"><a class="header-anchor" href="#2-在路由器的上一层网关（光猫或者是其他路由器）配置NAT服务">¶</a>2.在路由器的上一层网关（光猫或者是其他路由器）配置NAT服务</h2>
+<img src="img/NAT配置页面">
+<h2 id="3-整体数据的流程"><a class="header-anchor" href="#3-整体数据的流程">¶</a>3.整体数据的流程</h2>
+<img src="img/数据流程.png">
+<h1>重新设置后沙果服务出现的问题以及解决的办法</h1>
+<h2 id="1-emqx服务器出现问题"><a class="header-anchor" href="#1-emqx服务器出现问题">¶</a>1.emqx服务器出现问题</h2>
+<p>设备无法连接服务器，mqttx无法连接服务器。</p>
+<p>如何解决：直接将后端的sagooiot服务重启。（./opt/sagoo/sagooiot/bin/curl.sh start）</p>
+
+      </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag"># 网络</a>
+              <a href="/tags/%E6%9C%8D%E5%8A%A1/" rel="tag"># 服务</a>
+              <a href="/tags/%E8%B7%AF%E7%94%B1/" rel="tag"># 路由</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+            </div>
+            <div class="post-nav-item">
+                <a href="/2025/11/06/%E9%A1%B9%E7%9B%AE%E5%AE%9E%E7%8E%B0%E6%B5%8B%E8%AF%95%E6%8A%80%E5%B7%A7/" rel="next" title="项目实现测试技巧">
+                  项目实现测试技巧 <i class="fa fa-angle-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+
+  <div class="copyright">
+    &copy; 
+    <span itemprop="copyrightYear">2025</span>
+    <span class="with-love">
+      <i class="fa fa-heart"></i>
+    </span>
+    <span class="author" itemprop="copyrightHolder">Copyright © 2025 Zheng HanYang</span>
+  </div>
+<div class="wordcount">
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-chart-line"></i>
+    </span>
+    <span title="站点总字数">260k</span>
+  </span>
+  <span class="post-meta-item">
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    <span title="站点阅读时长">3:37</span>
+  </span>
+</div>
+<div class="busuanzi-count">
+    <span class="post-meta-item" id="busuanzi_container_site_uv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+  <div class="sidebar-dimmer"></div>
+  <div class="back-to-top" role="button" aria-label="返回顶部">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  <!-- SHA-256 library for password hashing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+  
+  <!-- 验证码功能脚本 -->
+  <script src="/js/captcha.js"></script>
+
+  <!-- 安全检测脚本 -->
+  <script src="/js/test_storage.js"></script>
+  
+  <script>
+      const correctHash = "f3de51f5ae1ac78d13e0d90de0e93f1e2b6d00f6a42a8bada7c7714af2272c77";
+      // 登录会话有效期（毫秒）- 7天
+      const SESSION_EXPIRE_TIME = 7 * 24 * 60 * 60 * 1000;
+
+    // 检查登录状态
+    function checkLoginStatus() {
+      try {
+        // 优先使用localStorage存储会话信息，实现7天内免登录
+      const isLoggedIn = localStorage.getItem('blogLoggedIn') === 'true';
+      const loginTime = localStorage.getItem('blogLoginTime');
+      const sessionToken = localStorage.getItem('blogSessionToken') || sessionStorage.getItem('blogSessionToken');
+        const now = new Date().getTime();
+        
+        // 检查是否已登录且会话未过期且会话令牌有效
+        if (isLoggedIn && loginTime && sessionToken && (now - parseInt(loginTime)) < SESSION_EXPIRE_TIME && validateSessionToken(sessionToken)) {
+          // 已登录用户直接显示博客内容
+          document.getElementById('login-page').style.display = 'none';
+          document.getElementById('blog-content').style.display = 'block';
+          
+          // 登录成功后显示侧边栏按钮
+          showSidebarButton();
+          return true;
+        } else {
+          // 未登录用户，在显示登录页面之前先应用主题色
+          clearSessionData();
+          
+          // 获取当前时间主题色
+          const currentHour = new Date().getHours();
+          let themeColor = '#8CC8FF'; // 默认天蓝色
+          
+          // 根据当前时间设置主题色
+          if (currentHour >= 14 && currentHour < 16) {
+            themeColor = '#8CC8FF'; // 天蓝色
+          } else if (currentHour >= 16 && currentHour < 18) {
+            themeColor = '#FFAA50'; // 琥珀橙
+          } else if (currentHour >= 18 && currentHour < 20) {
+            themeColor = '#D278C8'; // 玫紫
+          } else if (currentHour >= 20 && currentHour < 22) {
+            themeColor = '#1E3250'; // 藏青
+          } else if (currentHour >= 22 || currentHour < 2) {
+            themeColor = '#323741'; // 黛灰
+          } else if (currentHour >= 2 && currentHour < 4) {
+            themeColor = '#4A90E2'; // 靛蓝
+          } else if (currentHour >= 4 && currentHour < 6) {
+            themeColor = '#F5F5DC'; // 鱼肚白
+          } else if (currentHour >= 6 && currentHour < 8) {
+            themeColor = '#FFA58C'; // 橘粉
+          } else if (currentHour >= 8 && currentHour < 10) {
+            themeColor = '#FFD700'; // 鹅黄
+          } else if (currentHour >= 10 && currentHour < 12) {
+            themeColor = '#FFD700'; // 浅金
+          } else if (currentHour >= 12 && currentHour < 14) {
+            themeColor = '#FF8296'; // 绯红
+          }
+          
+          // 在显示登录页面之前先应用主题色
+          const mainLockIcon = document.getElementById('main-lock-icon');
+          const mainTitle = document.getElementById('main-title');
+          const passwordIcon = document.getElementById('password-icon');
+          const captchaIcon = document.getElementById('captcha-icon');
+          const loginButton = document.getElementById('login-button');
+          
+          if (mainLockIcon) mainLockIcon.style.stroke = themeColor;
+          if (mainTitle) mainTitle.style.color = themeColor;
+          if (passwordIcon) passwordIcon.style.color = themeColor;
+          if (captchaIcon) captchaIcon.style.color = themeColor;
+          if (loginButton) loginButton.style.background = themeColor;
+          
+          // 生成漂浮圆形
+          createBubbles(themeColor);
+          
+          // 现在显示登录页面
+          document.getElementById('login-page').style.display = 'flex';
+          document.getElementById('blog-content').style.display = 'none';
+          
+          console.log('显示登录页面并应用主题色:', themeColor, '当前时间:', currentHour);
+          return false;
+        }
+      } catch (error) {
+        // 防止XSS攻击通过修改localStorage/sessionStorage API导致错误
+        console.error('登录状态检查失败:', error);
+        clearSessionData();
+        
+        // 在显示登录页面之前先应用主题色
+        const currentHour = new Date().getHours();
+        let themeColor = '#8CC8FF'; // 默认天蓝色
+        
+        // 根据当前时间设置主题色
+        if (currentHour >= 14 && currentHour < 16) {
+          themeColor = '#8CC8FF'; // 天蓝色
+        } else if (currentHour >= 16 && currentHour < 18) {
+          themeColor = '#FFAA50'; // 琥珀橙
+        } else if (currentHour >= 18 && currentHour < 20) {
+          themeColor = '#D278C8'; // 玫紫
+        } else if (currentHour >= 20 && currentHour < 22) {
+          themeColor = '#1E3250'; // 藏青
+        } else if (currentHour >= 22 || currentHour < 2) {
+          themeColor = '#323741'; // 黛灰
+        } else if (currentHour >= 2 && currentHour < 4) {
+          themeColor = '#4A90E2'; // 靛蓝
+        } else if (currentHour >= 4 && currentHour < 6) {
+          themeColor = '#F5F5DC'; // 鱼肚白
+        } else if (currentHour >= 6 && currentHour < 8) {
+          themeColor = '#FFA58C'; // 橘粉
+        } else if (currentHour >= 8 && currentHour < 10) {
+          themeColor = '#FFD700'; // 鹅黄
+        } else if (currentHour >= 10 && currentHour < 12) {
+          themeColor = '#FFD700'; // 浅金
+        } else if (currentHour >= 12 && currentHour < 14) {
+          themeColor = '#FF8296'; // 绯红
+        }
+        
+        // 应用主题色
+        const mainLockIcon = document.getElementById('main-lock-icon');
+        const mainTitle = document.getElementById('main-title');
+        const passwordIcon = document.getElementById('password-icon');
+        const captchaIcon = document.getElementById('captcha-icon');
+        const loginButton = document.getElementById('login-button');
+        
+        if (mainLockIcon) mainLockIcon.style.stroke = themeColor;
+        if (mainTitle) mainTitle.style.color = themeColor;
+        if (passwordIcon) passwordIcon.style.color = themeColor;
+        if (captchaIcon) captchaIcon.style.color = themeColor;
+        if (loginButton) loginButton.style.background = themeColor;
+        
+        // 生成漂浮圆形
+        createBubbles(themeColor);
+        
+        document.getElementById('login-page').style.display = 'flex';
+        document.getElementById('blog-content').style.display = 'none';
+        return false;
+      }
+    }
+
+    // 验证密码
+    function checkPassword() {
+      // 检查验证码
+      const captchaInput = document.getElementById('captcha-input');
+      const captchaValue = captchaInput.value.trim();
+      
+      if (!captchaValue) {
+        document.getElementById('error-msg').textContent = '请输入验证码';
+        setTimeout(() => {
+          document.getElementById('error-msg').textContent = '';
+        }, 3000);
+        return;
+      }
+      
+      if (!validateCaptcha(captchaValue)) {
+        document.getElementById('error-msg').textContent = '验证码错误，请重试';
+        // 刷新验证码
+        refreshCaptcha();
+        // 清空输入
+        captchaInput.value = '';
+        setTimeout(() => {
+          document.getElementById('error-msg').textContent = '';
+        }, 3000);
+        return;
+      }
+      
+      const input = document.getElementById('pass-input').value;
+      
+      // 输入验证，防止空密码或过于简单的密码
+      if (!input || input.length < 6) {
+        document.getElementById('error-msg').textContent = '密码至少需要6个字符';
+        return;
+      }
+      
+      try {
+        // 计算输入密码的哈希
+        const inputHash = sha256(input);
+        
+        if (inputHash === correctHash) {
+          // 生成随机会话令牌
+          const sessionToken = generateSessionToken();
+          
+          // 使用localStorage存储会话信息，实现7天内免登录
+          localStorage.setItem('blogLoggedIn', 'true');
+          localStorage.setItem('blogLoginTime', new Date().getTime().toString());
+          localStorage.setItem('blogSessionToken', sessionToken);
+          
+          // 为输入框添加成功动画效果
+          const passInput = document.getElementById('pass-input');
+          // 获取主题色，如果没有则使用默认颜色
+          let themeColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-primary').trim();
+          if (!themeColor || themeColor === '') {
+            themeColor = '#333333';
+          }
+          passInput.style.borderColor = themeColor;
+          // 计算半透明的主题色阴影
+          const shadowColor = themeColor.replace(')', ', 0.2)').replace('rgb', 'rgba').replace('hsl', 'hsla');
+          passInput.style.boxShadow = `0 0 0 3px ${shadowColor}`;
+          
+          // 实现登录成功的消散动画效果
+          setTimeout(() => {
+            const loginPage = document.getElementById('login-page');
+            const loginForm = document.querySelector('#login-page > div');
+            const blogContent = document.getElementById('blog-content');
+            
+            // 显示博客内容但保持透明
+            blogContent.style.display = 'block';
+            blogContent.style.opacity = '0';
+            
+            // 应用表单淡出动画
+            loginForm.style.transition = 'all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)';
+            loginForm.style.opacity = '0';
+            loginForm.style.transform = 'scale(0.95) translateY(20px)';
+            
+            // 应用背景消散动画
+            loginPage.style.animation = 'fadeDissolve 1.2s ease forwards';
+            loginPage.style.transition = 'opacity 1.2s ease-in-out';
+            
+            // 同步显示博客内容
+            setTimeout(() => {
+              blogContent.style.transition = 'opacity 1s ease-in-out';
+              blogContent.style.opacity = '1';
+            }, 300);
+            
+            // 动画完成后隐藏登录页面
+            setTimeout(() => {
+              loginPage.style.display = 'none';
+              
+              // 登录成功后显示侧边栏按钮
+              showSidebarButton();
+            }, 1200);
+          }, 200);
+        } else {
+          handlePasswordError();
+        }
+      } catch (error) {
+        console.error('密码验证失败:', error);
+        document.getElementById('error-msg').textContent = '验证过程中发生错误';
+      } finally {
+        // 清空输入框，防止密码留在内存中
+        document.getElementById('pass-input').value = '';
+      }
+    }
+
+    // 生成随机会话令牌
+    function generateSessionToken() {
+      // 使用当前时间戳和随机数生成令牌
+      const timestamp = new Date().getTime();
+      const random = Math.random().toString(36).substring(2, 15);
+      // 使用SHA-256对组合值进行哈希，增加复杂性
+      return sha256(timestamp + random);
+    }
+
+    // 验证会话令牌 (简单验证，检查格式和长度)
+    function validateSessionToken(token) {
+      // 确保令牌存在且格式正确（64个字符的十六进制字符串）
+      return token && /^[0-9a-fA-F]{64}$/.test(token);
+    }
+
+    // 清除会话数据
+        function clearSessionData() {
+          try {
+            // 清除localStorage中的会话数据
+            localStorage.removeItem('blogLoggedIn');
+            localStorage.removeItem('blogLoginTime');
+            localStorage.removeItem('blogSessionToken');
+            // 同时清除sessionStorage中的数据以确保一致性
+            sessionStorage.removeItem('blogLoggedIn');
+            sessionStorage.removeItem('blogLoginTime');
+            sessionStorage.removeItem('blogSessionToken');
+          } catch (error) {
+            console.error('清除会话数据失败:', error);
+          }
+        }
+
+    // 处理密码错误
+    function handlePasswordError() {
+      document.getElementById('error-msg').textContent = '密码错误，请重试';
+      
+      // 添加错误抖动动画
+      const loginForm = document.querySelector('#login-page > div');
+      loginForm.style.animation = 'shake 0.5s ease-in-out';
+      setTimeout(() => {
+        loginForm.style.animation = '';
+      }, 500);
+      
+      // 3秒后清空错误信息
+      setTimeout(() => {
+        document.getElementById('error-msg').textContent = '';
+      }, 3000);
+    }
+
+    // 添加回车键登录支持
+    document.getElementById('pass-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        checkPassword();
+      }
+    });
+    
+    // 初始化验证码
+    document.addEventListener('DOMContentLoaded', function() {
+      // 初始化验证码
+      try {
+        initCaptcha();
+      } catch (error) {
+        console.error('初始化验证码失败:', error);
+      }
+    });
+    
+    // 添加密码输入框焦点效果
+    const passInput = document.getElementById('pass-input');
+    passInput.addEventListener('focus', function() {
+      // 获取主题色，如果没有则使用默认颜色
+      let themeColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-primary').trim();
+      if (!themeColor || themeColor === '') {
+        themeColor = '#333333';
+      }
+      this.style.borderColor = themeColor;
+      // 计算半透明的主题色阴影
+      const shadowColor = themeColor.replace(')', ', 0.1)').replace('rgb', 'rgba').replace('hsl', 'hsla');
+      this.style.boxShadow = `0 0 0 3px ${shadowColor}`;
+    });
+    passInput.addEventListener('blur', function() {
+      this.style.borderColor = 'transparent';
+      this.style.boxShadow = 'none';
+    });
+    
+    // 添加验证码输入框焦点效果
+    const captchaInput = document.getElementById('captcha-input');
+    captchaInput.addEventListener('focus', function() {
+      // 获取主题色，如果没有则使用默认颜色
+      let themeColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-primary').trim();
+      if (!themeColor || themeColor === '') {
+        themeColor = '#333333';
+      }
+      this.style.borderColor = themeColor;
+      // 计算半透明的主题色阴影
+      const shadowColor = themeColor.replace(')', ', 0.1)').replace('rgb', 'rgba').replace('hsl', 'hsla');
+      this.style.boxShadow = `0 0 0 3px ${shadowColor}`;
+    });
+    captchaInput.addEventListener('blur', function() {
+      this.style.borderColor = 'transparent';
+      this.style.boxShadow = 'none';
+    });
+
+    // 添加按钮悬停效果
+    const loginBtn = document.querySelector('#login-page button');
+    loginBtn.addEventListener('mouseenter', function() {
+      // 获取主题色，如果没有则使用默认颜色
+      let themeColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-primary').trim();
+      if (!themeColor || themeColor === '') {
+        themeColor = '#333333';
+      }
+      // 计算稍深的主题色
+      const darkerColor = getDarkerColor(themeColor);
+      // 计算半透明的主题色阴影
+      const shadowColor = themeColor.replace(')', ', 0.3)').replace('rgb', 'rgba').replace('hsl', 'hsla');
+      this.style.background = darkerColor;
+      this.style.transform = 'translateY(-1px)';
+      this.style.boxShadow = `0 4px 12px ${shadowColor}`;
+    });
+    loginBtn.addEventListener('mouseleave', function() {
+      // 获取主题色，如果没有则使用默认颜色
+      let themeColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-primary').trim();
+      if (!themeColor || themeColor === '') {
+        themeColor = '#333333';
+      }
+      this.style.background = themeColor;
+      this.style.transform = 'translateY(0)';
+      this.style.boxShadow = 'none';
+    });
+    
+    // 计算稍深的颜色
+    function getDarkerColor(color) {
+      // 简单实现，对于hex颜色格式
+      if (color.startsWith('#')) {
+        // 提取RGB值
+        let r = parseInt(color.slice(1, 3), 16);
+        let g = parseInt(color.slice(3, 5), 16);
+        let b = parseInt(color.slice(5, 7), 16);
+        
+        // 降低亮度（使颜色变深）
+        r = Math.floor(r * 0.8);
+        g = Math.floor(g * 0.8);
+        b = Math.floor(b * 0.8);
+        
+        // 转回hex格式
+        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+      }
+      return color; // 如果不是hex格式，返回原始颜色
+    }
+    loginBtn.addEventListener('mousedown', function() {
+      this.style.transform = 'translateY(0)';
+    });
+    
+    // 添加CSS动画
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+      }
+      
+      @keyframes gradient {
+        0% {
+          background-position: 0% 50%;
+        }
+        12.5% {
+          background-position: 12.5% 50%;
+        }
+        25% {
+          background-position: 25% 50%;
+        }
+        37.5% {
+          background-position: 37.5% 50%;
+        }
+        50% {
+          background-position: 50% 50%;
+        }
+        62.5% {
+          background-position: 62.5% 50%;
+        }
+        75% {
+          background-position: 75% 50%;
+        }
+        87.5% {
+          background-position: 87.5% 50%;
+        }
+        95% {
+          background-position: 95% 50%;
+        }
+        100% {
+          background-position: 100% 50%;
+        }
+      }
+      
+      /* 确保:root变量被设置 */
+      :root {
+        --theme-primary: #333333; /* 默认主题色 - 深色系 */
+      }
+      
+      @keyframes fadeDissolve {
+        0% {
+          opacity: 1;
+          background-size: 800% 800%;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.8;
+          background-size: 1200% 1200%;
+          transform: scale(1.1);
+        }
+        100% {
+          opacity: 0;
+          background-size: 2000% 2000%;
+          transform: scale(1.5);
+        }
+      }
+      
+      @keyframes fadeOut {
+        0% {
+          opacity: 1;
+        }
+        100% {
+          opacity: 0;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // 隐藏侧边栏按钮
+      function hideSidebarButton() {
+      // 这将在页面加载后执行，确保DOM元素已生成
+      setTimeout(() => {
+        const sidebarToggle = document.querySelector('.sidebar-toggle');
+        if (sidebarToggle) {
+          sidebarToggle.style.display = 'none';
+        }
+      }, 100);
+    }
+    
+    // 显示侧边栏按钮
+    function showSidebarButton() {
+      setTimeout(() => {
+        const sidebarToggle = document.querySelector('.sidebar-toggle');
+        if (sidebarToggle) {
+          sidebarToggle.style.display = '';
+        }
+      }, 100);
+    }
+
+    // 添加会话自动刷新，在会话即将过期时刷新
+    function setupSessionRefresh() {
+      // 每5分钟检查一次会话状态
+      setInterval(() => {
+        const loginTime = sessionStorage.getItem('blogLoginTime');
+        const now = new Date().getTime();
+        
+        if (loginTime) {
+          const elapsed = now - parseInt(loginTime);
+          // 当会话剩余时间小于15分钟时，刷新会话令牌
+          if (elapsed > (SESSION_EXPIRE_TIME - 15 * 60 * 1000)) {
+            const newToken = generateSessionToken();
+            sessionStorage.setItem('blogSessionToken', newToken);
+          }
+        }
+      }, 5 * 60 * 1000);
+    }
+
+    // 生成漂浮圆形元素
+    function createBubbles(themeColor = null) {
+      const container = document.getElementById('bubbles-container');
+      if (!container) return;
+      
+      // 清除现有的圆形
+      container.innerHTML = '';
+      
+      // 获取当前主题色 - 优先使用传入的主题色，否则根据当前时间计算
+      let currentTheme = themeColor;
+      if (!currentTheme) {
+        const currentHour = new Date().getHours();
+        if (currentHour >= 14 && currentHour < 16) {
+          currentTheme = '#8CC8FF'; // 天蓝色
+        } else if (currentHour >= 16 && currentHour < 18) {
+          currentTheme = '#FFAA50'; // 琥珀橙
+        } else if (currentHour >= 18 && currentHour < 20) {
+          currentTheme = '#D278C8'; // 玫紫
+        } else if (currentHour >= 20 && currentHour < 22) {
+          currentTheme = '#1E3250'; // 藏青
+        } else if (currentHour >= 22 || currentHour < 2) {
+          currentTheme = '#323741'; // 黛灰
+        } else if (currentHour >= 2 && currentHour < 4) {
+          currentTheme = '#4A90E2'; // 靛蓝
+        } else if (currentHour >= 4 && currentHour < 6) {
+          currentTheme = '#F5F5DC'; // 鱼肚白
+        } else if (currentHour >= 6 && currentHour < 8) {
+          currentTheme = '#FFA58C'; // 橘粉
+        } else if (currentHour >= 8 && currentHour < 10) {
+          currentTheme = '#FFD700'; // 鹅黄
+        } else if (currentHour >= 10 && currentHour < 12) {
+          currentTheme = '#FFD700'; // 浅金
+        } else if (currentHour >= 12 && currentHour < 14) {
+          currentTheme = '#FF8296'; // 绯红
+        } else {
+          currentTheme = '#8CC8FF'; // 默认天蓝色
+        }
+      }
+      
+      // 基于当前主题色生成颜色变体
+      const themeColors = generateBubbleColors(currentTheme);
+      const bubbleCount = 15; // 圆形数量
+      
+      for (let i = 0; i < bubbleCount; i++) {
+        const bubble = document.createElement('div');
+        
+        // 随机大小、位置和透明度
+        const size = Math.random() * 150 + 50; // 50-200px
+        const x = Math.random() * 100; // 0-100%
+        const y = Math.random() * 100; // 0-100%
+        const opacity = Math.random() * 0.4 + 0.1; // 0.1-0.5
+        const color = themeColors[Math.floor(Math.random() * themeColors.length)];
+        
+        // 设置圆形样式
+        bubble.style.cssText = `
+          position: absolute;
+          width: ${size}px;
+          height: ${size}px;
+          border-radius: 50%;
+          background: ${color};
+          opacity: ${opacity};
+          left: ${x}%;
+          top: ${y}%;
+          transform: translate(-50%, -50%);
+          transition: transform 0.3s ease;
+          z-index: -1;
+          filter: blur(2px);
+        `;
+        
+        // 存储圆形的原始位置和移动速度
+        bubble.dataset.originalX = x;
+        bubble.dataset.originalY = y;
+        bubble.dataset.speedX = (Math.random() - 0.5) * 0.5; // -0.25 到 0.25
+        bubble.dataset.speedY = (Math.random() - 0.5) * 0.5; // -0.25 到 0.25
+        
+        container.appendChild(bubble);
+      }
+    }
+    
+    // 圆形漂浮动画
+    function animateBubbles() {
+      const bubbles = document.querySelectorAll('#bubbles-container > div');
+      if (!bubbles.length) return;
+      
+      bubbles.forEach(bubble => {
+        // 获取当前位置和速度
+        let x = parseFloat(bubble.dataset.originalX);
+        let y = parseFloat(bubble.dataset.originalY);
+        const speedX = parseFloat(bubble.dataset.speedX);
+        const speedY = parseFloat(bubble.dataset.speedY);
+        
+        // 更新位置
+        x = (x + speedX + 100) % 100;
+        y = (y + speedY + 100) % 100;
+        
+        // 应用变换
+        bubble.style.left = `${x}%`;
+        bubble.style.top = `${y}%`;
+        
+        // 保存更新后的位置
+        bubble.dataset.originalX = x;
+        bubble.dataset.originalY = y;
+      });
+      
+      requestAnimationFrame(animateBubbles);
+    }
+    
+    // 生成基于主题色的圆形颜色变体
+    function generateBubbleColors(baseColor) {
+      if (!baseColor.startsWith('#')) {
+        return ['#333333', '#666666', '#999999', '#555555', '#777777', '#444444', '#888888'];
+      }
+      
+      const r = parseInt(baseColor.slice(1, 3), 16);
+      const g = parseInt(baseColor.slice(3, 5), 16);
+      const b = parseInt(baseColor.slice(5, 7), 16);
+      
+      return [
+        baseColor,
+        `#${Math.min(255, Math.floor(r * 1.2)).toString(16).padStart(2, '0')}${Math.min(255, Math.floor(g * 1.2)).toString(16).padStart(2, '0')}${Math.min(255, Math.floor(b * 1.2)).toString(16).padStart(2, '0')}`,
+        `#${Math.max(0, Math.floor(r * 0.8)).toString(16).padStart(2, '0')}${Math.max(0, Math.floor(g * 0.8)).toString(16).padStart(2, '0')}${Math.max(0, Math.floor(b * 0.8)).toString(16).padStart(2, '0')}`,
+        `#${Math.min(255, Math.floor(r * 1.1)).toString(16).padStart(2, '0')}${Math.min(255, Math.floor(g * 1.1)).toString(16).padStart(2, '0')}${Math.max(0, Math.floor(b * 0.9)).toString(16).padStart(2, '0')}`,
+        `#${Math.max(0, Math.floor(r * 0.9)).toString(16).padStart(2, '0')}${Math.min(255, Math.floor(g * 1.1)).toString(16).padStart(2, '0')}${Math.min(255, Math.floor(b * 1.1)).toString(16).padStart(2, '0')}`,
+        `#${Math.min(255, Math.floor(r * 1.3)).toString(16).padStart(2, '0')}${Math.min(255, Math.floor(g * 1.3)).toString(16).padStart(2, '0')}${Math.min(255, Math.floor(b * 1.3)).toString(16).padStart(2, '0')}`,
+        `#${Math.max(0, Math.floor(r * 0.7)).toString(16).padStart(2, '0')}${Math.max(0, Math.floor(g * 0.7)).toString(16).padStart(2, '0')}${Math.max(0, Math.floor(b * 0.7)).toString(16).padStart(2, '0')}`
+      ];
+    }
+    
+    // 添加鼠标交互效果（圆形避开鼠标）
+    function addMouseInteraction() {
+      const bubbles = document.querySelectorAll('#bubbles-container > div');
+      if (!bubbles.length) return;
+      
+      document.addEventListener('mousemove', (e) => {
+        const mouseX = e.clientX;
+        const mouseY = e.clientY;
+        const threshold = 200; // 鼠标影响范围
+        
+        bubbles.forEach(bubble => {
+          const bubbleRect = bubble.getBoundingClientRect();
+          const bubbleX = bubbleRect.left + bubbleRect.width / 2;
+          const bubbleY = bubbleRect.top + bubbleRect.height / 2;
+          
+          // 计算鼠标和圆形之间的距离
+          const dx = mouseX - bubbleX;
+          const dy = mouseY - bubbleY;
+          const distance = Math.sqrt(dx * dx + dy * dy);
+          
+          // 如果圆形在鼠标影响范围内，则移动它
+          if (distance < threshold) {
+            const force = (threshold - distance) / threshold; // 力量与距离成反比
+            const angle = Math.atan2(dy, dx);
+            
+            // 计算移动方向（远离鼠标）
+            const moveX = Math.cos(angle + Math.PI) * force * 30; // 远离鼠标的方向
+            const moveY = Math.sin(angle + Math.PI) * force * 30;
+            
+            bubble.style.transform = `translate(-50%, -50%) translate(${moveX}px, ${moveY}px)`;
+          } else {
+            // 如果远离鼠标，恢复原始位置
+            bubble.style.transform = 'translate(-50%, -50%)';
+          }
+        });
+      });
+    }
+    
+    // 圆形破裂动画
+    function animateBubblesBurst() {
+      const bubbles = document.querySelectorAll('#bubbles-container > div');
+      if (!bubbles.length) return;
+      
+      bubbles.forEach((bubble, index) => {
+        // 延迟动画，使破裂有层次感
+        setTimeout(() => {
+          bubble.style.transition = 'all 0.6s ease-out';
+          bubble.style.transform = `translate(-50%, -50%) scale(1.5)`;
+          bubble.style.opacity = '0';
+          bubble.style.filter = 'blur(10px)';
+        }, index * 50);
+      });
+      
+      // 动画结束后移除圆形
+      setTimeout(() => {
+        document.getElementById('bubbles-container').innerHTML = '';
+      }, 1000);
+    }
+    
+    // 磨砂玻璃背景消失动画
+    function animateFrostedBgFadeOut() {
+      const frostedBg = document.getElementById('frosted-bg');
+      if (!frostedBg) return;
+      
+      frostedBg.style.transition = 'all 1.5s ease-out';
+      frostedBg.style.opacity = '0';
+      frostedBg.style.backdropFilter = 'blur(0px)';
+    }
+    
+    // 修改登录函数，添加动画效果
+    function enhancedCheckPassword() {
+      // 保留原有的密码验证逻辑
+      const passInput = document.getElementById('pass-input');
+      const captchaInput = document.getElementById('captcha-input');
+      const errorMsg = document.getElementById('error-msg');
+      
+      if (!passInput || !captchaInput || !errorMsg) return;
+      
+      // 获取用户输入
+      const password = passInput.value;
+      const captcha = captchaInput.value;
+      
+      // 检查输入是否为空
+      if (!password) {
+        errorMsg.textContent = '请输入密码';
+        return;
+      }
+      
+      if (!captcha) {
+        errorMsg.textContent = '请输入验证码';
+        return;
+      }
+      
+      // 检查验证码是否正确
+      if (captcha.toLowerCase() !== currentCaptchaAnswer.toLowerCase()) {
+        errorMsg.textContent = '验证码错误';
+        refreshCaptcha(); // 重新生成验证码
+        return;
+      }
+      
+      // 验证密码
+      const hash = sha256(password);
+      
+      if (hash === correctHash) {
+        // 密码正确，执行登录动画
+        errorMsg.textContent = '';
+        
+        // 1. 播放圆形破裂动画
+        animateBubblesBurst();
+        
+        // 2. 播放磨砂玻璃背景消失动画
+        animateFrostedBgFadeOut();
+        
+        // 3. 登录表单淡出
+        const loginForm = document.querySelector('#login-page > div:first-of-type:not(#frosted-bg):not(#bubbles-container)');
+        if (loginForm) {
+          loginForm.style.transition = 'all 1s ease-out';
+          loginForm.style.transform = 'translateY(-50px)';
+          loginForm.style.opacity = '0';
+        }
+        
+        // 4. 显示博客内容
+        setTimeout(() => {
+          document.getElementById('login-page').style.display = 'none';
+          document.getElementById('blog-content').style.display = 'block';
+          showSidebarButton();
+          
+          // 设置会话数据，使用localStorage实现7天内免登录
+          const token = generateSessionToken();
+          localStorage.setItem('blogLoggedIn', 'true');
+          localStorage.setItem('blogLoginTime', new Date().getTime().toString());
+          localStorage.setItem('blogSessionToken', token);
+        }, 1200);
+      } else {
+        // 密码错误
+        errorMsg.textContent = '密码错误，请重试';
+        refreshCaptcha(); // 重新生成验证码
+      }
+    }
+    
+    // 页面加载时检查登录状态并设置会话刷新
+    // 立即应用主题色（不等待页面完全加载）
+    (function() {
+      const currentHour = new Date().getHours();
+      let themeColor = '#8CC8FF'; // 默认天蓝色
+      
+      // 根据当前时间设置主题色
+      if (currentHour >= 14 && currentHour < 16) {
+        themeColor = '#8CC8FF'; // 天蓝色
+      } else if (currentHour >= 16 && currentHour < 18) {
+        themeColor = '#FFAA50'; // 琥珀橙
+      } else if (currentHour >= 18 && currentHour < 20) {
+        themeColor = '#D278C8'; // 玫紫
+      } else if (currentHour >= 20 && currentHour < 22) {
+        themeColor = '#1E3250'; // 藏青
+      } else if (currentHour >= 22 || currentHour < 2) {
+        themeColor = '#323741'; // 黛灰
+      } else if (currentHour >= 2 && currentHour < 4) {
+        themeColor = '#4A90E2'; // 靛蓝
+      } else if (currentHour >= 4 && currentHour < 6) {
+        themeColor = '#F5F5DC'; // 鱼肚白
+      } else if (currentHour >= 6 && currentHour < 8) {
+        themeColor = '#FFA58C'; // 橘粉
+      } else if (currentHour >= 8 && currentHour < 10) {
+        themeColor = '#FFD700'; // 鹅黄
+      } else if (currentHour >= 10 && currentHour < 12) {
+        themeColor = '#FFD700'; // 浅金
+      } else if (currentHour >= 12 && currentHour < 14) {
+        themeColor = '#FF8296'; // 绯红
+      }
+      
+      // 立即应用主题色到HTML元素
+      const mainLockIcon = document.getElementById('main-lock-icon');
+      const mainTitle = document.getElementById('main-title');
+      const passwordIcon = document.getElementById('password-icon');
+      const captchaIcon = document.getElementById('captcha-icon');
+      const loginButton = document.getElementById('login-button');
+      
+      if (mainLockIcon) mainLockIcon.style.stroke = themeColor;
+      if (mainTitle) mainTitle.style.color = themeColor;
+      if (passwordIcon) passwordIcon.style.color = themeColor;
+      if (captchaIcon) captchaIcon.style.color = themeColor;
+      if (loginButton) loginButton.style.background = themeColor;
+      
+      // 立即生成漂浮圆形
+      createBubbles(themeColor);
+      
+      console.log('立即应用主题色:', themeColor, '当前时间:', currentHour);
+    })();
+    
+    // 在DOMContentLoaded时再次应用主题色
+    document.addEventListener('DOMContentLoaded', function() {
+      const currentHour = new Date().getHours();
+      let themeColor = '#8CC8FF'; // 默认天蓝色
+      
+      // 根据当前时间设置主题色
+      if (currentHour >= 14 && currentHour < 16) {
+        themeColor = '#8CC8FF'; // 天蓝色
+      } else if (currentHour >= 16 && currentHour < 18) {
+        themeColor = '#FFAA50'; // 琥珀橙
+      } else if (currentHour >= 18 && currentHour < 20) {
+        themeColor = '#D278C8'; // 玫紫
+      } else if (currentHour >= 20 && currentHour < 22) {
+        themeColor = '#1E3250'; // 藏青
+      } else if (currentHour >= 22 || currentHour < 2) {
+        themeColor = '#323741'; // 黛灰
+      } else if (currentHour >= 2 && currentHour < 4) {
+        themeColor = '#4A90E2'; // 靛蓝
+      } else if (currentHour >= 4 && currentHour < 6) {
+        themeColor = '#F5F5DC'; // 鱼肚白
+      } else if (currentHour >= 6 && currentHour < 8) {
+        themeColor = '#FFA58C'; // 橘粉
+      } else if (currentHour >= 8 && currentHour < 10) {
+        themeColor = '#FFD700'; // 鹅黄
+      } else if (currentHour >= 10 && currentHour < 12) {
+        themeColor = '#FFD700'; // 浅金
+      } else if (currentHour >= 12 && currentHour < 14) {
+        themeColor = '#FF8296'; // 绯红
+      }
+      
+      // 应用主题色到HTML元素
+      const mainLockIcon = document.getElementById('main-lock-icon');
+      const mainTitle = document.getElementById('main-title');
+      const passwordIcon = document.getElementById('password-icon');
+      const captchaIcon = document.getElementById('captcha-icon');
+      const loginButton = document.getElementById('login-button');
+      
+      if (mainLockIcon) mainLockIcon.style.stroke = themeColor;
+      if (mainTitle) mainTitle.style.color = themeColor;
+      if (passwordIcon) passwordIcon.style.color = themeColor;
+      if (captchaIcon) captchaIcon.style.color = themeColor;
+      if (loginButton) loginButton.style.background = themeColor;
+      
+      // 生成漂浮圆形
+      createBubbles(themeColor);
+      
+      console.log('DOMContentLoaded应用主题色:', themeColor, '当前时间:', currentHour);
+    });
+    
+    window.addEventListener('load', () => {
+      checkLoginStatus();
+      setupSessionRefresh();
+      
+      // 生成圆形漂浮元素
+      setTimeout(() => {
+        createBubbles();
+        animateBubbles();
+        addMouseInteraction();
+      }, 100);
+      
+      // 更新登录页面元素的主题色
+      function updateLoginPageTheme() {
+        // 获取当前主题色 - 优先使用时间主题色，然后是基础主题色，最后是默认值
+        let themeColor = getComputedStyle(document.documentElement).getPropertyValue('--theme-primary').trim() || 
+                        getComputedStyle(document.documentElement).getPropertyValue('--theme-color').trim() || 
+                        '#333333';
+        
+        console.log('更新登录页面主题色:', themeColor);
+        const shadowColor = themeColor.replace(')', ', 0.2)').replace('rgb', 'rgba').replace('hsl', 'hsla');
+        
+        // 更新主锁图标颜色
+        const mainLockIcon = document.getElementById('main-lock-icon');
+        if (mainLockIcon) {
+          mainLockIcon.style.stroke = themeColor;
+        }
+        
+        // 更新标题颜色
+        const mainTitle = document.getElementById('main-title');
+        if (mainTitle) {
+          mainTitle.style.color = themeColor;
+        }
+        
+        // 更新密码输入框图标颜色
+        const passwordIcon = document.getElementById('password-icon');
+        if (passwordIcon) {
+          passwordIcon.style.color = themeColor;
+        }
+        
+        // 更新验证码输入框图标颜色
+        const captchaIcon = document.getElementById('captcha-icon');
+        if (captchaIcon) {
+          captchaIcon.style.color = themeColor;
+        }
+        
+        // 更新登录按钮颜色
+        const loginButton = document.getElementById('login-button');
+        if (loginButton) {
+          loginButton.style.background = themeColor;
+        }
+      
+      // 设置输入框焦点事件处理
+      const inputs = document.querySelectorAll('.login-input');
+      const captchaCanvas = document.getElementById('captcha-canvas');
+      
+      // 为所有输入框添加焦点事件
+      inputs.forEach(input => {
+        // 初始状态设置为无色边框
+        input.style.borderColor = 'transparent';
+        
+        // 焦点事件：显示主题色边框和阴影
+        input.addEventListener('focus', () => {
+          input.style.borderColor = themeColor;
+          input.style.boxShadow = `0 0 0 3px ${shadowColor}`;
+        });
+        
+        // 失焦事件：恢复无色边框
+        input.addEventListener('blur', () => {
+          input.style.borderColor = 'transparent';
+          input.style.boxShadow = 'none';
+        });
+      });
+      
+      // 验证码画布也使用主题色
+      if (captchaCanvas) {
+        captchaCanvas.style.borderColor = 'transparent';
+        captchaCanvas.addEventListener('mouseover', () => {
+          captchaCanvas.style.borderColor = themeColor;
+        });
+        captchaCanvas.addEventListener('mouseout', () => {
+          captchaCanvas.style.borderColor = 'transparent';
+        });
+        }
+      }
+      
+      // 立即更新一次主题色
+      updateLoginPageTheme();
+      
+      // 延迟执行以确保时间主题已应用
+      setTimeout(() => {
+        updateLoginPageTheme();
+        // 重新生成漂浮圆形以匹配当前主题色
+        createBubbles();
+      }, 500);
+      
+      // 强制设置当前时间主题色（如果CSS变量未生效）
+      setTimeout(() => {
+        const currentHour = new Date().getHours();
+        let themeColor = '#333333'; // 默认颜色
+        
+        // 根据当前时间设置主题色
+        if (currentHour >= 14 && currentHour < 16) {
+          themeColor = '#8CC8FF'; // 天蓝色
+        } else if (currentHour >= 16 && currentHour < 18) {
+          themeColor = '#FFAA50'; // 琥珀橙
+        } else if (currentHour >= 18 && currentHour < 20) {
+          themeColor = '#D278C8'; // 玫紫
+        } else if (currentHour >= 20 && currentHour < 22) {
+          themeColor = '#1E3250'; // 藏青
+        } else if (currentHour >= 22 || currentHour < 2) {
+          themeColor = '#323741'; // 黛灰
+        } else if (currentHour >= 2 && currentHour < 4) {
+          themeColor = '#4A90E2'; // 靛蓝
+        } else if (currentHour >= 4 && currentHour < 6) {
+          themeColor = '#F5F5DC'; // 鱼肚白
+        } else if (currentHour >= 6 && currentHour < 8) {
+          themeColor = '#FFA58C'; // 橘粉
+        } else if (currentHour >= 8 && currentHour < 10) {
+          themeColor = '#FFD700'; // 鹅黄
+        } else if (currentHour >= 10 && currentHour < 12) {
+          themeColor = '#FFD700'; // 浅金
+        } else if (currentHour >= 12 && currentHour < 14) {
+          themeColor = '#FF8296'; // 绯红
+        }
+        
+        // 直接设置登录页面元素的颜色
+        const mainLockIcon = document.getElementById('main-lock-icon');
+        const mainTitle = document.getElementById('main-title');
+        const passwordIcon = document.getElementById('password-icon');
+        const captchaIcon = document.getElementById('captcha-icon');
+        const loginButton = document.getElementById('login-button');
+        const passwordInput = document.getElementById('pass-input');
+        const captchaInput = document.getElementById('captcha-input');
+        
+        if (mainLockIcon) mainLockIcon.style.stroke = themeColor;
+        if (mainTitle) mainTitle.style.color = themeColor;
+        if (passwordIcon) passwordIcon.style.color = themeColor;
+        if (captchaIcon) captchaIcon.style.color = themeColor;
+        if (loginButton) {
+          loginButton.style.background = themeColor;
+          loginButton.style.borderColor = themeColor;
+        }
+        
+        // 设置输入框焦点样式 - 使用更强的样式和事件处理
+        if (passwordInput) {
+          // 移除之前的事件监听器
+          if (passwordInput._focusHandler) {
+            passwordInput.removeEventListener('focus', passwordInput._focusHandler);
+          }
+          if (passwordInput._blurHandler) {
+            passwordInput.removeEventListener('blur', passwordInput._blurHandler);
+          }
+          
+          // 创建新的事件处理函数
+          passwordInput._focusHandler = function() {
+            this.style.setProperty('border-color', themeColor, 'important');
+            this.style.setProperty('box-shadow', `0 0 0 2px ${themeColor}20`, 'important');
+            this.style.setProperty('outline', 'none', 'important');
+          };
+          
+          passwordInput._blurHandler = function() {
+            this.style.setProperty('border-color', 'transparent', 'important');
+            this.style.setProperty('box-shadow', 'none', 'important');
+            this.style.setProperty('outline', 'none', 'important');
+          };
+          
+          // 添加事件监听器
+          passwordInput.addEventListener('focus', passwordInput._focusHandler);
+          passwordInput.addEventListener('blur', passwordInput._blurHandler);
+          
+          // 设置初始样式
+          passwordInput.style.setProperty('border-color', 'transparent', 'important');
+          passwordInput.style.setProperty('outline', 'none', 'important');
+        }
+        
+        if (captchaInput) {
+          // 移除之前的事件监听器
+          if (captchaInput._focusHandler) {
+            captchaInput.removeEventListener('focus', captchaInput._focusHandler);
+          }
+          if (captchaInput._blurHandler) {
+            captchaInput.removeEventListener('blur', captchaInput._blurHandler);
+          }
+          
+          // 创建新的事件处理函数
+          captchaInput._focusHandler = function() {
+            this.style.setProperty('border-color', themeColor, 'important');
+            this.style.setProperty('box-shadow', `0 0 0 2px ${themeColor}20`, 'important');
+            this.style.setProperty('outline', 'none', 'important');
+          };
+          
+          captchaInput._blurHandler = function() {
+            this.style.setProperty('border-color', 'transparent', 'important');
+            this.style.setProperty('box-shadow', 'none', 'important');
+            this.style.setProperty('outline', 'none', 'important');
+          };
+          
+          // 添加事件监听器
+          captchaInput.addEventListener('focus', captchaInput._focusHandler);
+          captchaInput.addEventListener('blur', captchaInput._blurHandler);
+          
+          // 设置初始样式
+          captchaInput.style.setProperty('border-color', 'transparent', 'important');
+          captchaInput.style.setProperty('outline', 'none', 'important');
+        }
+        
+        // 设置登录按钮悬停效果 - 确保始终使用主题色
+        if (loginButton) {
+          // 移除之前的事件监听器
+          if (loginButton._mouseenterHandler) {
+            loginButton.removeEventListener('mouseenter', loginButton._mouseenterHandler);
+          }
+          if (loginButton._mouseleaveHandler) {
+            loginButton.removeEventListener('mouseleave', loginButton._mouseleaveHandler);
+          }
+          
+          // 创建新的事件处理函数
+          loginButton._mouseenterHandler = function() {
+            this.style.setProperty('background', themeColor, 'important');
+            this.style.setProperty('border-color', themeColor, 'important');
+            this.style.setProperty('color', 'white', 'important');
+          };
+          
+          loginButton._mouseleaveHandler = function() {
+            this.style.setProperty('background', themeColor, 'important');
+            this.style.setProperty('border-color', themeColor, 'important');
+            this.style.setProperty('color', 'white', 'important');
+          };
+          
+          // 添加事件监听器
+          loginButton.addEventListener('mouseenter', loginButton._mouseenterHandler);
+          loginButton.addEventListener('mouseleave', loginButton._mouseleaveHandler);
+          
+          // 设置初始样式
+          loginButton.style.setProperty('background', themeColor, 'important');
+          loginButton.style.setProperty('border-color', themeColor, 'important');
+          loginButton.style.setProperty('color', 'white', 'important');
+        }
+        
+        // 重新生成漂浮圆形
+        createBubbles(themeColor);
+        
+        console.log('强制设置主题色:', themeColor, '当前时间:', currentHour);
+        
+        // 动态注入CSS样式以确保优先级
+        const styleId = 'login-theme-styles';
+        let existingStyle = document.getElementById(styleId);
+        if (existingStyle) {
+          existingStyle.remove();
+        }
+        
+        const style = document.createElement('style');
+        style.id = styleId;
+        style.textContent = `
+          #pass-input:focus {
+            border-color: ${themeColor} !important;
+            box-shadow: 0 0 0 2px ${themeColor}20 !important;
+            outline: none !important;
+          }
+          #captcha-input:focus {
+            border-color: ${themeColor} !important;
+            box-shadow: 0 0 0 2px ${themeColor}20 !important;
+            outline: none !important;
+          }
+          #login-button {
+            background: ${themeColor} !important;
+            border-color: ${themeColor} !important;
+            color: white !important;
+          }
+          #login-button:hover {
+            background: ${themeColor} !important;
+            border-color: ${themeColor} !important;
+            color: white !important;
+          }
+          #login-button:active {
+            background: ${themeColor} !important;
+            border-color: ${themeColor} !important;
+            color: white !important;
+          }
+        `;
+        document.head.appendChild(style);
+        
+        // 定期检查并修复主题色（防止被其他样式覆盖）
+        setInterval(() => {
+          const currentThemeColor = themeColor;
+          
+          // 检查并修复登录页面元素的主题色
+          if (mainLockIcon) {
+            mainLockIcon.style.setProperty('stroke', currentThemeColor, 'important');
+          }
+          if (mainTitle) {
+            mainTitle.style.setProperty('color', currentThemeColor, 'important');
+          }
+          if (passwordIcon) {
+            passwordIcon.style.setProperty('color', currentThemeColor, 'important');
+          }
+          if (captchaIcon) {
+            captchaIcon.style.setProperty('color', currentThemeColor, 'important');
+          }
+          if (loginButton) {
+            loginButton.style.setProperty('background', currentThemeColor, 'important');
+            loginButton.style.setProperty('border-color', currentThemeColor, 'important');
+          }
+        }, 1000); // 每1秒检查一次
+        
+        // 更强的保护机制：监听DOM变化
+        const observer = new MutationObserver(() => {
+          const currentThemeColor = themeColor;
+          
+          // 强制应用主题色
+          if (mainLockIcon) {
+            mainLockIcon.style.setProperty('stroke', currentThemeColor, 'important');
+          }
+          if (mainTitle) {
+            mainTitle.style.setProperty('color', currentThemeColor, 'important');
+          }
+          if (passwordIcon) {
+            passwordIcon.style.setProperty('color', currentThemeColor, 'important');
+          }
+          if (captchaIcon) {
+            captchaIcon.style.setProperty('color', currentThemeColor, 'important');
+          }
+          if (loginButton) {
+            loginButton.style.setProperty('background', currentThemeColor, 'important');
+            loginButton.style.setProperty('border-color', currentThemeColor, 'important');
+          }
+        });
+        
+        // 观察整个文档的变化
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ['style', 'class']
+        });
+        
+        // 定期重新生成漂浮圆形，确保颜色正确
+        setInterval(() => {
+          createBubbles(themeColor);
+        }, 5000); // 每5秒重新生成一次
+      }, 1000);
+      
+      // 监听主题色变化（当时间主题切换时）
+      const observer = new MutationObserver(() => {
+        updateLoginPageTheme();
+        // 重新生成漂浮圆形以匹配新的主题色
+        createBubbles();
+      });
+      
+      // 观察body的class变化，因为时间主题是通过添加class来切换的
+      observer.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class']
+      });
+    });
+    
+    // 增强安全性：监听可能的XSS攻击事件
+    document.addEventListener('securitypolicyviolation', (e) => {
+      console.error('安全策略违反:', e);
+      clearSessionData();
+    });
+    
+    // 防止点击劫持攻击
+    if (window.top !== window.self) {
+      window.top.location = window.self.location;
+    }
+  </script>
+</body>
+</html>
