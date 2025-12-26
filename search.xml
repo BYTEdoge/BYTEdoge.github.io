@@ -7053,4 +7053,206 @@ VPP 需要定时执行操作（比如每小时统计一次区域能耗、每天�
         <tag>部署</tag>
       </tags>
   </entry>
+  <entry>
+    <title>redis避免耗尽连接池相关泄露的问题</title>
+    <url>/2025/12/26/redis%E9%81%BF%E5%85%8D%E8%80%97%E5%B0%BD%E8%BF%9E%E6%8E%A5%E6%B1%A0%E7%9B%B8%E5%85%B3%E6%B3%84%E9%9C%B2%E7%9A%84%E9%97%AE%E9%A2%98/</url>
+    <content><![CDATA[<h2 id="Redis避免耗尽连接池以及相关泄露的问题"><a class="header-anchor" href="#Redis避免耗尽连接池以及相关泄露的问题">¶</a>Redis避免耗尽连接池以及相关泄露的问题</h2>
+<h3 id="问题背景"><a class="header-anchor" href="#问题背景">¶</a>问题背景</h3>
+<p>在编写《蒙东电网》接口服务时，需要频繁调用redis中的内容，造成了大量的redis的连接，但是连接没有及时关闭，最后导致蒙东电网的接口服务在单一设备的情况下运行大约一周左右便会出现无法继续上报数据的问题，经过排查发现问题在于redis的连接池的配置问题，导致连接数量过多后没能及时关闭连接，最后造成新的获取缓存数据的服务无法建立连接，从而导致无法上报相关数据。</p>
+<h3 id="解决方式"><a class="header-anchor" href="#解决方式">¶</a>解决方式</h3>
+<p>主要分为配置文件的优化，程序代码的连接关闭，重试机制以及超时管理。</p>
+<h2 id="一、配置文件修改（config-yaml）"><a class="header-anchor" href="#一、配置文件修改（config-yaml）">¶</a>一、配置文件修改（config.yaml）</h2>
+<h3 id="1-Redis-连接池配置优化"><a class="header-anchor" href="#1-Redis-连接池配置优化">¶</a>1. Redis 连接池配置优化</h3>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 连接池配置（优化：降低连接池大小，避免与sagooiot-professional竞争资源）</span></span><br><span class="line"><span class="attr">poolSize:</span> <span class="number">50</span>               <span class="comment"># 连接池容量（优化：从500降低到50）</span></span><br><span class="line"><span class="attr">minIdle:</span> <span class="number">10</span>                <span class="comment"># 最小空闲连接数（优化：从50降低到10）</span></span><br></pre></td></tr></table></figure>
+<p>修改说明：</p>
+<ul>
+<li>poolSize: 500 → 50（降低 90%）
+<ul>
+<li>限制最大连接数，避免耗尽 Redis 连接</li>
+<li>两个服务共享 Redis，总和不超过服务器限制</li>
+</ul>
+</li>
+<li>minIdle: 50 → 10（降低 80%）
+<ul>
+<li>减少常驻空闲连接，降低内存占用</li>
+<li>仍保留最小空闲连接，保证响应速度</li>
+</ul>
+</li>
+</ul>
+<h3 id="2-MySQL-连接池配置优化"><a class="header-anchor" href="#2-MySQL-连接池配置优化">¶</a>2. MySQL 连接池配置优化</h3>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">maxIdle:</span> <span class="number">20</span> <span class="comment">#连接池最大闲置的连接数（优化：从50降低到20，避免资源竞争）</span></span><br><span class="line"><span class="attr">maxOpen:</span> <span class="number">100</span> <span class="comment">#连接池最大打开的连接数（优化：从1000降低到100，避免耗尽数据库连接）</span></span><br><span class="line"><span class="attr">maxLifetime:</span> <span class="number">3600</span> <span class="comment">#(单位秒)连接对象可重复使用的时间长度（优化：从120秒增加到3600秒，减少频繁重建连接）</span></span><br></pre></td></tr></table></figure>
+<p>修改说明：</p>
+<ul>
+<li>maxOpen: 1000 → 100（降低 90%）</li>
+<li>maxIdle: 50 → 20（降低 60%）</li>
+<li>maxLifetime: 120 → 3600（增加 30 倍）
+<ul>
+<li>减少频繁重建连接，降低连接池压力</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h2 id="二、代码层面的防泄漏机制"><a class="header-anchor" href="#二、代码层面的防泄漏机制">¶</a>二、代码层面的防泄漏机制</h2>
+<h3 id="1-超时控制机制"><a class="header-anchor" href="#1-超时控制机制">¶</a>1. 超时控制机制</h3>
+<p>在 <code>realtime_pipeline.go</code> 中添加了超时控制：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">cacheAppendToday</span><span class="params">(ctx context.Context, domain Domain, device <span class="type">string</span>, v any)</span></span> <span class="type">error</span> &#123;</span><br><span class="line">	<span class="comment">// 添加超时控制，避免长时间阻塞</span></span><br><span class="line">	opCtx, cancel := context.WithTimeout(ctx, <span class="number">10</span>*time.Second)</span><br><span class="line">	<span class="keyword">defer</span> cancel()</span><br></pre></td></tr></table></figure>
+<p>作用：</p>
+<ul>
+<li>每个 Redis 操作最多 10 秒超时</li>
+<li>超时后自动取消，连接归还连接池</li>
+<li>防止因网络问题导致连接长时间占用</li>
+</ul>
+<h3 id="2-重试机制"><a class="header-anchor" href="#2-重试机制">¶</a>2. 重试机制</h3>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="comment">// 添加重试机制，最多重试3次</span></span><br><span class="line">maxRetries := <span class="number">3</span></span><br><span class="line"><span class="keyword">var</span> lastErr <span class="type">error</span></span><br><span class="line"><span class="keyword">for</span> i := <span class="number">0</span>; i &lt; maxRetries; i++ &#123;</span><br><span class="line">	<span class="comment">// 检查上下文是否已取消</span></span><br><span class="line">	<span class="keyword">if</span> opCtx.Err() != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;操作超时: %w&quot;</span>, opCtx.Err())</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	redis := g.Redis()</span><br><span class="line"></span><br><span class="line">	<span class="comment">// LPUSH + LTRIM 裁剪（使用超时上下文）</span></span><br><span class="line">	<span class="keyword">if</span> _, err := redis.LPush(opCtx, key, b); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="comment">// 检查是否超时</span></span><br><span class="line">		<span class="keyword">if</span> errors.Is(err, context.DeadlineExceeded) &#123;</span><br><span class="line">			<span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;Redis LPUSH超时: %w&quot;</span>, err)</span><br><span class="line">		&#125;</span><br><span class="line">		lastErr = err</span><br><span class="line">		g.Log().Warningf(opCtx, <span class="string">&quot;Redis LPUSH失败(尝试%d/%d)，键: %s, 错误: %v&quot;</span>, i+<span class="number">1</span>, maxRetries, key, err)</span><br><span class="line">		<span class="keyword">if</span> i &lt; maxRetries<span class="number">-1</span> &#123;</span><br><span class="line">			time.Sleep(time.Duration(i+<span class="number">1</span>) * <span class="number">100</span> * time.Millisecond) <span class="comment">// 递增等待时间</span></span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> _, err := redis.Do(opCtx, <span class="string">&quot;LTRIM&quot;</span>, key, <span class="number">0</span>, max<span class="number">-1</span>); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="comment">// 检查是否超时</span></span><br><span class="line">		<span class="keyword">if</span> errors.Is(err, context.DeadlineExceeded) &#123;</span><br><span class="line">			<span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;Redis LTRIM超时: %w&quot;</span>, err)</span><br><span class="line">		&#125;</span><br><span class="line">		lastErr = err</span><br><span class="line">		g.Log().Warningf(opCtx, <span class="string">&quot;Redis LTRIM失败(尝试%d/%d)，键: %s, 错误: %v&quot;</span>, i+<span class="number">1</span>, maxRetries, key, err)</span><br><span class="line">		<span class="keyword">if</span> i &lt; maxRetries<span class="number">-1</span> &#123;</span><br><span class="line">			time.Sleep(time.Duration(i+<span class="number">1</span>) * <span class="number">100</span> * time.Millisecond)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> _, err := redis.Do(opCtx, <span class="string">&quot;EXPIRE&quot;</span>, key, <span class="type">int64</span>(ttlH*<span class="number">3600</span>)); err != <span class="literal">nil</span> &#123;</span><br><span class="line">		<span class="comment">// 检查是否超时</span></span><br><span class="line">		<span class="keyword">if</span> errors.Is(err, context.DeadlineExceeded) &#123;</span><br><span class="line">			<span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;Redis EXPIRE超时: %w&quot;</span>, err)</span><br><span class="line">		&#125;</span><br><span class="line">		lastErr = err</span><br><span class="line">		g.Log().Warningf(opCtx, <span class="string">&quot;Redis EXPIRE失败(尝试%d/%d)，键: %s, 错误: %v&quot;</span>, i+<span class="number">1</span>, maxRetries, key, err)</span><br><span class="line">		<span class="keyword">if</span> i &lt; maxRetries<span class="number">-1</span> &#123;</span><br><span class="line">			time.Sleep(time.Duration(i+<span class="number">1</span>) * <span class="number">100</span> * time.Millisecond)</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 所有操作成功</span></span><br><span class="line">	<span class="keyword">return</span> <span class="literal">nil</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 所有重试都失败</span></span><br><span class="line"><span class="keyword">return</span> fmt.Errorf(<span class="string">&quot;Redis写入失败，已重试%d次，最后错误: %w&quot;</span>, maxRetries, lastErr)</span><br></pre></td></tr></table></figure>
+<p>作用：</p>
+<ul>
+<li>失败时最多重试 3 次</li>
+<li>每次重试前检查超时，避免无效重试</li>
+<li>重试间隔递增，避免瞬时压力</li>
+<li>失败后连接正常归还，不会泄漏</li>
+</ul>
+<hr>
+<h2 id="三、框架层面的连接管理（GoFrame）"><a class="header-anchor" href="#三、框架层面的连接管理（GoFrame）">¶</a>三、框架层面的连接管理（GoFrame）</h2>
+<h3 id="1-连接自动归还机制"><a class="header-anchor" href="#1-连接自动归还机制">¶</a>1. 连接自动归还机制</h3>
+<p>代码中使用 <code>g.Redis()</code> 获取连接：</p>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line">redis := g.Redis()</span><br></pre></td></tr></table></figure>
+<p>GoFrame 的连接管理机制：</p>
+<ul>
+<li>自动连接池：<code>g.Redis()</code> 返回的是连接池客户端，不是单个连接</li>
+<li>自动归还：操作完成后，连接自动归还到连接池</li>
+<li>连接复用：多个操作共享连接池中的连接</li>
+</ul>
+<h3 id="2-连接池生命周期管理"><a class="header-anchor" href="#2-连接池生命周期管理">¶</a>2. 连接池生命周期管理</h3>
+<p>GoFrame 框架会自动：</p>
+<ul>
+<li>启动时创建连接池（懒加载）</li>
+<li>根据 <code>poolSize</code> 和 <code>minIdle</code> 管理连接数量</li>
+<li>空闲连接自动清理（超过 <code>idleTimeout</code> 后关闭）</li>
+<li>连接异常时自动重建</li>
+</ul>
+<hr>
+<h2 id="四、防止连接泄漏的机制总结"><a class="header-anchor" href="#四、防止连接泄漏的机制总结">¶</a>四、防止连接泄漏的机制总结</h2>
+<h3 id="1-配置层面"><a class="header-anchor" href="#1-配置层面">¶</a>1. 配置层面</h3>
+<table>
+<thead>
+<tr>
+<th>配置项</th>
+<th>修改前</th>
+<th>修改后</th>
+<th>防泄漏作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>poolSize</code></td>
+<td>500</td>
+<td>50</td>
+<td>限制最大连接数，防止无限制增长</td>
+</tr>
+<tr>
+<td><code>minIdle</code></td>
+<td>50</td>
+<td>10</td>
+<td>减少常驻连接，降低泄漏影响</td>
+</tr>
+<tr>
+<td><code>maxOpen</code></td>
+<td>1000</td>
+<td>100</td>
+<td>限制数据库连接数</td>
+</tr>
+<tr>
+<td><code>maxLifetime</code></td>
+<td>120秒</td>
+<td>3600秒</td>
+<td>减少频繁重建，降低连接池压力</td>
+</tr>
+</tbody>
+</table>
+<h3 id="2-代码层面"><a class="header-anchor" href="#2-代码层面">¶</a>2. 代码层面</h3>
+<table>
+<thead>
+<tr>
+<th>机制</th>
+<th>实现位置</th>
+<th>防泄漏作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>超时控制</strong></td>
+<td><code>context.WithTimeout(ctx, 10*time.Second)</code></td>
+<td>防止连接长时间占用</td>
+</tr>
+<tr>
+<td><strong>上下文取消</strong></td>
+<td><code>opCtx.Err() != nil</code> 检查</td>
+<td>超时后立即释放资源</td>
+</tr>
+<tr>
+<td><strong>错误处理</strong></td>
+<td>重试机制中的错误检查</td>
+<td>确保异常时连接正常归还</td>
+</tr>
+<tr>
+<td><strong>框架管理</strong></td>
+<td><code>g.Redis()</code> 自动管理</td>
+<td>GoFrame 自动处理连接生命周期</td>
+</tr>
+</tbody>
+</table>
+<h3 id="3-连接泄漏防护流程"><a class="header-anchor" href="#3-连接泄漏防护流程">¶</a>3. 连接泄漏防护流程</h3>
+<figure class="highlight go"><table><tr><td class="code"><pre><span class="line"><span class="number">1.</span> 获取连接</span><br><span class="line">   redis := g.Redis()  <span class="comment">// 从连接池获取（不创建新连接）</span></span><br><span class="line"></span><br><span class="line"><span class="number">2.</span> 设置超时</span><br><span class="line">   opCtx, cancel := context.WithTimeout(ctx, <span class="number">10</span>*time.Second)</span><br><span class="line">   <span class="keyword">defer</span> cancel()  <span class="comment">// 确保超时后释放资源</span></span><br><span class="line"></span><br><span class="line"><span class="number">3.</span> 执行操作</span><br><span class="line">   redis.LPush(opCtx, key, b)  <span class="comment">// 使用超时上下文</span></span><br><span class="line"></span><br><span class="line"><span class="number">4.</span> 自动归还</span><br><span class="line">   - 操作成功：连接自动归还到连接池</span><br><span class="line">   - 操作超时：context 取消，连接自动归还</span><br><span class="line">   - 操作失败：重试或返回错误，连接自动归还</span><br><span class="line"></span><br><span class="line"><span class="number">5.</span> 连接池管理</span><br><span class="line">   - 空闲连接超过 minIdle：保留 minIdle 个</span><br><span class="line">   - 连接数超过 poolSize：等待或拒绝新请求</span><br><span class="line">   - 连接异常：自动重建</span><br></pre></td></tr></table></figure>
+<hr>
+<h2 id="五、为什么这样配置能防止泄漏？"><a class="header-anchor" href="#五、为什么这样配置能防止泄漏？">¶</a>五、为什么这样配置能防止泄漏？</h2>
+<h3 id="1-限制连接数上限"><a class="header-anchor" href="#1-限制连接数上限">¶</a>1. 限制连接数上限</h3>
+<ul>
+<li><code>poolSize: 50</code> 限制最大连接数</li>
+<li>即使有泄漏，最多泄漏 50 个连接</li>
+<li>不会无限增长导致服务器崩溃</li>
+</ul>
+<h3 id="2-超时机制强制释放"><a class="header-anchor" href="#2-超时机制强制释放">¶</a>2. 超时机制强制释放</h3>
+<ul>
+<li>10 秒超时确保连接不会永久占用</li>
+<li>即使代码有 bug，超时后也会释放</li>
+</ul>
+<h3 id="3-框架自动管理"><a class="header-anchor" href="#3-框架自动管理">¶</a>3. 框架自动管理</h3>
+<ul>
+<li>GoFrame 自动处理连接生命周期</li>
+<li>不需要手动 <code>Close()</code>，减少人为错误</li>
+</ul>
+<h3 id="4-减少空闲连接"><a class="header-anchor" href="#4-减少空闲连接">¶</a>4. 减少空闲连接</h3>
+<ul>
+<li><code>minIdle: 10</code> 减少常驻连接</li>
+<li>即使有泄漏，影响也较小</li>
+</ul>
+<hr>
+<h2 id="六、监控建议"><a class="header-anchor" href="#六、监控建议">¶</a>六、监控建议</h2>
+<p>可以添加以下监控来验证配置是否生效：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 监控 Redis 连接数</span></span><br><span class="line">redis-cli INFO clients | grep connected_clients</span><br><span class="line"></span><br><span class="line"><span class="comment"># 监控 MySQL 连接数</span></span><br><span class="line">mysql -u root -p -e <span class="string">&quot;SHOW STATUS LIKE &#x27;Threads_connected&#x27;;&quot;</span></span><br></pre></td></tr></table></figure>
+<p>如果连接数稳定在配置范围内，说明配置生效，连接没有泄漏。</p>
+<hr>
+<h2 id="总结"><a class="header-anchor" href="#总结">¶</a>总结</h2>
+<p>主要修改：</p>
+<ol>
+<li>配置文件：降低 <code>poolSize</code> 和 <code>minIdle</code></li>
+<li>代码层面：添加超时控制和重试机制</li>
+<li>框架层面：依赖 GoFrame 的自动连接管理</li>
+</ol>
+<p>这些改动共同确保：</p>
+<ul>
+<li>连接数不会超过限制</li>
+<li>超时后自动释放</li>
+<li>异常情况下连接正常归还</li>
+<li>两个服务共享资源时不会互相影响</li>
+</ul>
+<p>如需进一步优化，可添加连接池监控和告警机制。</p>
+]]></content>
+      <categories>
+        <category>redis</category>
+      </categories>
+      <tags>
+        <tag>redis</tag>
+      </tags>
+  </entry>
 </search>
