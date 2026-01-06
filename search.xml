@@ -7255,4 +7255,38 @@ VPP 需要定时执行操作（比如每小时统计一次区域能耗、每天�
         <tag>redis</tag>
       </tags>
   </entry>
+  <entry>
+    <title>沙果平台组态画面功能控制失败的问题排查方案</title>
+    <url>/2026/01/06/%E6%B2%99%E6%9E%9C%E5%B9%B3%E5%8F%B0%E7%BB%84%E6%80%81%E7%94%BB%E9%9D%A2%E5%8A%9F%E8%83%BD%E6%8E%A7%E5%88%B6%E5%A4%B1%E8%B4%A5%E7%9A%84%E9%97%AE%E9%A2%98%E6%8E%92%E6%9F%A5%E6%96%B9%E6%A1%88/</url>
+    <content><![CDATA[<h1>整体流程排查</h1>
+<ol>
+<li>
+<p>检查对应功能的物模型参数，订阅主题和灵智平台网关管理绑定的设备绑定的参数是否一致</p>
+</li>
+<li>
+<p>检查该功能参数对应的灵智设备的参数值数据类型是否对应的是布尔值，如果对应的是其他的值也可能会出现问题。（从共有设备，私有设备里面查找，不是网关绑定的设备参数）</p>
+</li>
+<li>
+<p>灵智方面修改完毕后记得直接断电重启plc以及dtu（直接通过透传来远程断电重启plc是无法做到的，因为那样仅仅是重启了plc，dtu并没有被重启）</p>
+</li>
+<li>
+<p>经过上述排查后，现阶段应当是沙果平台的mqtt已经订阅相关主题，并且物模型参数正确</p>
+</li>
+<li>
+<p>检查功能下发消息，查看规则引擎中负责上报功能的mqttout节点的主题，通过mqttx来检查对应主题出现的消息，是否带上<mark>网络号</mark>内容，并且格式如下：<br>
+{&quot;deviceKey&quot;:&quot;grid_p7255&quot;,&quot;func&quot;:&quot;setkeyvals&quot;,&quot;id&quot;:&quot;3yc6j0048o0dfh5tj6m5v50d90qs17ip&quot;,&quot;params&quot;:[{&quot;k&quot;:&quot;7255m102&quot;,&quot;v&quot;:0}]}</p>
+</li>
+<li>
+<p>如果出现组态图画完之后并且物模型再次发生变更，那么一定要记得将组态图中相关的功能参数绑定为<mark>更改后的物模型参数</mark>，否则会按照原先的参数进行上报</p>
+<p>​	这一个问题的排查方法是：订阅/sys/{productkey}/{devicekey}/thing/service/+,观察发布指令的消息主题</p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>工作文档</category>
+      </categories>
+      <tags>
+        <tag>工作文档</tag>
+      </tags>
+  </entry>
 </search>
